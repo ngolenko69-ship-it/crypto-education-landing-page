@@ -10,10 +10,12 @@ const trustItems = [
 export function HeroContent() {
   return (
     <div className="max-w-xl">
-      <h1 className="font-serif text-5xl font-medium leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">
+      <h1 className="font-serif text-[2.9rem] font-medium leading-[0.98] tracking-[-0.01em] text-balance sm:text-6xl lg:text-[5.25rem]">
         <span className="block text-foreground">Antes de mover</span>
         <span className="block text-foreground">tu dinero,</span>
-        <span className="block text-gold">aprende a protegerlo.</span>
+        <span className="block text-gold drop-shadow-[0_2px_20px_oklch(0.8_0.11_84/0.25)]">
+          aprende a protegerlo.
+        </span>
       </h1>
 
       <p className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">

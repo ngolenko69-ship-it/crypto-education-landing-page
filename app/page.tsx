@@ -19,7 +19,7 @@ export default function Home() {
           id="inicio"
           className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-10 lg:pt-10"
         >
-          <section className="grid flex-1 items-center gap-12 lg:grid-cols-2 lg:gap-8">
+          <section className="grid flex-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
             <HeroContent />
             <div className="order-last lg:order-none">
               <RoadmapVisual />
