@@ -12,6 +12,36 @@ export default function Home() {
         aria-hidden="true"
       />
 
+      {/* faint mountain / landscape silhouette on the right */}
+      <svg
+        className="pointer-events-none absolute -right-10 top-0 h-[70vh] w-[70%] opacity-[0.22] lg:w-[55%]"
+        viewBox="0 0 800 600"
+        preserveAspectRatio="xMaxYMax slice"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="oklch(0.5 0.06 155)" />
+            <stop offset="100%" stopColor="oklch(0.12 0.02 158)" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M0 470 L120 350 L210 430 L320 250 L430 400 L520 300 L640 440 L740 320 L800 400 L800 600 L0 600 Z"
+          fill="url(#ridge)"
+        />
+        <path
+          d="M300 520 L420 380 L520 470 L640 340 L760 460 L800 420 L800 600 L280 600 Z"
+          fill="oklch(0.18 0.024 158)"
+          fillOpacity="0.85"
+        />
+      </svg>
+
+      {/* atmospheric light points */}
+      <div
+        className="bg-particles pointer-events-none absolute inset-0"
+        aria-hidden="true"
+      />
+
       <div className="relative flex min-h-screen flex-col">
         <SiteHeader />
 
