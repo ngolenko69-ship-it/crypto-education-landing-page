@@ -20,13 +20,13 @@ export function SiteHeader() {
     <header className="relative z-20 border-b border-primary/10 bg-background/40 backdrop-blur-md supports-[backdrop-filter]:bg-background/30">
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-5 py-6 sm:px-8 lg:px-10 lg:py-7"
+        className="mx-auto flex max-w-7xl items-center justify-between gap-8 px-5 py-3 sm:px-8 lg:px-10 lg:py-3.5"
       >
         <a href="#inicio" className="flex items-center py-1 transition-opacity hover:opacity-90">
           <img
             src="/images/ruta-logo.png"
             alt="RUTA Cripto Segura"
-            className="h-11 w-auto object-contain drop-shadow-[0_2px_10px_oklch(0.8_0.11_84/0.2)] sm:h-12 lg:h-16"
+            className="h-9 w-auto object-contain drop-shadow-[0_2px_10px_oklch(0.8_0.11_84/0.2)] sm:h-10 lg:h-12"
           />
         </a>
 
@@ -35,7 +35,7 @@ export function SiteHeader() {
             <li key={item.label}>
               <a
                 href={item.href}
-                className="text-[17px] font-medium tracking-wide text-[oklch(0.9_0.03_88)] transition-all duration-200 hover:text-gold hover:opacity-90"
+                className="text-[19px] font-medium tracking-wide text-[oklch(0.9_0.03_88)] transition-all duration-200 hover:text-gold hover:opacity-90"
               >
                 {item.label}
               </a>
@@ -44,7 +44,7 @@ export function SiteHeader() {
         </ul>
 
         <div className="hidden lg:block">
-          <Button className="rounded-xl bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-7 py-5 text-[15px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]">
+          <Button className="rounded-xl bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-6 py-4 text-[15px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]">
             Empezar la ruta
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
