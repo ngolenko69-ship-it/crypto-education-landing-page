@@ -47,16 +47,18 @@ export default function Home() {
 
         <main
           id="inicio"
-          className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pb-10 pt-6 sm:px-8 lg:px-10 lg:pt-10"
+          className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-6 sm:px-8 md:px-10 lg:px-14 lg:pt-10"
         >
-          <section className="grid flex-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
-            <HeroContent />
-            <div className="order-last lg:order-none">
+          <section className="grid flex-1 items-center gap-12 py-10 md:py-14 lg:grid-cols-[0.43fr_0.57fr] lg:gap-16 lg:py-16 xl:gap-20">
+            <div className="relative z-10">
+              <HeroContent />
+            </div>
+            <div className="relative z-0 order-last flex w-full items-center justify-center lg:order-none lg:justify-end">
               <RoadmapVisual />
             </div>
           </section>
 
-          <div className="mt-12 lg:mt-8">
+          <div className="mt-8 lg:mt-4">
             <BenefitsBar />
           </div>
         </main>
