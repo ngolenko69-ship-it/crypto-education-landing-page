@@ -42,7 +42,7 @@ export function HeroContent() {
           className="h-14 rounded-full border-primary/45 bg-card/40 px-8 text-[15px] font-semibold text-foreground backdrop-blur-sm transition-all duration-200 hover:border-primary/70 hover:bg-card/60 hover:text-foreground"
         >
           <ShieldCheck className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
-          Protegerme de estafas
+          Aprender a protegerme de estafas
         </Button>
       </div>
 

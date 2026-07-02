@@ -12,30 +12,6 @@ export default function Home() {
         aria-hidden="true"
       />
 
-      {/* faint mountain / landscape silhouette on the right */}
-      <svg
-        className="pointer-events-none absolute -right-10 top-0 h-[70vh] w-[70%] opacity-[0.22] lg:w-[55%]"
-        viewBox="0 0 800 600"
-        preserveAspectRatio="xMaxYMax slice"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.5 0.06 155)" />
-            <stop offset="100%" stopColor="oklch(0.12 0.02 158)" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0 470 L120 350 L210 430 L320 250 L430 400 L520 300 L640 440 L740 320 L800 400 L800 600 L0 600 Z"
-          fill="url(#ridge)"
-        />
-        <path
-          d="M300 520 L420 380 L520 470 L640 340 L760 460 L800 420 L800 600 L280 600 Z"
-          fill="oklch(0.18 0.024 158)"
-          fillOpacity="0.85"
-        />
-      </svg>
-
       {/* atmospheric light points */}
       <div
         className="bg-particles pointer-events-none absolute inset-0"
@@ -49,11 +25,11 @@ export default function Home() {
           id="inicio"
           className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-2 sm:px-8 md:px-10 lg:px-14 lg:pt-2"
         >
-          <section className="grid flex-1 items-center gap-10 py-2 md:py-4 lg:grid-cols-[0.43fr_0.57fr] lg:gap-16 lg:py-4 xl:gap-20">
-            <div className="relative z-10">
+          <section className="grid flex-1 items-center gap-10 py-2 md:py-4 lg:grid-cols-[0.4fr_0.6fr] lg:items-start lg:gap-10 lg:py-2 xl:gap-14">
+            <div className="relative z-10 lg:pt-10 xl:pt-16">
               <HeroContent />
             </div>
-            <div className="relative z-0 order-last flex w-full items-center justify-center lg:order-none lg:justify-end">
+            <div className="relative z-0 order-last flex w-full items-start justify-center lg:order-none lg:-mt-2 lg:justify-end">
               <RoadmapVisual />
             </div>
           </section>
