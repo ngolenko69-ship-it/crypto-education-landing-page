@@ -1,6 +1,6 @@
 import { BenefitsBar } from "@/components/benefits-bar"
 import { HeroContent } from "@/components/hero-content"
-import { RoadmapVisual } from "@/components/roadmap-visual"
+import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
 import { SiteHeader } from "@/components/site-header"
 
 export default function Home() {
@@ -23,18 +23,24 @@ export default function Home() {
 
         <main
           id="inicio"
-          className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-2 sm:px-8 md:px-10 lg:px-14 lg:pt-2"
+          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-2 sm:px-8 md:px-10 lg:px-14 lg:pt-2"
         >
-          <section className="grid flex-1 items-center gap-10 py-2 md:py-4 lg:grid-cols-[0.4fr_0.6fr] lg:items-start lg:gap-10 lg:py-2 xl:gap-14">
-            <div className="relative z-10 lg:pt-10 xl:pt-16">
+          <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-9rem)]">
+            {/* Desktop: cinematic roadmap image blended into the background */}
+            <RoadmapBackdrop />
+
+            {/* Left text content, floating above the blended scene */}
+            <div className="relative z-10 w-full max-w-xl lg:max-w-[38rem]">
               <HeroContent />
             </div>
-            <div className="relative z-0 order-last flex w-full items-start justify-center lg:order-none lg:-mt-2 lg:justify-end">
-              <RoadmapVisual />
+
+            {/* Mobile / tablet: image stacked below the text as its own section */}
+            <div className="relative z-10 mt-10 lg:hidden">
+              <RoadmapMobile />
             </div>
           </section>
 
-          <div className="mt-8 lg:mt-4">
+          <div className="relative z-10 mt-8 lg:mt-4">
             <BenefitsBar />
           </div>
         </main>
