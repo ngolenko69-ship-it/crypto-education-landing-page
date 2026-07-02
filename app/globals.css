@@ -152,23 +152,23 @@
       oklch(0.34 0.05 150 / 0.55) 0%,
       transparent 50%
     ),
-    /* concentrated gold halo behind the shield */
+    /* concentrated soft gold halo behind the shield */
     radial-gradient(
-      44% 36% at 80% 20%,
-      oklch(0.66 0.1 84 / 0.22) 0%,
-      transparent 62%
+      46% 38% at 80% 22%,
+      oklch(0.66 0.1 84 / 0.26) 0%,
+      transparent 64%
     ),
     /* deep shadow lower-left for depth */
     radial-gradient(
-      100% 90% at 2% 112%,
-      oklch(0.05 0.01 158 / 0.98) 0%,
-      transparent 56%
+      100% 92% at 0% 114%,
+      oklch(0.04 0.008 158 / 0.99) 0%,
+      transparent 58%
     ),
-    /* strong cinematic vignette */
+    /* stronger cinematic vignette for a private-banking depth */
     radial-gradient(
-      135% 115% at 52% 34%,
-      transparent 48%,
-      oklch(0.04 0.006 158 / 0.95) 100%
+      130% 112% at 52% 32%,
+      transparent 42%,
+      oklch(0.03 0.005 158 / 0.98) 100%
     ),
     linear-gradient(
       180deg,
@@ -177,13 +177,13 @@
     );
 }
 
-/* map/grid texture, kept faint and localized behind the visual */
+/* map/grid texture, kept very faint and tightly localized behind the visual */
 .bg-grid {
   background-image:
-    linear-gradient(oklch(0.8 0.11 84 / 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, oklch(0.8 0.11 84 / 0.028) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: radial-gradient(58% 52% at 76% 26%, black 0%, transparent 68%);
+    linear-gradient(oklch(0.8 0.11 84 / 0.014) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.8 0.11 84 / 0.014) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(46% 42% at 78% 24%, black 0%, transparent 66%);
 }
 
 /* scattered light points / atmospheric dust on the right */

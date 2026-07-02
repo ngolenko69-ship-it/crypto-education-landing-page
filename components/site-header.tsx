@@ -26,7 +26,7 @@ export function SiteHeader() {
           <img
             src="/images/ruta-logo.png"
             alt="RUTA Cripto Segura"
-            className="h-9 w-auto object-contain drop-shadow-[0_2px_10px_oklch(0.8_0.11_84/0.2)] sm:h-10 lg:h-12"
+            className="h-10 w-auto object-contain drop-shadow-[0_2px_12px_oklch(0.8_0.11_84/0.25)] sm:h-11 lg:h-14"
           />
         </a>
 
@@ -44,7 +44,7 @@ export function SiteHeader() {
         </ul>
 
         <div className="hidden lg:block">
-          <Button className="rounded-xl bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-6 py-4 text-[15px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]">
+          <Button className="rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-7 py-4 text-[15px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]">
             Empezar la ruta
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
@@ -76,7 +76,7 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-          <Button className="mt-4 w-full rounded-xl bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]">
+          <Button className="mt-4 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]">
             Empezar la ruta
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
