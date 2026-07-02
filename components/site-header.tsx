@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight, Menu, ShieldCheck, X } from "lucide-react"
+import { ArrowRight, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
@@ -22,18 +22,12 @@ export function SiteHeader() {
         aria-label="Navegación principal"
         className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-5 sm:px-8 lg:px-10"
       >
-        <a href="#inicio" className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/40 bg-primary/10 text-primary">
-            <ShieldCheck className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-serif text-lg font-semibold tracking-wide text-foreground">
-              RUTA
-            </span>
-            <span className="text-[0.62rem] font-medium tracking-[0.3em] text-primary">
-              CRIPTO SEGURA
-            </span>
-          </span>
+        <a href="#inicio" className="flex items-center">
+          <img
+            src="/images/ruta-logo.png"
+            alt="RUTA Cripto Segura"
+            className="h-10 w-auto object-contain sm:h-12 lg:h-14"
+          />
         </a>
 
         <ul className="hidden items-center gap-8 lg:flex">

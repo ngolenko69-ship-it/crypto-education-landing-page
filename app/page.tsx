@@ -47,9 +47,9 @@ export default function Home() {
 
         <main
           id="inicio"
-          className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-6 sm:px-8 md:px-10 lg:px-14 lg:pt-10"
+          className="mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-2 sm:px-8 md:px-10 lg:px-14 lg:pt-2"
         >
-          <section className="grid flex-1 items-center gap-12 py-10 md:py-14 lg:grid-cols-[0.43fr_0.57fr] lg:gap-16 lg:py-16 xl:gap-20">
+          <section className="grid flex-1 items-center gap-10 py-2 md:py-4 lg:grid-cols-[0.43fr_0.57fr] lg:gap-16 lg:py-4 xl:gap-20">
             <div className="relative z-10">
               <HeroContent />
             </div>
