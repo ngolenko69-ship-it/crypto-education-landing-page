@@ -31,6 +31,8 @@ export function HeroContent() {
       <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
         <Button
           size="lg"
+          nativeButton={false}
+          render={<a href="#curso" />}
           className="h-14 rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)]"
         >
           Empezar la ruta

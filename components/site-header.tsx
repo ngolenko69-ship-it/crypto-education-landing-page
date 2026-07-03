@@ -44,7 +44,11 @@ export function SiteHeader() {
         </ul>
 
         <div className="hidden shrink-0 lg:block">
-          <Button className="rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-6 py-4 text-sm font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]">
+          <Button
+            nativeButton={false}
+            render={<a href="#curso" />}
+            className="rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-6 py-4 text-sm font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)]"
+          >
             Empezar la ruta
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
@@ -76,7 +80,12 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-          <Button className="mt-4 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]">
+          <Button
+            nativeButton={false}
+            render={<a href="#curso" />}
+            onClick={() => setOpen(false)}
+            className="mt-4 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]"
+          >
             Empezar la ruta
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>

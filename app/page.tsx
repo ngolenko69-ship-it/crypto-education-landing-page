@@ -1,6 +1,8 @@
 import { BenefitsBar } from "@/components/benefits-bar"
 import { HeroContent } from "@/components/hero-content"
+import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
+import { ScrollTransition } from "@/components/scroll-transition"
 import { SiteHeader } from "@/components/site-header"
 
 export default function Home() {
@@ -44,6 +46,10 @@ export default function Home() {
             <BenefitsBar />
           </div>
         </main>
+
+        {/* cinematic scroll continuation from the hero roadmap into step 1 */}
+        <ScrollTransition />
+        <PrimerosPasosSection />
       </div>
     </div>
   )
