@@ -28,6 +28,14 @@ export function ScrollTransition() {
     const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
     let raf = 0
 
+    // prime the drawn path so it can be revealed via stroke-dashoffset
+    const path = pathRef.current
+    const pathLen = path ? path.getTotalLength() : 0
+    if (path) {
+      path.style.strokeDasharray = String(pathLen)
+      path.style.strokeDashoffset = reduced ? "0" : String(pathLen)
+    }
+
     const apply = () => {
       raf = 0
       const rect = zone.getBoundingClientRect()
@@ -39,7 +47,7 @@ export function ScrollTransition() {
       const nodeP = reduced ? 1 : clamp((p - 0.32) / 0.42)
       const labelP = reduced ? 1 : clamp((p - 0.46) / 0.4)
 
-      if (lineRef.current) lineRef.current.style.transform = `scaleY(${lineP})`
+      if (path) path.style.strokeDashoffset = String(pathLen * (1 - lineP))
       if (glowRef.current) glowRef.current.style.opacity = String(0.25 + nodeP * 0.55)
       if (nodeRef.current) {
         nodeRef.current.style.opacity = String(0.35 + nodeP * 0.65)
@@ -85,19 +93,41 @@ export function ScrollTransition() {
         }}
       />
 
-      {/* growing golden route line */}
-      <div className="relative h-[24vh] w-px sm:h-[28vh] lg:h-[34vh]">
-        <div
-          ref={lineRef}
-          className="absolute inset-0 origin-top"
-          style={{
-            transform: "scaleY(0)",
-            transition: "transform 0.12s linear",
-            background:
-              "linear-gradient(to bottom, transparent 0%, oklch(0.8 0.11 84 / 0.15) 12%, oklch(0.82 0.12 84 / 0.9) 100%)",
-            boxShadow: "0 0 12px oklch(0.8 0.11 84 / 0.5)",
-          }}
-        />
+      {/* growing golden route line — a gentle S-curve drawn on scroll */}
+      <div className="relative h-[24vh] w-[160px] sm:h-[28vh] lg:h-[34vh] lg:w-[200px]">
+        <svg
+          viewBox="0 0 200 600"
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full"
+          fill="none"
+        >
+          <defs>
+            <linearGradient id="scroll-route-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="oklch(0.82 0.12 84 / 0.12)" />
+              <stop offset="45%" stopColor="oklch(0.82 0.12 84 / 0.85)" />
+              <stop offset="100%" stopColor="oklch(0.85 0.12 84)" />
+            </linearGradient>
+          </defs>
+          {/* faint guide so the curve reads before it is drawn */}
+          <path
+            d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
+            stroke="oklch(0.82 0.12 84 / 0.08)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          {/* animated drawn path */}
+          <path
+            ref={pathRef}
+            d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
+            stroke="url(#scroll-route-grad)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            style={{
+              filter: "drop-shadow(0 0 6px oklch(0.8 0.11 84 / 0.55))",
+              transition: "stroke-dashoffset 0.12s linear",
+            }}
+          />
+        </svg>
       </div>
 
       {/* glowing first checkpoint node */}
