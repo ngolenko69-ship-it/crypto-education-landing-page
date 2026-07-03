@@ -1,6 +1,7 @@
 import { BenefitsBar } from "@/components/benefits-bar"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
 import { HeroContent } from "@/components/hero-content"
+import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
 import { ScrollTransition } from "@/components/scroll-transition"
@@ -56,6 +57,10 @@ export default function Home() {
         {/* snake route transition guiding from step 1 into step 2 */}
         <SnakeTransition step="Etapa 2" label="Dólares digitales" />
         <DolaresDigitalesSection />
+
+        {/* snake route transition guiding from step 2 into step 3 */}
+        <SnakeTransition step="Etapa 3" label="P2P: qué revisar" />
+        <P2pQueRevisarSection />
       </div>
     </div>
   )
