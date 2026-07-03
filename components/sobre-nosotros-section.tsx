@@ -31,9 +31,9 @@ export function SobreNosotrosSection() {
 
   return (
     <section
-      id="nosotros"
+      id="sobre-nosotros"
       aria-labelledby="nosotros-title"
-      className="relative flex w-full scroll-mt-24 items-center overflow-hidden lg:min-h-[860px]"
+      className="relative flex w-full scroll-mt-20 items-center overflow-hidden md:scroll-mt-24 lg:min-h-[860px]"
     >
       {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">

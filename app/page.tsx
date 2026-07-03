@@ -11,6 +11,8 @@ import { SnakeTransition } from "@/components/snake-transition"
 import { SobreNosotrosSection } from "@/components/sobre-nosotros-section"
 import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
+import { TelegramFloatingBar } from "@/components/telegram-floating-bar"
+import { FinalCtaPopup } from "@/components/final-cta-popup"
 
 export default function Home() {
   return (
@@ -27,12 +29,12 @@ export default function Home() {
         aria-hidden="true"
       />
 
-      <div className="relative flex min-h-screen flex-col">
+      <div className="relative flex min-h-screen flex-col pt-14 lg:pt-16">
         <SiteHeader />
 
         <main
           id="inicio"
-          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col px-5 pb-12 pt-2 sm:px-8 md:px-10 lg:px-14 lg:pt-2"
+          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pb-12 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-2"
         >
           <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-9rem)]">
             {/* Desktop: cinematic roadmap image blended into the background */}
@@ -82,6 +84,10 @@ export default function Home() {
         <SnakeTransition step="Etapa 7" label="Sobre nosotros" />
         <SobreNosotrosSection />
       </div>
+
+      {/* conversion overlays: floating community bar + final invitation popup */}
+      <TelegramFloatingBar />
+      <FinalCtaPopup />
     </div>
   )
 }

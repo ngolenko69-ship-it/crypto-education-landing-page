@@ -27,9 +27,9 @@ export function PrimerosPasosSection() {
 
   return (
     <section
-      id="curso"
+      id="primeros-pasos"
       aria-labelledby="primeros-pasos-title"
-      className="relative w-full scroll-mt-24 overflow-hidden"
+      className="relative w-full scroll-mt-20 overflow-hidden md:scroll-mt-24"
     >
       {/* ---------- cinematic background layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
