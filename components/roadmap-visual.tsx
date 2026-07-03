@@ -12,38 +12,45 @@ const IMAGE_ALT =
 export function RoadmapBackdrop() {
   return (
     <div
-      className="pointer-events-none absolute inset-y-0 right-0 hidden w-[68%] xl:w-[64%] lg:block"
+      className="pointer-events-none absolute inset-y-0 right-0 hidden w-[70%] items-center justify-end overflow-hidden xl:w-[66%] lg:flex"
       aria-hidden="true"
     >
-      <div className="relative h-full w-full">
-        <Image
+      <div className="relative flex h-full items-center justify-end">
+        {/* soft green-gold aura behind the scene for a seamless blend */}
+        <div
+          className="absolute right-0 top-1/2 h-[85%] w-[85%] -translate-y-1/2"
+          style={{
+            background:
+              "radial-gradient(closest-side, oklch(0.34 0.05 150 / 0.4) 0%, oklch(0.66 0.1 84 / 0.14) 45%, transparent 78%)",
+            filter: "blur(24px)",
+          }}
+        />
+
+        {/* full scene, sized to its own aspect ratio so nothing is cropped,
+            with every edge feathered into the background */}
+        <img
           src="/images/hero-roadmap-visual.png"
           alt=""
-          fill
-          priority
-          sizes="65vw"
-          className="object-cover object-right-top"
+          className="relative h-[94%] w-auto max-w-none object-contain"
           style={{
             WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 30%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 12%, black 86%, transparent 100%)",
+              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
             maskImage:
-              "linear-gradient(to right, transparent 0%, black 30%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 12%, black 86%, transparent 100%)",
+              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
           }}
         />
-
-        {/* multi-overlay blend: left dark wash + right vignette + overall tint */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.75) 14%, transparent 42%), radial-gradient(75% 80% at 72% 42%, transparent 52%, oklch(0.07 0.01 158 / 0.55) 100%), linear-gradient(to bottom, oklch(0.11 0.015 158 / 0.5) 0%, transparent 20%, transparent 78%, oklch(0.1 0.014 158 / 0.7) 100%)",
-          }}
-        />
-        {/* subtle overall darkening so gold text/headline always wins contrast */}
-        <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]/25" />
       </div>
+
+      {/* left dark wash so the headline always keeps strong contrast */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.6) 12%, transparent 34%)",
+        }}
+      />
     </div>
   )
 }
