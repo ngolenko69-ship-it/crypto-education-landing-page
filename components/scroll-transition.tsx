@@ -72,7 +72,7 @@ export function ScrollTransition() {
     <div
       ref={zoneRef}
       aria-hidden="true"
-      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-16 pt-6 sm:pb-20 lg:pb-28 lg:pt-10"
+      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-12 pt-4 sm:pb-16 lg:pb-20 lg:pt-8"
     >
       {/* progressive darkening / vignette that deepens on scroll */}
       <div
@@ -86,7 +86,7 @@ export function ScrollTransition() {
       />
 
       {/* growing golden route line */}
-      <div className="relative h-[30vh] w-px sm:h-[34vh] lg:h-[42vh]">
+      <div className="relative h-[24vh] w-px sm:h-[28vh] lg:h-[34vh]">
         <div
           ref={lineRef}
           className="absolute inset-0 origin-top"

@@ -92,10 +92,10 @@ export function SnakeTransition({
     <div
       ref={zoneRef}
       aria-hidden="true"
-      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-10 pt-8 sm:pb-14 lg:pb-20 lg:pt-14"
+      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-8 pt-5 sm:pb-11 lg:pb-14 lg:pt-9"
     >
       {/* winding golden route */}
-      <div className="relative h-[42vh] w-[220px] sm:h-[46vh] lg:h-[52vh] lg:w-[280px]">
+      <div className="relative h-[34vh] w-[200px] sm:h-[38vh] lg:h-[44vh] lg:w-[260px]">
         <svg
           viewBox="0 0 200 600"
           preserveAspectRatio="xMidYMid meet"
@@ -111,7 +111,7 @@ export function SnakeTransition({
 
           {/* faint full path so the curve reads even before it's drawn */}
           <path
-            d="M100 0 C 100 90, 28 150, 100 250 C 172 350, 28 430, 100 520 C 118 560, 100 580, 100 600"
+            d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
             fill="none"
             stroke="oklch(0.82 0.12 84 / 0.08)"
             strokeWidth="2"
@@ -121,7 +121,7 @@ export function SnakeTransition({
           {/* animated glowing path */}
           <path
             ref={pathRef}
-            d="M100 0 C 100 90, 28 150, 100 250 C 172 350, 28 430, 100 520 C 118 560, 100 580, 100 600"
+            d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
             fill="none"
             stroke="url(#snake-grad)"
             strokeWidth="2.5"

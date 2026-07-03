@@ -33,7 +33,7 @@ export function SobreNosotrosSection() {
     <section
       id="sobre-nosotros"
       aria-labelledby="nosotros-title"
-      className="relative flex w-full scroll-mt-20 items-center overflow-hidden md:scroll-mt-24 lg:min-h-[860px]"
+      className="relative flex w-full scroll-mt-20 items-center overflow-hidden md:scroll-mt-24 lg:min-h-[760px]"
     >
       {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
@@ -100,7 +100,7 @@ export function SobreNosotrosSection() {
       </div>
 
       {/* ---------- content ---------- */}
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8 md:px-10 lg:px-14 lg:py-28">
+      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-24">
         <div
           ref={ref}
           className="flex max-w-xl flex-col items-start text-left transition-all duration-1000 ease-out will-change-transform lg:max-w-[40rem]"

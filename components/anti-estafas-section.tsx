@@ -106,7 +106,7 @@ export function AntiEstafasSection() {
       </div>
 
       {/* ---------- content ---------- */}
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-24 sm:px-8 md:px-10 lg:px-14 lg:py-36">
+      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-28">
         <div
           ref={ref}
           className="flex max-w-xl flex-col items-start text-left transition-all duration-1000 ease-out will-change-transform lg:max-w-[38rem]"
@@ -164,7 +164,7 @@ export function AntiEstafasSection() {
         </div>
 
         {/* compact glass cards */}
-        <ul className="mt-14 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4">
+        <ul className="mt-10 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4">
           {cards.map(({ icon: Icon, title, description }, i) => (
             <li
               key={title}
