@@ -39,19 +39,19 @@ export function PrimerosPasosSection() {
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
         />
 
-        {/* base dark green overlay to unify the image with the site background */}
+        {/* base dark green overlay to unify the image with the site background (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.014 158 / 0.38)" }}
+          style={{ background: "oklch(0.09 0.014 158 / 0.24)" }}
         />
 
         {/* soft gold glow to reveal the shield / route on the right */}
         <div
           className="absolute inset-y-0 right-0 hidden lg:block"
           style={{
-            width: "46%",
+            width: "48%",
             background:
-              "radial-gradient(60% 55% at 74% 52%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 70%)",
+              "radial-gradient(60% 55% at 72% 50%, oklch(0.66 0.1 84 / 0.18) 0%, transparent 72%)",
           }}
         />
 
