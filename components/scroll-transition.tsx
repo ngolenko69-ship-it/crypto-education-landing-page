@@ -14,7 +14,7 @@ import { Rocket } from "lucide-react"
  */
 export function ScrollTransition() {
   const zoneRef = useRef<HTMLDivElement>(null)
-  const lineRef = useRef<HTMLDivElement>(null)
+  const pathRef = useRef<SVGPathElement>(null)
   const glowRef = useRef<HTMLDivElement>(null)
   const nodeRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)

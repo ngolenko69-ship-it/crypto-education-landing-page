@@ -2,7 +2,7 @@
 
 import { ArrowLeftRight, ArrowRight, CircleDollarSign, ShieldAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useInView } from "@/hooks/use-scroll-reveal"
+import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const cards = [
   {
@@ -23,7 +23,7 @@ const cards = [
 ]
 
 export function DolaresDigitalesSection() {
-  const { ref, inView } = useInView()
+  const { ref, inView, reveal, settle } = useReveal()
 
   return (
     <section
@@ -41,6 +41,7 @@ export function DolaresDigitalesSection() {
           src="/images/dolares-digitales-background.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[88%_center] opacity-100 lg:object-[center_right]"
+          style={settle()}
         />
 
         {/* global dark overlay so the image never overpowers the text (lightened for +visibility) */}
@@ -109,14 +110,13 @@ export function DolaresDigitalesSection() {
       <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-28">
         <div
           ref={ref}
-          className="flex max-w-xl flex-col items-start text-left transition-all duration-1000 ease-out will-change-transform lg:max-w-[38rem]"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(28px)",
-          }}
+          className="flex max-w-xl flex-col items-start text-left lg:max-w-[38rem]"
         >
           {/* elegant checkpoint badge */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm">
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
+            style={reveal({ delay: 0, y: 12, duration: 500 })}
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
               Paso 2 · Dólares digitales
@@ -126,6 +126,7 @@ export function DolaresDigitalesSection() {
           <h2
             id="dolares-digitales-title"
             className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-5xl lg:text-[3.4rem]"
+            style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             Entender los dólares digitales es{" "}
             <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
@@ -133,14 +134,17 @@ export function DolaresDigitalesSection() {
             </span>
           </h2>
 
-          <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p
+            className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+            style={reveal({ delay: 260, y: 16, duration: 600 })}
+          >
             USDT y USDC aparecen cada vez más en pagos, ahorros digitales y
             transferencias. Antes de usarlos, lo importante es entender qué son,
             cómo funcionan y qué revisar para no cometer errores.
           </p>
 
           {/* single primary CTA */}
-          <div className="mt-9 w-full sm:w-auto">
+          <div className="mt-9 w-full sm:w-auto" style={reveal({ delay: 380, y: 14, duration: 500 })}>
             <Button
               size="lg"
               nativeButton={false}
@@ -153,7 +157,10 @@ export function DolaresDigitalesSection() {
           </div>
 
           {/* trust line */}
-          <p className="mt-5 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]">
+          <p
+            className="mt-5 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]"
+            style={reveal({ delay: 480, y: 12, duration: 600 })}
+          >
             Contenido educativo. Sin señales. Sin promesas de ganancias.
           </p>
         </div>
@@ -163,11 +170,11 @@ export function DolaresDigitalesSection() {
           {cards.map(({ icon: Icon, title, description }, i) => (
             <li
               key={title}
-              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-out hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
               style={{
                 opacity: inView ? 1 : 0,
-                transform: inView ? "translateY(0)" : "translateY(24px)",
-                transitionDelay: `${180 + i * 130}ms`,
+                transform: inView ? "translateY(0)" : "translateY(20px)",
+                transitionDelay: `${560 + i * 110}ms`,
               }}
             >
               <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">

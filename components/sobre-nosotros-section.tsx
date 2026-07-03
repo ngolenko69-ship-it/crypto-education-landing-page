@@ -1,7 +1,7 @@
 "use client"
 
 import { Network, Users, BookOpen, ShieldCheck } from "lucide-react"
-import { useInView } from "@/hooks/use-scroll-reveal"
+import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const cards = [
   {
@@ -27,7 +27,7 @@ const cards = [
 ]
 
 export function SobreNosotrosSection() {
-  const { ref, inView } = useInView()
+  const { ref, inView, reveal, settle } = useReveal()
 
   return (
     <section
@@ -45,6 +45,7 @@ export function SobreNosotrosSection() {
           src="/images/sobre-nosotros-ruta-background.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[72%_center] lg:object-[center_right]"
+          style={settle()}
         />
 
         {/* light global dark overlay so the image stays premium and cinematic */}
@@ -103,14 +104,13 @@ export function SobreNosotrosSection() {
       <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-24">
         <div
           ref={ref}
-          className="flex max-w-xl flex-col items-start text-left transition-all duration-1000 ease-out will-change-transform lg:max-w-[40rem]"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(28px)",
-          }}
+          className="flex max-w-xl flex-col items-start text-left lg:max-w-[40rem]"
         >
           {/* section badge */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm">
+          <span
+            className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
+            style={reveal({ delay: 0, y: 12, duration: 500 })}
+          >
             <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
               Sobre nosotros
@@ -120,6 +120,7 @@ export function SobreNosotrosSection() {
           <h2
             id="nosotros-title"
             className="mt-6 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-[2.7rem] lg:text-[3.1rem]"
+            style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             Quién está detrás de{" "}
             <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
@@ -127,7 +128,10 @@ export function SobreNosotrosSection() {
             </span>
           </h2>
 
-          <div className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+          <div
+            className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base"
+            style={reveal({ delay: 260, y: 16, duration: 600 })}
+          >
             <p>
               Detrás de Ruta Cripto Segura hay un equipo enfocado en educación,
               seguridad y acompañamiento para personas que quieren entender el
@@ -147,7 +151,10 @@ export function SobreNosotrosSection() {
           </div>
 
           {/* small credibility note */}
-          <p className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.72_0.02_88)]">
+          <p
+            className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.72_0.02_88)]"
+            style={reveal({ delay: 400, y: 12, duration: 600 })}
+          >
             La información institucional puede estar respaldada por
             documentación, certificaciones o acuerdos correspondientes.
           </p>
@@ -157,11 +164,11 @@ export function SobreNosotrosSection() {
             {cards.map(({ icon: Icon, title, description }, i) => (
               <li
                 key={title}
-                className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-out hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+                className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
                 style={{
                   opacity: inView ? 1 : 0,
-                  transform: inView ? "translateY(0)" : "translateY(24px)",
-                  transitionDelay: `${180 + i * 120}ms`,
+                  transform: inView ? "translateY(0)" : "translateY(20px)",
+                  transitionDelay: `${500 + i * 110}ms`,
                 }}
               >
                 <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
