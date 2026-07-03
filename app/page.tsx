@@ -74,13 +74,13 @@ export default function Home() {
         <SnakeTransition step="Etapa 5" label="Anti-estafas" />
         <AntiEstafasSection />
 
-        {/* snake route transition guiding from step 5 into the Sobre nosotros section */}
-        <SnakeTransition step="Etapa 6" label="Sobre nosotros" />
-        <SobreNosotrosSection />
-
-        {/* snake route transition guiding from Sobre nosotros into the final community step */}
-        <SnakeTransition step="Etapa 7" label="Comunidad cripto segura" />
+        {/* snake route transition guiding from step 5 into the community step */}
+        <SnakeTransition step="Etapa 6" label="Comunidad cripto segura" />
         <ComunidadCriptoSeguraSection />
+
+        {/* snake route transition guiding from the community step into the final trust section */}
+        <SnakeTransition step="Etapa 7" label="Sobre nosotros" />
+        <SobreNosotrosSection />
       </div>
     </div>
   )
