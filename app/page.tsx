@@ -1,3 +1,4 @@
+import { AntiEstafasSection } from "@/components/anti-estafas-section"
 import { BenefitsBar } from "@/components/benefits-bar"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
 import { HeroContent } from "@/components/hero-content"
@@ -66,6 +67,10 @@ export default function Home() {
         {/* snake route transition guiding from step 3 into step 4 */}
         <SnakeTransition step="Etapa 4" label="Wallets y claves" />
         <WalletsYClavesSection />
+
+        {/* snake route transition guiding from step 4 into step 5 */}
+        <SnakeTransition step="Etapa 5" label="Anti-estafas" />
+        <AntiEstafasSection />
       </div>
     </div>
   )
