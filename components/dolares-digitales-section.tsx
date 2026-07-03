@@ -31,27 +31,36 @@ export function DolaresDigitalesSection() {
       aria-labelledby="dolares-digitales-title"
       className="relative w-full scroll-mt-24 overflow-hidden"
     >
-      {/* ---------- cinematic background (CSS only, lighter than step 1) ---------- */}
+      {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        {/* deep dark-green base */}
-        <div className="absolute inset-0 bg-[oklch(0.1_0.014_158)]" />
+        {/* deep dark-green base behind everything */}
+        <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
 
-        {/* soft gold glow anchored on the right for depth */}
-        <div
-          className="absolute inset-y-0 right-0 hidden lg:block"
-          style={{
-            width: "52%",
-            background:
-              "radial-gradient(58% 52% at 74% 48%, oklch(0.66 0.1 84 / 0.14) 0%, transparent 72%)",
-          }}
+        {/* the coin / route PNG as a full-bleed cover layer on the right */}
+        <img
+          src="/images/dolares-digitales-background.png"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[88%_center] opacity-90 lg:object-[center_right]"
         />
 
-        {/* gentle green atmosphere lower-left */}
+        {/* global dark overlay so the image never overpowers the text */}
         <div
           className="absolute inset-0"
+          style={{ background: "oklch(0.09 0.012 158 / 0.42)" }}
+        />
+
+        {/* subtle dark-green tint to unify the gold with the site palette */}
+        <div
+          className="absolute inset-0 mix-blend-multiply"
+          style={{ background: "oklch(0.18 0.03 158 / 0.35)" }}
+        />
+
+        {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
+        <div
+          className="absolute inset-y-0 left-0 w-full lg:w-[78%]"
           style={{
             background:
-              "radial-gradient(70% 60% at 6% 96%, oklch(0.2 0.03 158 / 0.6) 0%, transparent 60%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.96) 34%, oklch(0.08 0.012 158 / 0.66) 64%, transparent 100%)",
           }}
         />
 
@@ -59,19 +68,29 @@ export function DolaresDigitalesSection() {
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "22%",
+            height: "26%",
             background:
-              "linear-gradient(to bottom, oklch(0.1 0.014 158) 0%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
           }}
         />
 
-        {/* bottom fade */}
+        {/* bottom fade into the section base */}
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
-            height: "24%",
+            height: "28%",
             background:
-              "linear-gradient(to top, oklch(0.09 0.012 158) 0%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
+          }}
+        />
+
+        {/* right edge vignette */}
+        <div
+          className="absolute inset-y-0 right-0"
+          style={{
+            width: "16%",
+            background:
+              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.7), transparent)",
           }}
         />
       </div>
