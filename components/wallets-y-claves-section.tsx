@@ -43,25 +43,25 @@ export function WalletsYClavesSection() {
           className="absolute inset-0 h-full w-full object-cover object-[84%_center] opacity-100 lg:object-[center_right]"
         />
 
-        {/* global dark overlay so the image never overpowers the text */}
+        {/* global dark overlay so the image never overpowers the text (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.26)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.12)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.24)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.16)" }}
         />
 
-        {/* soft gold glow to lift the focal point on the right */}
+        {/* soft gold glow to lift the focal point (route, vault, key) on the right */}
         <div
           className="absolute inset-y-0 right-0 hidden lg:block"
           style={{
-            width: "48%",
+            width: "54%",
             background:
-              "radial-gradient(58% 54% at 72% 50%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 72%)",
+              "radial-gradient(60% 58% at 70% 52%, oklch(0.66 0.1 84 / 0.22) 0%, transparent 74%)",
           }}
         />
 
