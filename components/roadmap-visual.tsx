@@ -12,44 +12,82 @@ const IMAGE_ALT =
 export function RoadmapBackdrop() {
   return (
     <div
-      className="pointer-events-none absolute inset-y-0 right-0 hidden w-[70%] items-center justify-end overflow-hidden xl:w-[66%] lg:flex"
+      className="pointer-events-none absolute -right-14 bottom-0 top-0 z-0 hidden overflow-hidden lg:block"
+      style={{ width: "64vw" }}
       aria-hidden="true"
     >
-      <div className="relative flex h-full items-center justify-end">
-        {/* soft green-gold aura behind the scene for a seamless blend */}
-        <div
-          className="absolute right-0 top-1/2 h-[85%] w-[85%] -translate-y-1/2"
-          style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.34 0.05 150 / 0.4) 0%, oklch(0.66 0.1 84 / 0.14) 45%, transparent 78%)",
-            filter: "blur(24px)",
-          }}
-        />
+      {/* wide cover image that bleeds past the edges like a hero background */}
+      <img
+        src="/images/hero-roadmap-visual.png"
+        alt=""
+        className="h-full w-full"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center right",
+          transform: "scale(1.08)",
+          opacity: 0.92,
+        }}
+      />
 
-        {/* full scene, sized to its own aspect ratio so nothing is cropped,
-            with every edge feathered into the background */}
-        <img
-          src="/images/hero-roadmap-visual.png"
-          alt=""
-          className="relative h-[94%] w-auto max-w-none object-contain"
-          style={{
-            WebkitMaskImage:
-              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
-            maskImage:
-              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-          }}
-        />
-      </div>
+      {/* A) strong left fade into the background */}
+      <div
+        className="absolute inset-y-0"
+        style={{
+          left: "34%",
+          width: "34%",
+          zIndex: 1,
+          background:
+            "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.92) 28%, rgba(4,9,7,0.58) 58%, transparent 100%)",
+        }}
+      />
 
-      {/* left dark wash so the headline always keeps strong contrast */}
+      {/* B) text protection gradient on the left side */}
+      <div
+        className="absolute inset-y-0 left-0"
+        style={{
+          width: "54%",
+          zIndex: 1,
+          background:
+            "radial-gradient(circle at 28% 42%, rgba(4,9,7,0.22), rgba(4,9,7,0.86) 72%)",
+        }}
+      />
+
+      {/* C) top fade */}
+      <div
+        className="absolute inset-x-0 top-0"
+        style={{
+          height: "210px",
+          zIndex: 1,
+          background:
+            "linear-gradient(to bottom, #040907 0%, rgba(4,9,7,0.85) 40%, transparent 100%)",
+        }}
+      />
+
+      {/* D) bottom fade (also clears the lower conflict area) */}
+      <div
+        className="absolute inset-x-0 bottom-0"
+        style={{
+          height: "220px",
+          zIndex: 1,
+          background:
+            "linear-gradient(to top, #040907 0%, rgba(4,9,7,0.78) 45%, transparent 100%)",
+        }}
+      />
+
+      {/* E) right vignette */}
+      <div
+        className="absolute inset-y-0 right-0"
+        style={{
+          width: "18vw",
+          zIndex: 1,
+          background: "linear-gradient(to left, rgba(2,4,3,0.55), transparent)",
+        }}
+      />
+
+      {/* F) subtle global darkener so the left text always wins contrast */}
       <div
         className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.6) 12%, transparent 34%)",
-        }}
+        style={{ zIndex: 1, background: "rgba(2,4,3,0.10)" }}
       />
     </div>
   )
