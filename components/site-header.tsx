@@ -20,7 +20,7 @@ export function SiteHeader() {
     <header className="relative z-20 border-b border-primary/10 bg-background/40 backdrop-blur-md supports-[backdrop-filter]:bg-background/30">
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-4 px-5 py-3 sm:px-8 lg:gap-6 lg:px-10 lg:py-3.5 xl:gap-8"
+        className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 sm:px-8 lg:gap-6 lg:px-10 lg:py-3.5 xl:gap-8"
       >
         <a href="#inicio" className="flex shrink-0 items-center py-1 transition-opacity hover:opacity-90">
           <img
