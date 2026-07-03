@@ -6,6 +6,7 @@ import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
 import { ScrollTransition } from "@/components/scroll-transition"
 import { SnakeTransition } from "@/components/snake-transition"
+import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
 
 export default function Home() {
@@ -61,6 +62,10 @@ export default function Home() {
         {/* snake route transition guiding from step 2 into step 3 */}
         <SnakeTransition step="Etapa 3" label="P2P: qué revisar" />
         <P2pQueRevisarSection />
+
+        {/* snake route transition guiding from step 3 into step 4 */}
+        <SnakeTransition step="Etapa 4" label="Wallets y claves" />
+        <WalletsYClavesSection />
       </div>
     </div>
   )
