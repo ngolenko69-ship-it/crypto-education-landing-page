@@ -1,5 +1,6 @@
 import { AntiEstafasSection } from "@/components/anti-estafas-section"
 import { BenefitsBar } from "@/components/benefits-bar"
+import { ComunidadCriptoSeguraSection } from "@/components/comunidad-cripto-segura-section"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
 import { HeroContent } from "@/components/hero-content"
 import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
@@ -71,6 +72,10 @@ export default function Home() {
         {/* snake route transition guiding from step 4 into step 5 */}
         <SnakeTransition step="Etapa 5" label="Anti-estafas" />
         <AntiEstafasSection />
+
+        {/* snake route transition guiding from step 5 into the final community step */}
+        <SnakeTransition step="Etapa 6" label="Comunidad cripto segura" />
+        <ComunidadCriptoSeguraSection />
       </div>
     </div>
   )
