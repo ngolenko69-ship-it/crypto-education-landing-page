@@ -3,6 +3,7 @@ import { BenefitsBar } from "@/components/benefits-bar"
 import { ComunidadCriptoSeguraSection } from "@/components/comunidad-cripto-segura-section"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
 import { HeroContent } from "@/components/hero-content"
+import { LegalTrustFooterSection } from "@/components/legal-trust-footer-section"
 import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
@@ -83,6 +84,10 @@ export default function Home() {
         {/* snake route transition guiding from the community step into the final trust section */}
         <SnakeTransition step="Etapa 7" label="Sobre nosotros" />
         <SobreNosotrosSection />
+
+        {/* the golden route ends in trust: continuation into the legal / trust footer */}
+        <SnakeTransition step="Etapa 8" label="Confianza y transparencia" />
+        <LegalTrustFooterSection />
       </div>
 
       {/* conversion overlays: floating community bar + final invitation popup */}
