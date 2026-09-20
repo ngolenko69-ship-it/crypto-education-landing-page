@@ -28,17 +28,18 @@ type ExitSpec =
 interface TransitionSpec {
   exit: ExitSpec
   arrivalDotId: string
+  arrivalSectionId: string
 }
 
 const TRANSITIONS: TransitionSpec[] = [
-  { exit: { type: "point", ids: ["route-exit-hero", "route-exit-hero-mobile"] }, arrivalDotId: "route-dot-primeros-pasos" },
-  { exit: { type: "section", id: "primeros-pasos" }, arrivalDotId: "route-dot-dolares-digitales" },
-  { exit: { type: "section", id: "dolares-digitales" }, arrivalDotId: "route-dot-p2p" },
-  { exit: { type: "section", id: "p2p-seguro" }, arrivalDotId: "route-dot-wallets" },
-  { exit: { type: "section", id: "wallets" }, arrivalDotId: "route-dot-anti-estafas" },
-  { exit: { type: "section", id: "anti-estafas" }, arrivalDotId: "route-dot-comunidad" },
-  { exit: { type: "section", id: "comunidad" }, arrivalDotId: "route-dot-sobre-nosotros" },
-  { exit: { type: "section", id: "sobre-nosotros" }, arrivalDotId: "route-dot-legal" },
+  { exit: { type: "point", ids: ["route-exit-hero", "route-exit-hero-mobile"] }, arrivalDotId: "route-dot-primeros-pasos", arrivalSectionId: "primeros-pasos" },
+  { exit: { type: "section", id: "primeros-pasos" }, arrivalDotId: "route-dot-dolares-digitales", arrivalSectionId: "dolares-digitales" },
+  { exit: { type: "section", id: "dolares-digitales" }, arrivalDotId: "route-dot-p2p", arrivalSectionId: "p2p-seguro" },
+  { exit: { type: "section", id: "p2p-seguro" }, arrivalDotId: "route-dot-wallets", arrivalSectionId: "wallets" },
+  { exit: { type: "section", id: "wallets" }, arrivalDotId: "route-dot-anti-estafas", arrivalSectionId: "anti-estafas" },
+  { exit: { type: "section", id: "anti-estafas" }, arrivalDotId: "route-dot-comunidad", arrivalSectionId: "comunidad" },
+  { exit: { type: "section", id: "comunidad" }, arrivalDotId: "route-dot-sobre-nosotros", arrivalSectionId: "sobre-nosotros" },
+  { exit: { type: "section", id: "sobre-nosotros" }, arrivalDotId: "route-dot-legal", arrivalSectionId: "legal" },
 ]
 
 // Trailing offsets behind the comet's head, in pixels along the path —
@@ -52,26 +53,9 @@ function travelEase(t: number) {
   return c * c * c * (c * (c * 6 - 15) + 10)
 }
 
-interface RuntimeTransition {
-  pathEl: SVGPathElement
-  windowEl: SVGPathElement
-  cometHalo: SVGCircleElement
-  cometGlow: SVGCircleElement
-  cometCore: SVGCircleElement
-  tailEls: SVGCircleElement[]
-  arrivalDot: HTMLElement | null
-  exitAnchor: () => { x: number; y: number } | null
-  arrivalAnchor: () => { x: number; y: number } | null
-  total: number
-  target: number
-  current: number
-  pulsed: boolean
-}
-
 export function GoldenRoute() {
   const svgRef = useRef<SVGSVGElement>(null)
   const [docSize, setDocSize] = useState({ w: 0, h: 0 })
-  const runtimeRef = useRef<RuntimeTransition[]>([])
 
   useEffect(() => {
     const svg = svgRef.current
@@ -79,6 +63,7 @@ export function GoldenRoute() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const isMobile = () => window.matchMedia("(max-width: 1023px)").matches
+    const clampPct = (n: number) => Math.min(100, Math.max(0, n))
 
     const scrollY = () => window.scrollY || document.documentElement.scrollTop
 
@@ -168,6 +153,10 @@ export function GoldenRoute() {
         cometCore,
         tailEls,
         arrivalDot: null as HTMLElement | null,
+        arrivalSection: null as HTMLElement | null,
+        exitSection: (spec.exit.type === "section" ? document.getElementById(spec.exit.id) : null) as HTMLElement | null,
+        arrivalOriginPct: { x: 50, y: 0 },
+        exitOriginPct: { x: 82, y: 100 },
         exitAnchor: exitAnchorFor(spec.exit),
         arrivalAnchor: arrivalAnchorFor(spec.arrivalDotId),
         total: 0,
@@ -202,6 +191,29 @@ export function GoldenRoute() {
         gr.windowPath.setAttribute("d", d)
         gr.total = gr.guide.getTotalLength()
         gr.arrivalDot = document.getElementById(gr.spec.arrivalDotId)
+        gr.arrivalSection = document.getElementById(gr.spec.arrivalSectionId)
+
+        // where the arrival point sits inside its own section, so the
+        // "camera settling" zoom can be anchored at the exact spot the
+        // comet lands rather than a generic corner
+        if (gr.arrivalSection) {
+          const sr = gr.arrivalSection.getBoundingClientRect()
+          if (sr.width && sr.height) {
+            gr.arrivalOriginPct = {
+              x: clampPct(((a.x - sr.left) / sr.width) * 100),
+              y: clampPct(((a.y - scrollY() - sr.top) / sr.height) * 100),
+            }
+          }
+        }
+        if (gr.exitSection) {
+          const sr = gr.exitSection.getBoundingClientRect()
+          if (sr.width && sr.height) {
+            gr.exitOriginPct = {
+              x: clampPct(((e.x - sr.left) / sr.width) * 100),
+              y: clampPct(((e.y - scrollY() - sr.top) / sr.height) * 100),
+            }
+          }
+        }
       }
     }
 
@@ -256,7 +268,20 @@ export function GoldenRoute() {
           gr.cometCore.setAttribute("r", "0")
           gr.tailEls.forEach((t) => t.setAttribute("r", "0"))
           gr.windowPath.style.opacity = "0"
+          if (gr.arrivalSection) gr.arrivalSection.style.transform = ""
+          if (gr.exitSection) gr.exitSection.style.transform = ""
           continue
+        }
+
+        // the camera settles as we fly into the next section: it starts
+        // slightly zoomed in from the exact point the comet lands, and
+        // eases to rest right as the comet arrives — "we flew in with it"
+        if (gr.arrivalSection) {
+          const settleT = clamp((gr.current - 0.55) / 0.45)
+          const scale = 1.055 - travelEase(settleT) * 0.055
+          gr.arrivalSection.style.transformOrigin = `${gr.arrivalOriginPct.x}% ${gr.arrivalOriginPct.y}%`
+          gr.arrivalSection.style.transform = `scale(${scale})`
+          gr.arrivalSection.style.willChange = settleT < 1 ? "transform" : "auto"
         }
 
         // moving bright window trailing the comet
@@ -270,19 +295,25 @@ export function GoldenRoute() {
         const head = gr.guide.getPointAtLength(dist)
         const cometOpacity = Math.min(clamp(gr.current / 0.04), clamp((1 - gr.current) / 0.06))
 
+        // right before arrival the light gathers into a brief, concentrated
+        // bloom — the "diving into it" moment — before it hands off to the
+        // section's own camera-settle and the badge-dot pulse
+        const bloom = clamp((gr.current - 0.83) / 0.14) * clamp((0.985 - gr.current) / 0.03)
+        const boost = 1 + bloom * 1.6
+
         gr.cometHalo.setAttribute("cx", String(head.x))
         gr.cometHalo.setAttribute("cy", String(head.y))
-        gr.cometHalo.setAttribute("r", String(sizes.halo))
+        gr.cometHalo.setAttribute("r", String(sizes.halo * boost))
         gr.cometHalo.style.opacity = String(cometOpacity * 0.6)
 
         gr.cometGlow.setAttribute("cx", String(head.x))
         gr.cometGlow.setAttribute("cy", String(head.y))
-        gr.cometGlow.setAttribute("r", String(sizes.glow))
+        gr.cometGlow.setAttribute("r", String(sizes.glow * boost))
         gr.cometGlow.style.opacity = String(cometOpacity * 0.85)
 
         gr.cometCore.setAttribute("cx", String(head.x))
         gr.cometCore.setAttribute("cy", String(head.y))
-        gr.cometCore.setAttribute("r", String(sizes.core))
+        gr.cometCore.setAttribute("r", String(sizes.core * (1 + bloom * 0.5)))
         gr.cometCore.style.opacity = String(cometOpacity)
 
         tailOffsets.forEach((offset, i) => {
@@ -309,7 +340,6 @@ export function GoldenRoute() {
     const onResize = () => recompute()
     window.addEventListener("resize", onResize)
     raf = requestAnimationFrame(tick)
-    runtimeRef.current = []
 
     return () => {
       window.removeEventListener("resize", onResize)
