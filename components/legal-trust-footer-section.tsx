@@ -56,7 +56,15 @@ export function LegalTrustFooterSection() {
           src="/images/legal-trust-footer-background.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[80%_center] lg:object-[center_right]"
-          style={settle()}
+          style={{
+            ...settle(),
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
         />
 
         {/* light global dark overlay so the image stays premium and cinematic */}

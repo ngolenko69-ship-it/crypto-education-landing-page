@@ -37,7 +37,15 @@ export function PrimerosPasosSection() {
           src="/images/primeros-pasos-background.webp"
           alt=""
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
-          style={settle()}
+          style={{
+            ...settle(),
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
         />
 
         {/* base dark green overlay to unify the image with the site background (lightened for +visibility) */}
