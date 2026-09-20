@@ -81,11 +81,31 @@ export function RoadmapMobile() {
           className="h-auto w-full object-contain"
           style={{
             WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+              "radial-gradient(85% 78% at 50% 46%, black 45%, transparent 92%), linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)",
             maskImage:
-              "linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%), linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+              "radial-gradient(85% 78% at 50% 46%, black 45%, transparent 92%), linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
+          }}
+        />
+
+        {/* top fade so the scene dissolves into the section above it */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-[22%]"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(to bottom, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.55) 45%, transparent 100%)",
+          }}
+        />
+
+        {/* bottom fade so the scene dissolves into whatever follows */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[26%]"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(to top, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.55) 45%, transparent 100%)",
           }}
         />
       </div>
