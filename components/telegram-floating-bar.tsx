@@ -8,14 +8,14 @@ const DISMISS_KEY = "ruta_telegram_bar_dismissed"
 
 export function TelegramFloatingBar() {
   const [visible, setVisible] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
+  const [dismissed, setDismissed] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      sessionStorage.getItem(DISMISS_KEY) === "1",
+  )
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    if (sessionStorage.getItem(DISMISS_KEY) === "1") {
-      setDismissed(true)
-      return
-    }
+    if (typeof window === "undefined" || dismissed) return
 
     const dolares = document.getElementById("dolares-digitales")
 
@@ -33,7 +33,7 @@ export function TelegramFloatingBar() {
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+  }, [dismissed])
 
   const handleClose = () => {
     setVisible(false)
