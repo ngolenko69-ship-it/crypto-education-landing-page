@@ -5,16 +5,24 @@ import { Rocket } from "lucide-react"
 
 /**
  * Cinematic connective zone between the hero roadmap and the "Primeros pasos"
- * section. As the user scrolls, a golden route line grows downward, the first
- * checkpoint glows into focus, and the background darkens — so the roadmap
- * appears to "open" into the first step instead of hard-cutting to a new page.
+ * section. As the user scrolls, a comet with a fading tail flies down a
+ * golden S-curve that draws itself, the first checkpoint zooms into focus as
+ * it arrives, and the background darkens — so the roadmap appears to "open"
+ * into the first step instead of hard-cutting to a new page.
  *
  * Motion is driven by a single rAF loop that writes transforms directly to the
  * DOM (no per-frame React re-renders) and is disabled for reduced-motion users.
  */
+
+// Trailing offsets behind the comet's head, as a fraction of the path's
+// total length — decreasing radius/opacity from index 0 (closest) outward.
+const TAIL_OFFSETS = [0.02, 0.045, 0.075, 0.11, 0.15]
+
 export function ScrollTransition() {
   const zoneRef = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
+  const cometRef = useRef<SVGGElement>(null)
+  const tailRefs = useRef<(SVGCircleElement | null)[]>([])
   const glowRef = useRef<HTMLDivElement>(null)
   const nodeRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLDivElement>(null)
@@ -35,6 +43,8 @@ export function ScrollTransition() {
       path.style.strokeDasharray = String(pathLen)
       path.style.strokeDashoffset = reduced ? "0" : String(pathLen)
     }
+    const pointAt = (frac: number) =>
+      path ? path.getPointAtLength(pathLen * clamp(frac)) : { x: 0, y: 0 }
 
     const apply = () => {
       raf = 0
@@ -48,10 +58,35 @@ export function ScrollTransition() {
       const labelP = reduced ? 1 : clamp((p - 0.46) / 0.4)
 
       if (path) path.style.strokeDashoffset = String(pathLen * (1 - lineP))
-      if (glowRef.current) glowRef.current.style.opacity = String(0.25 + nodeP * 0.55)
+
+      // comet with a fading tail flying down the route as it draws
+      const cometOpacity = reduced
+        ? 0
+        : Math.min(clamp(lineP / 0.05), clamp((1 - lineP) / 0.12))
+      if (cometRef.current) {
+        const head = pointAt(lineP)
+        cometRef.current.setAttribute("transform", `translate(${head.x} ${head.y})`)
+        cometRef.current.style.opacity = String(cometOpacity)
+      }
+      TAIL_OFFSETS.forEach((offset, i) => {
+        const dot = tailRefs.current[i]
+        if (!dot) return
+        const pt = pointAt(lineP - offset)
+        dot.setAttribute("cx", String(pt.x))
+        dot.setAttribute("cy", String(pt.y))
+        dot.style.opacity = String(cometOpacity * (1 - i / TAIL_OFFSETS.length) * 0.7)
+      })
+
+      // the checkpoint zooms into focus — camera push + focus pull — as the
+      // comet arrives
+      if (glowRef.current) {
+        glowRef.current.style.opacity = String(0.14 + nodeP * 0.7)
+        glowRef.current.style.transform = `translate(-50%, -68%) scale(${0.65 + nodeP * 0.55})`
+      }
       if (nodeRef.current) {
-        nodeRef.current.style.opacity = String(0.35 + nodeP * 0.65)
-        nodeRef.current.style.transform = `scale(${0.86 + nodeP * 0.14})`
+        nodeRef.current.style.opacity = String(0.2 + nodeP * 0.8)
+        nodeRef.current.style.transform = `scale(${0.55 + nodeP * 0.55})`
+        nodeRef.current.style.filter = `blur(${(1 - nodeP) * 6}px)`
       }
       if (labelRef.current) {
         labelRef.current.style.opacity = String(labelP)
@@ -97,9 +132,8 @@ export function ScrollTransition() {
       <div className="relative h-[15vh] w-[150px] sm:h-[17vh] lg:h-[20vh] lg:w-[190px]">
         <svg
           viewBox="0 0 200 600"
-          preserveAspectRatio="none"
-          className="absolute inset-0 h-full w-full"
-          fill="none"
+          preserveAspectRatio="xMidYMid meet"
+          className="absolute inset-0 h-full w-full overflow-visible"
         >
           <defs>
             <linearGradient id="scroll-route-grad" x1="0" y1="0" x2="0" y2="1">
@@ -111,6 +145,7 @@ export function ScrollTransition() {
           {/* faint guide so the curve reads before it is drawn */}
           <path
             d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
+            fill="none"
             stroke="oklch(0.82 0.12 84 / 0.08)"
             strokeWidth="2"
             strokeLinecap="round"
@@ -119,6 +154,7 @@ export function ScrollTransition() {
           <path
             ref={pathRef}
             d="M100 0 C 52 108, 52 196, 100 300 C 148 404, 148 492, 100 600"
+            fill="none"
             stroke="url(#scroll-route-grad)"
             strokeWidth="2.5"
             strokeLinecap="round"
@@ -127,16 +163,40 @@ export function ScrollTransition() {
               transition: "stroke-dashoffset 0.12s linear",
             }}
           />
+
+          {/* comet tail — a handful of shrinking, fading dots trailing the head */}
+          {TAIL_OFFSETS.map((_, i) => (
+            <circle
+              key={i}
+              ref={(el) => {
+                tailRefs.current[i] = el
+              }}
+              r={3.2 - i * 0.4}
+              fill="oklch(0.85 0.12 85)"
+              style={{ opacity: 0 }}
+            />
+          ))}
+
+          {/* comet head — the brightest point, flying along the route */}
+          <g ref={cometRef} style={{ opacity: 0 }}>
+            <circle r="9" fill="oklch(0.85 0.12 85 / 0.5)" style={{ filter: "blur(4px)" }} />
+            <circle
+              r="4"
+              fill="oklch(0.94 0.09 88)"
+              style={{ filter: "drop-shadow(0 0 9px oklch(0.85 0.12 84 / 0.95))" }}
+            />
+          </g>
         </svg>
       </div>
 
-      {/* glowing first checkpoint node */}
+      {/* glowing first checkpoint node — the camera zooms into it as the comet arrives */}
       <div className="relative -mt-1 flex flex-col items-center">
         <div
           ref={glowRef}
-          className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-[68%] rounded-full"
+          className="absolute left-1/2 top-1/2 h-32 w-32 rounded-full"
           style={{
-            opacity: 0.25,
+            opacity: 0.14,
+            transform: "translate(-50%, -68%) scale(0.65)",
             background:
               "radial-gradient(closest-side, oklch(0.8 0.11 84 / 0.5) 0%, transparent 72%)",
             filter: "blur(6px)",
@@ -145,7 +205,7 @@ export function ScrollTransition() {
         <div
           ref={nodeRef}
           className="relative flex h-16 w-16 items-center justify-center rounded-full border border-primary/60 bg-[oklch(0.13_0.018_158)] shadow-[0_0_28px_-4px_oklch(0.8_0.11_84/0.6),inset_0_0_16px_-6px_oklch(0.8_0.11_84/0.7)]"
-          style={{ opacity: 0.35, transform: "scale(0.86)" }}
+          style={{ opacity: 0.2, transform: "scale(0.55)" }}
         >
           <span className="route-dot absolute inset-0 rounded-full ring-1 ring-primary/40" />
           <Rocket className="h-6 w-6 text-primary" aria-hidden="true" />

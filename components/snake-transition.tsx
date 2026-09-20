@@ -23,18 +23,21 @@ type FromIconKey = keyof typeof FROM_ICONS
 
 /**
  * Cinematic "snake" route transition that continues the golden path from one
- * roadmap step into the next. On scroll: the icon for the step just finished
- * zooms into focus, an SVG S-curve then draws itself with glowing nodes
- * traveling along it, and a small badge for the next step fades in at the
- * end — right where that section's own circular reveal (see
- * `useCircularReveal`) picks up and "opens" into it.
+ * roadmap step into the next. On scroll: the camera "zooms into" the
+ * checkpoint icon for the step just finished, a comet with a fading tail
+ * then flies down the S-curve that draws itself beneath it, and a small
+ * badge for the next step settles in as it arrives — right where that
+ * section's own circular reveal (see `useCircularReveal`) picks up and
+ * "opens" into it.
  *
  * Motion is driven by a single rAF loop writing directly to the DOM (no
  * per-frame React re-renders) and collapses to a static state for
  * reduced-motion users.
  */
 
-const NODE_FRACTIONS = [0.28, 0.58, 0.82]
+// Trailing offsets behind the comet's head, as a fraction of the path's
+// total length — decreasing radius/opacity from index 0 (closest) outward.
+const TAIL_OFFSETS = [0.02, 0.045, 0.075, 0.11, 0.15]
 
 export function SnakeTransition({
   fromIcon,
@@ -48,7 +51,8 @@ export function SnakeTransition({
   const FromIcon = FROM_ICONS[fromIcon]
   const zoneRef = useRef<HTMLDivElement>(null)
   const pathRef = useRef<SVGPathElement>(null)
-  const nodeRefs = useRef<(SVGCircleElement | null)[]>([])
+  const cometRef = useRef<SVGGElement>(null)
+  const tailRefs = useRef<(SVGCircleElement | null)[]>([])
   const iconGlowRef = useRef<HTMLDivElement>(null)
   const iconNodeRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
@@ -66,15 +70,7 @@ export function SnakeTransition({
     path.style.strokeDasharray = `${total}`
     path.style.strokeDashoffset = reduced ? "0" : `${total}`
 
-    // position the glowing nodes precisely on the path
-    NODE_FRACTIONS.forEach((f, i) => {
-      const pt = path.getPointAtLength(total * f)
-      const node = nodeRefs.current[i]
-      if (node) {
-        node.setAttribute("cx", String(pt.x))
-        node.setAttribute("cy", String(pt.y))
-      }
-    })
+    const pointAt = (frac: number) => path.getPointAtLength(total * clamp(frac))
 
     let raf = 0
     const apply = () => {
@@ -83,23 +79,38 @@ export function SnakeTransition({
       const vh = window.innerHeight || document.documentElement.clientHeight
       const p = clamp((vh - rect.top) / (rect.height + vh))
 
-      // phase 1: zoom into the checkpoint icon for the step just finished
-      const zoomP = reduced ? 1 : clamp(p / 0.24)
-      if (iconGlowRef.current) iconGlowRef.current.style.opacity = String(0.18 + zoomP * 0.6)
+      // phase 1: the camera zooms into the checkpoint icon for the step
+      // just finished — scale, glow and focus pull all ramp together.
+      const zoomP = reduced ? 1 : clamp(p / 0.2)
+      if (iconGlowRef.current) {
+        iconGlowRef.current.style.opacity = String(0.12 + zoomP * 0.75)
+        iconGlowRef.current.style.transform = `translate(-50%, -50%) scale(${0.7 + zoomP * 0.7})`
+      }
       if (iconNodeRef.current) {
-        iconNodeRef.current.style.opacity = String(0.4 + zoomP * 0.6)
-        iconNodeRef.current.style.transform = `scale(${0.8 + zoomP * 0.32})`
+        iconNodeRef.current.style.opacity = String(0.25 + zoomP * 0.75)
+        iconNodeRef.current.style.transform = `scale(${0.45 + zoomP * 0.85})`
+        iconNodeRef.current.style.filter = `blur(${(1 - zoomP) * 6}px)`
       }
 
-      // phase 2: the route draws itself, traveling from that point onward
+      // phase 2: a comet with a fading tail flies down the route as it draws
       const drawP = reduced ? 1 : clamp((p - 0.14) / 0.6)
       path.style.strokeDashoffset = `${total * (1 - drawP)}`
 
-      NODE_FRACTIONS.forEach((f, i) => {
-        const node = nodeRefs.current[i]
-        if (!node) return
-        const on = reduced ? 1 : clamp((drawP - f) / 0.08)
-        node.style.opacity = String(0.2 + on * 0.8)
+      const cometOpacity = reduced
+        ? 0
+        : Math.min(clamp(drawP / 0.05), clamp((1 - drawP) / 0.12))
+      if (cometRef.current) {
+        const head = pointAt(drawP)
+        cometRef.current.setAttribute("transform", `translate(${head.x} ${head.y})`)
+        cometRef.current.style.opacity = String(cometOpacity)
+      }
+      TAIL_OFFSETS.forEach((offset, i) => {
+        const dot = tailRefs.current[i]
+        if (!dot) return
+        const pt = pointAt(drawP - offset)
+        dot.setAttribute("cx", String(pt.x))
+        dot.setAttribute("cy", String(pt.y))
+        dot.style.opacity = String(cometOpacity * (1 - i / TAIL_OFFSETS.length) * 0.7)
       })
 
       // phase 3: the next step's badge settles in as the route arrives —
@@ -132,22 +143,24 @@ export function SnakeTransition({
       aria-hidden="true"
       className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-4 pt-3 sm:pb-5 lg:pb-6 lg:pt-4"
     >
-      {/* checkpoint icon for the step just finished — zooms into focus first */}
+      {/* checkpoint icon for the step just finished — the camera zooms into
+          it before the route below starts to draw */}
       <div className="relative mb-1 flex items-center justify-center">
         <div
           ref={iconGlowRef}
-          className="absolute left-1/2 top-1/2 h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="absolute left-1/2 top-1/2 h-24 w-24 rounded-full"
           style={{
-            opacity: 0.18,
+            opacity: 0.12,
+            transform: "translate(-50%, -50%) scale(0.7)",
             background:
-              "radial-gradient(closest-side, oklch(0.8 0.11 84 / 0.5) 0%, transparent 72%)",
-            filter: "blur(5px)",
+              "radial-gradient(closest-side, oklch(0.8 0.11 84 / 0.55) 0%, transparent 72%)",
+            filter: "blur(6px)",
           }}
         />
         <div
           ref={iconNodeRef}
           className="relative flex h-11 w-11 items-center justify-center rounded-full border border-primary/55 bg-[oklch(0.13_0.018_158)] shadow-[0_0_20px_-4px_oklch(0.8_0.11_84/0.55),inset_0_0_12px_-6px_oklch(0.8_0.11_84/0.7)]"
-          style={{ opacity: 0.4, transform: "scale(0.8)" }}
+          style={{ opacity: 0.25, transform: "scale(0.45)" }}
         >
           <FromIcon className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
         </div>
@@ -191,21 +204,32 @@ export function SnakeTransition({
             }}
           />
 
-          {/* glowing nodes along the route */}
-          {NODE_FRACTIONS.map((_, i) => (
+          {/* comet tail — a handful of shrinking, fading dots trailing the head */}
+          {TAIL_OFFSETS.map((_, i) => (
             <circle
               key={i}
               ref={(el) => {
-                nodeRefs.current[i] = el
+                tailRefs.current[i] = el
               }}
-              r="4.5"
-              fill="oklch(0.88 0.11 86)"
-              style={{
-                opacity: 0.2,
-                filter: "drop-shadow(0 0 6px oklch(0.8 0.11 84 / 0.9))",
-              }}
+              r={3.2 - i * 0.4}
+              fill="oklch(0.85 0.12 85)"
+              style={{ opacity: 0 }}
             />
           ))}
+
+          {/* comet head — the brightest point, flying along the route */}
+          <g ref={cometRef} style={{ opacity: 0 }}>
+            <circle
+              r="9"
+              fill="oklch(0.85 0.12 85 / 0.5)"
+              style={{ filter: "blur(4px)" }}
+            />
+            <circle
+              r="4"
+              fill="oklch(0.94 0.09 88)"
+              style={{ filter: "drop-shadow(0 0 9px oklch(0.85 0.12 84 / 0.95))" }}
+            />
+          </g>
         </svg>
       </div>
 
