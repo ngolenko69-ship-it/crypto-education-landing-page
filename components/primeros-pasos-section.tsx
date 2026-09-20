@@ -117,7 +117,10 @@ export function PrimerosPasosSection() {
             className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
             style={reveal({ delay: 0, y: 12, duration: 500 })}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
+            <span
+              id="route-dot-primeros-pasos"
+              className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
+            />
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
               Paso 1 · Primeros pasos
             </span>

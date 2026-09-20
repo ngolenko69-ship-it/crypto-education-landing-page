@@ -2,13 +2,12 @@ import { AntiEstafasSection } from "@/components/anti-estafas-section"
 import { BenefitsBar } from "@/components/benefits-bar"
 import { ComunidadCriptoSeguraSection } from "@/components/comunidad-cripto-segura-section"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
+import { GoldenRoute } from "@/components/golden-route"
 import { HeroContent } from "@/components/hero-content"
 import { LegalTrustFooterSection } from "@/components/legal-trust-footer-section"
 import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
-import { ScrollTransition } from "@/components/scroll-transition"
-import { SnakeTransition } from "@/components/snake-transition"
 import { SobreNosotrosSection } from "@/components/sobre-nosotros-section"
 import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
@@ -57,38 +56,27 @@ export default function Home() {
           </div>
         </main>
 
-        {/* cinematic scroll continuation from the hero roadmap into step 1 */}
-        <ScrollTransition />
         <PrimerosPasosSection />
-
-        {/* snake route transition guiding from step 1 into step 2 */}
-        <SnakeTransition fromIcon="rocket" step="Etapa 2" label="Dólares digitales" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <DolaresDigitalesSection />
-
-        {/* snake route transition guiding from step 2 into step 3 */}
-        <SnakeTransition fromIcon="dollar" step="Etapa 3" label="P2P: qué revisar" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <P2pQueRevisarSection />
-
-        {/* snake route transition guiding from step 3 into step 4 */}
-        <SnakeTransition fromIcon="user-check" step="Etapa 4" label="Wallets y claves" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <WalletsYClavesSection />
-
-        {/* snake route transition guiding from step 4 into step 5 */}
-        <SnakeTransition fromIcon="key" step="Etapa 5" label="Anti-estafas" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <AntiEstafasSection />
-
-        {/* snake route transition guiding from step 5 into the community step */}
-        <SnakeTransition fromIcon="shield" step="Etapa 6" label="Comunidad cripto segura" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <ComunidadCriptoSeguraSection />
-
-        {/* snake route transition guiding from the community step into the final trust section */}
-        <SnakeTransition fromIcon="users" step="Etapa 7" label="Sobre nosotros" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <SobreNosotrosSection />
-
-        {/* the golden route ends in trust: continuation into the legal / trust footer */}
-        <SnakeTransition fromIcon="shield" step="Etapa 8" label="Confianza y transparencia" />
+        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <LegalTrustFooterSection />
       </div>
+
+      {/* the golden route: one continuous comet motif linking every step,
+          measured against the sections' real anchors rather than drawn as
+          a fixed widget between them */}
+      <GoldenRoute />
 
       {/* conversion overlays: floating community bar + final invitation popup */}
       <TelegramFloatingBar />

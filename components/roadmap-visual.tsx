@@ -28,19 +28,29 @@ export function RoadmapBackdrop() {
 
         {/* full scene, sized to its own aspect ratio so nothing is cropped,
             with every edge feathered into the background */}
-        <img
-          src="/images/hero-roadmap-visual.png"
-          alt=""
-          className="relative h-[94%] w-auto max-w-none object-contain"
-          style={{
-            WebkitMaskImage:
-              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
-            maskImage:
-              "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-          }}
-        />
+        <div className="relative inline-block h-[94%]">
+          <img
+            src="/images/hero-roadmap-visual.png"
+            alt=""
+            className="relative h-full w-auto max-w-none object-contain"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
+              maskImage:
+                "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
+              WebkitMaskComposite: "source-in",
+              maskComposite: "intersect",
+            }}
+          />
+          {/* golden route anchor: where the artwork's own "1. Primeros pasos"
+              checkpoint sits, so the route SVG can depart from this exact spot */}
+          <span
+            id="route-exit-hero"
+            aria-hidden="true"
+            className="absolute h-px w-px"
+            style={{ left: "28%", top: "89%" }}
+          />
+        </div>
       </div>
 
       {/* left dark wash so the headline always keeps strong contrast */}
@@ -107,6 +117,15 @@ export function RoadmapMobile() {
             background:
               "linear-gradient(to top, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.55) 45%, transparent 100%)",
           }}
+        />
+
+        {/* golden route anchor: where the artwork's own "1. Primeros pasos"
+            checkpoint sits, so the route SVG can depart from this exact spot */}
+        <span
+          id="route-exit-hero-mobile"
+          aria-hidden="true"
+          className="absolute h-px w-px"
+          style={{ left: "28%", top: "89%" }}
         />
       </div>
     </div>
