@@ -73,13 +73,13 @@ export function LegalTrustFooterSection() {
         {/* light global dark overlay so the image stays premium and cinematic */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.16)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.09)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.14)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.08)" }}
         />
 
         {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}

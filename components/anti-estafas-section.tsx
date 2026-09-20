@@ -58,13 +58,13 @@ export function AntiEstafasSection() {
         {/* global dark overlay so the image never overpowers the text */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.14)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.08)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.16)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.09)" }}
         />
 
         {/* soft gold glow to lift the shield / route focal point on the right */}

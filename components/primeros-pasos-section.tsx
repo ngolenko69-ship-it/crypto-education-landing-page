@@ -54,7 +54,7 @@ export function PrimerosPasosSection() {
         {/* base dark green overlay to unify the image with the site background (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.014 158 / 0.24)" }}
+          style={{ background: "oklch(0.09 0.014 158 / 0.14)" }}
         />
 
         {/* soft gold glow to reveal the shield / route on the right */}

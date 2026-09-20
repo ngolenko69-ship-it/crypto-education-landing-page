@@ -57,19 +57,12 @@ export default function Home() {
         </main>
 
         <PrimerosPasosSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <DolaresDigitalesSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <P2pQueRevisarSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <WalletsYClavesSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <AntiEstafasSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <ComunidadCriptoSeguraSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <SobreNosotrosSection />
-        <div className="h-10 sm:h-14 lg:h-20" aria-hidden="true" />
         <LegalTrustFooterSection />
       </div>
 
