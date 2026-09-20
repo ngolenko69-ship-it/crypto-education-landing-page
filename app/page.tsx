@@ -9,6 +9,7 @@ import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
 import { SobreNosotrosSection } from "@/components/sobre-nosotros-section"
+import { TubesCursor } from "@/components/tubes-cursor"
 import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
 import { TelegramFloatingBar } from "@/components/telegram-floating-bar"
@@ -65,6 +66,10 @@ export default function Home() {
         <SobreNosotrosSection />
         <LegalTrustFooterSection />
       </div>
+
+      {/* ambient gold tubes, reactive to the cursor, fixed to the viewport
+          so they glow behind every section as the page scrolls */}
+      <TubesCursor />
 
       {/* the golden route: one continuous comet motif linking every step,
           measured against the sections' real anchors rather than drawn as

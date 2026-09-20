@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { TubesCursor } from "@/components/tubes-cursor"
 
 const IMAGE_ALT =
   "Ruta cripto segura: escudo con Bitcoin y las seis etapas del aprendizaje — 1. Primeros pasos, 2. Dólares digitales, 3. P2P: qué revisar, 4. Wallets y claves, 5. Anti-estafas, 6. Criterio cripto"
@@ -17,10 +16,6 @@ export function RoadmapBackdrop() {
       aria-hidden="true"
     >
       <div className="relative flex h-full items-center justify-end">
-        {/* ambient gold tubes, reactive to the cursor, glowing behind the
-            scene wherever the artwork and its aura don't already cover it */}
-        <TubesCursor />
-
         {/* soft green-gold aura behind the scene for a seamless blend */}
         <div
           className="absolute right-0 top-1/2 h-[85%] w-[85%] -translate-y-1/2"

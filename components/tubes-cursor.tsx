@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "@/hooks/use-scroll-reveal"
 
 const TUBES_OPTIONS = {
-  bloom: { threshold: 0, strength: 1.1, radius: 0.55 },
+  bloom: false as const,
   tubes: {
+    minRadius: 0.0028,
+    maxRadius: 0.026,
+    minTubularSegments: 20,
+    maxTubularSegments: 70,
     colors: ["#b8860b", "#d4af37", "#f4e4bc"],
     lights: {
       intensity: 200,
@@ -17,7 +21,8 @@ const TUBES_OPTIONS = {
 const DESKTOP_QUERY = "(min-width: 1024px)"
 
 /**
- * Ambient, mouse-reactive gold tubes woven behind the hero artwork.
+ * Ambient, mouse-reactive gold tubes woven behind the whole page — fixed to
+ * the viewport so they follow the cursor no matter which section is in view.
  * Only mounted at desktop widths and never under prefers-reduced-motion —
  * both checked live so the WebGL context is created (and disposed) only
  * when the effect will actually be visible.
@@ -51,7 +56,7 @@ export function TubesCursor() {
         handle = createTubesCursor(canvas, TUBES_OPTIONS)
       })
       .catch(() => {
-        // WebGL unavailable or the asset failed to load — the hero reads
+        // WebGL unavailable or the asset failed to load — the page reads
         // fine without the ambient effect.
       })
 
@@ -64,6 +69,8 @@ export function TubesCursor() {
   if (!active) return null
 
   return (
-    <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
+    <div className="pointer-events-none fixed inset-0 z-[4]" aria-hidden="true">
+      <canvas ref={canvasRef} className="h-full w-full" />
+    </div>
   )
 }
