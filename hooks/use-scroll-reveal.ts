@@ -23,9 +23,10 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
   options?: IntersectionObserverInit,
 ) {
   const ref = useRef<T>(null)
-  const [inView, setInView] = useState(
-    () => typeof IntersectionObserver === "undefined",
-  )
+  // Starts false on both server and client so hydration never diverges;
+  // `typeof IntersectionObserver` differs between the two environments, so
+  // it must never feed the initial render, only the effect below.
+  const [inView, setInView] = useState(false)
 
   useEffect(() => {
     const el = ref.current
@@ -94,4 +95,28 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(
   }
 
   return { ref, inView, reduced, reveal, settle }
+}
+
+/**
+ * One-shot "portal" reveal: the element is clipped to a circle anchored at
+ * its top-center and grows to fully cover it the first time it enters the
+ * viewport — so a section appears to open from the exact point where the
+ * golden route above it ends. Fires once, then stays open. Skips the clip
+ * entirely for prefers-reduced-motion.
+ */
+export function useCircularReveal<T extends HTMLElement = HTMLDivElement>() {
+  const { ref, inView } = useInView<T>({
+    threshold: 0,
+    rootMargin: "0px 0px -20% 0px",
+  })
+  const reduced = useReducedMotion()
+
+  const style = reduced
+    ? undefined
+    : {
+        clipPath: inView ? "circle(150% at 50% 0%)" : "circle(0% at 50% 0%)",
+        transition: `clip-path 1100ms ${PREMIUM_EASE}`,
+      }
+
+  return { ref, style }
 }

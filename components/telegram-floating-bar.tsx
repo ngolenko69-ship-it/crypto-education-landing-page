@@ -8,14 +8,19 @@ const DISMISS_KEY = "ruta_telegram_bar_dismissed"
 
 export function TelegramFloatingBar() {
   const [visible, setVisible] = useState(false)
-  const [dismissed, setDismissed] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      sessionStorage.getItem(DISMISS_KEY) === "1",
-  )
+  // Starts false on both server and client so hydration never diverges;
+  // sessionStorage can only be read once mounted in the browser.
+  const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    if (typeof window === "undefined" || dismissed) return
+    // Syncing with a browser-only store on mount, not a derivable render
+    // value — sessionStorage isn't available during SSR or lazy init.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (sessionStorage.getItem(DISMISS_KEY) === "1") setDismissed(true)
+  }, [])
+
+  useEffect(() => {
+    if (dismissed) return
 
     const dolares = document.getElementById("dolares-digitales")
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { BookOpen, BellOff, Wallet, ShieldCheck } from "lucide-react"
-import { useReveal } from "@/hooks/use-scroll-reveal"
+import { useCircularReveal, useReveal } from "@/hooks/use-scroll-reveal"
 
 const trustCards = [
   {
@@ -39,12 +39,15 @@ const legalLinks = [
 
 export function LegalTrustFooterSection() {
   const { ref, inView, reveal, settle } = useReveal()
+  const { ref: openRef, style: openStyle } = useCircularReveal()
 
   return (
     <section
+      ref={openRef}
       id="legal"
       aria-labelledby="legal-title"
       className="relative flex w-full scroll-mt-20 flex-col justify-center overflow-hidden md:scroll-mt-24 lg:min-h-[68vh]"
+      style={openStyle}
     >
       {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">

@@ -62,31 +62,31 @@ export default function Home() {
         <PrimerosPasosSection />
 
         {/* snake route transition guiding from step 1 into step 2 */}
-        <SnakeTransition step="Etapa 2" label="Dólares digitales" />
+        <SnakeTransition fromIcon="rocket" step="Etapa 2" label="Dólares digitales" />
         <DolaresDigitalesSection />
 
         {/* snake route transition guiding from step 2 into step 3 */}
-        <SnakeTransition step="Etapa 3" label="P2P: qué revisar" />
+        <SnakeTransition fromIcon="dollar" step="Etapa 3" label="P2P: qué revisar" />
         <P2pQueRevisarSection />
 
         {/* snake route transition guiding from step 3 into step 4 */}
-        <SnakeTransition step="Etapa 4" label="Wallets y claves" />
+        <SnakeTransition fromIcon="user-check" step="Etapa 4" label="Wallets y claves" />
         <WalletsYClavesSection />
 
         {/* snake route transition guiding from step 4 into step 5 */}
-        <SnakeTransition step="Etapa 5" label="Anti-estafas" />
+        <SnakeTransition fromIcon="key" step="Etapa 5" label="Anti-estafas" />
         <AntiEstafasSection />
 
         {/* snake route transition guiding from step 5 into the community step */}
-        <SnakeTransition step="Etapa 6" label="Comunidad cripto segura" />
+        <SnakeTransition fromIcon="shield" step="Etapa 6" label="Comunidad cripto segura" />
         <ComunidadCriptoSeguraSection />
 
         {/* snake route transition guiding from the community step into the final trust section */}
-        <SnakeTransition step="Etapa 7" label="Sobre nosotros" />
+        <SnakeTransition fromIcon="users" step="Etapa 7" label="Sobre nosotros" />
         <SobreNosotrosSection />
 
         {/* the golden route ends in trust: continuation into the legal / trust footer */}
-        <SnakeTransition step="Etapa 8" label="Confianza y transparencia" />
+        <SnakeTransition fromIcon="shield" step="Etapa 8" label="Confianza y transparencia" />
         <LegalTrustFooterSection />
       </div>
 

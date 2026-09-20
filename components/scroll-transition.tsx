@@ -80,7 +80,7 @@ export function ScrollTransition() {
     <div
       ref={zoneRef}
       aria-hidden="true"
-      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-12 pt-4 sm:pb-16 lg:pb-20 lg:pt-8"
+      className="pointer-events-none relative flex w-full flex-col items-center overflow-hidden px-6 pb-6 pt-4 sm:pb-8 lg:pb-10 lg:pt-6"
     >
       {/* progressive darkening / vignette that deepens on scroll */}
       <div
@@ -94,7 +94,7 @@ export function ScrollTransition() {
       />
 
       {/* growing golden route line — a gentle S-curve drawn on scroll */}
-      <div className="relative h-[24vh] w-[160px] sm:h-[28vh] lg:h-[34vh] lg:w-[200px]">
+      <div className="relative h-[15vh] w-[150px] sm:h-[17vh] lg:h-[20vh] lg:w-[190px]">
         <svg
           viewBox="0 0 200 600"
           preserveAspectRatio="none"
@@ -153,14 +153,12 @@ export function ScrollTransition() {
 
         <div
           ref={labelRef}
-          className="mt-5 flex flex-col items-center gap-1.5"
+          className="mt-4 inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
           style={{ opacity: 0, transform: "translateY(14px)" }}
         >
-          <span className="text-[11px] font-semibold uppercase tracking-[0.32em] text-primary/70">
-            Etapa 1
-          </span>
-          <span className="font-serif text-2xl font-medium text-[oklch(0.97_0.015_88)] sm:text-3xl">
-            Primeros pasos
+          <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
+            Etapa 1 · Primeros pasos
           </span>
         </div>
       </div>
