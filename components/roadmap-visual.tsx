@@ -9,11 +9,10 @@ const IMAGE_ALT =
 
 /**
  * Desktop-only cinematic background layer — the hero's own environment, not
- * a picture placed inside it. The artwork is scaled slightly past the
- * section's own height (clipped top/bottom by the wrapper) so its left edge
- * genuinely bleeds into the text column instead of stopping short of it;
- * everything below is one dark-green canvas the image, glows and text all
- * share, matching the base/overlay recipe every other section already uses.
+ * a picture placed inside it. The scene fills the section edge-to-edge
+ * (object-cover, no frame, no card), with the same dark base + gradient
+ * recipe every other section already uses so it reads as one continuous
+ * canvas rather than an inserted photo.
  */
 export function RoadmapBackdrop() {
   const reduced = useReducedMotion()
@@ -26,150 +25,109 @@ export function RoadmapBackdrop() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 hidden items-center justify-end overflow-hidden lg:flex"
+      className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block"
       aria-hidden="true"
     >
-      {/* Layer 1 — base atmosphere: the exact tone every other section
-          starts from, so the hero's canvas matches theirs instead of
-          showing the page-wide ambient gradient through it */}
+      {/* Layer 0 — base atmosphere: the exact tone every other section
+          starts from, so the hero's canvas matches theirs */}
       <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
 
-      {/* wide ambient color echo behind the whole scene, reinforcing
-          continuity even past where the photo itself can reach */}
+      {/* Layer 1 — the scene itself: full-bleed cover, fading in once on
+          load, then breathing with an imperceptibly slow zoom */}
       <div
         className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(70% 75% at 74% 44%, oklch(0.34 0.05 150 / 0.32) 0%, transparent 64%)",
-        }}
-      />
-
-      {/* Layer 2 — hero image, entering with a slow settle rather than
-          snapping in with the rest of the page */}
-      <div
-        className="relative flex h-full items-center justify-end"
         style={
           reduced
             ? undefined
             : {
                 opacity: mounted ? 1 : 0,
-                transform: mounted ? "scale(1)" : "scale(0.985)",
-                transition:
-                  "opacity 600ms cubic-bezier(0.22,1,0.36,1) 100ms, transform 900ms cubic-bezier(0.22,1,0.36,1) 100ms",
+                transition: "opacity 1500ms cubic-bezier(0.22,1,0.36,1)",
               }
         }
       >
-        {/* soft green-gold aura behind the scene for a seamless blend */}
-        <div
-          className="absolute right-0 top-1/2 h-[95%] w-[95%] -translate-y-1/2"
+        <img
+          src="/images/hero-shield-skyline-background.webp"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-[center_right]"
           style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.34 0.05 150 / 0.4) 0%, oklch(0.66 0.1 84 / 0.14) 45%, transparent 78%)",
-            filter: "blur(24px)",
+            transformOrigin: "68% 46%",
+            animation: reduced ? "none" : "heroSlowZoom 19s ease-in-out infinite alternate",
           }}
         />
 
-        {/* full scene, scaled a little past the section's own height so its
-            edges — top, bottom, and crucially the left — genuinely bleed
-            into the surrounding canvas instead of stopping in mid-air */}
-        <div className="relative inline-block h-full xl:h-[112%]">
-          <img
-            src="/images/hero-roadmap-visual.png"
-            alt=""
-            className="relative h-full w-auto max-w-none object-contain"
-            style={{
-              WebkitMaskImage:
-                "radial-gradient(145% 140% at 60% 48%, black 48%, transparent 96%), linear-gradient(to right, transparent 0%, black 26%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%)",
-              maskImage:
-                "radial-gradient(145% 140% at 60% 48%, black 48%, transparent 96%), linear-gradient(to right, transparent 0%, black 26%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%)",
-              WebkitMaskComposite: "source-in",
-              maskComposite: "intersect",
-            }}
-          />
-          {/* golden route anchor: where the artwork's own "1. Primeros pasos"
-              checkpoint sits, so the route SVG can depart from this exact spot */}
-          <span
-            id="route-exit-hero"
-            aria-hidden="true"
-            className="absolute h-px w-px"
-            style={{ left: "28%", top: "89%" }}
-          />
-
-          {/* a single restrained pulse of gold at the route's start as the
-              hero settles in — the path quietly waking up, not an endless
-              animation. Scroll then hands motion off to the Golden Route. */}
-          {!reduced && (
-            <span
-              aria-hidden="true"
-              className="absolute rounded-full"
-              style={{
-                left: "28%",
-                top: "89%",
-                width: 10,
-                height: 10,
-                marginLeft: -5,
-                marginTop: -5,
-                background: "oklch(0.95 0.06 90)",
-                boxShadow: "0 0 10px oklch(0.9 0.09 88 / 0.9), 0 0 26px oklch(0.8 0.11 84 / 0.6)",
-                opacity: 0,
-                animation: mounted ? "routeAwaken 1400ms cubic-bezier(0.22,1,0.36,1) 650ms forwards" : "none",
-              }}
-            />
-          )}
-        </div>
+        {/* golden route anchor: where the artwork's own "1. Primeros pasos"
+            checkpoint sits, so the route SVG can depart from this exact spot */}
+        <span
+          id="route-exit-hero"
+          aria-hidden="true"
+          className="absolute h-px w-px"
+          style={{ left: "70%", top: "86%" }}
+        />
       </div>
 
-      {/* soft gold glow lifting the shield / route focal point, same recipe
-          every other section uses on its own focal point */}
-      <div
-        className="absolute inset-y-0 right-0"
-        style={{
-          width: "58%",
-          background:
-            "radial-gradient(62% 60% at 66% 46%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 74%)",
-        }}
-      />
-
-      {/* Layer 3 — left dark wash, long and gradual so the text sits inside
-          the scene's own shadow rather than a separate opaque panel */}
+      {/* Layer 2 — premium dark gradient from the left so the text sits
+          inside the scene's own shadow rather than a separate opaque panel */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to right, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.92) 24%, oklch(0.09 0.012 158 / 0.6) 38%, oklch(0.09 0.012 158 / 0.22) 52%, transparent 66%)",
+            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.97) 0%, oklch(0.07 0.012 158 / 0.88) 30%, oklch(0.08 0.013 158 / 0.5) 56%, oklch(0.08 0.013 158 / 0.12) 76%, transparent 92%)",
         }}
       />
 
-      {/* top fade so the scene meets the header without a hard line */}
+      {/* Layer 3 — soft gold light breathing from the shield, the route's
+          own destination point */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(40% 48% at 64% 47%, oklch(0.66 0.1 84 / 0.24) 0%, transparent 72%)",
+          animation: reduced ? "none" : "heroGlowBreathe 7s ease-in-out infinite",
+        }}
+      />
+
+      {/* a single mote of light climbing the checkpoint stack's connector,
+          very slowly — a quiet trajectory, not a loop that draws the eye */}
+      {!reduced && (
+        <span
+          aria-hidden="true"
+          className="absolute rounded-full"
+          style={{
+            right: "9.5%",
+            top: "87%",
+            width: 6,
+            height: 6,
+            marginRight: -3,
+            background: "oklch(0.96 0.05 92)",
+            boxShadow: "0 0 8px oklch(0.9 0.09 88 / 0.9), 0 0 22px oklch(0.8 0.11 84 / 0.65)",
+            animation: "heroRouteParticle 15s ease-in-out infinite",
+          }}
+        />
+      )}
+
+      {/* Layer 4 — cinematic vignette: top meets the header, bottom already
+          prepares the next section, right edge softens the frame */}
       <div
         className="absolute inset-x-0 top-0"
         style={{
-          height: "16%",
+          height: "14%",
           background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.45) 60%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.4) 60%, transparent 100%)",
         }}
       />
-
-      {/* bottom fade already preparing the next section — longer and
-          gentler than a typical edge fade so the route's own departure
-          point (anchored around 89% down the artwork) dissolves smoothly
-          rather than sitting on a hard dark band; no hard edge, the
-          Golden Route continues the eye downward from here */}
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "30%",
+          height: "20%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.5) 42%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 55%, transparent 100%)",
         }}
       />
-
-      {/* right edge vignette so it never reads as a flat cut-off */}
       <div
         className="absolute inset-y-0 right-0"
         style={{
-          width: "8%",
-          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.5), transparent)",
+          width: "5%",
+          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.4), transparent)",
         }}
       />
     </div>
@@ -192,41 +150,33 @@ export function RoadmapMobile() {
           filter: "blur(10px)",
         }}
       />
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-2xl">
         <Image
-          src="/images/hero-roadmap-visual.png"
+          src="/images/hero-shield-skyline-background.webp"
           alt=""
-          width={1128}
-          height={1456}
+          width={1672}
+          height={941}
           priority
-          className="h-auto w-full object-contain"
-          style={{
-            WebkitMaskImage:
-              "radial-gradient(85% 78% at 50% 46%, black 45%, transparent 92%), linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)",
-            maskImage:
-              "radial-gradient(85% 78% at 50% 46%, black 45%, transparent 92%), linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-          }}
+          className="h-auto w-full object-cover"
         />
 
         {/* top fade so the scene dissolves into the section above it */}
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[22%]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[20%]"
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to bottom, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.55) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.5) 45%, transparent 100%)",
           }}
         />
 
         {/* bottom fade so the scene dissolves into whatever follows */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[26%]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[22%]"
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to top, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.55) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.5) 45%, transparent 100%)",
           }}
         />
 
@@ -236,7 +186,7 @@ export function RoadmapMobile() {
           id="route-exit-hero-mobile"
           aria-hidden="true"
           className="absolute h-px w-px"
-          style={{ left: "28%", top: "89%" }}
+          style={{ left: "69%", top: "89%" }}
         />
       </div>
     </div>

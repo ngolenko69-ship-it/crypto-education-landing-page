@@ -232,20 +232,44 @@
   }
 }
 
-/* one-shot hero entrance: the route's start point quietly wakes up once,
-   then settles to a soft resting glow — never loops */
-@keyframes routeAwaken {
+/* hero background: an imperceptibly slow breathing zoom on the cinematic
+   scene, never a jump-cut loop — alternate keeps it gliding in and out */
+@keyframes heroSlowZoom {
   0% {
-    opacity: 0;
-    transform: scale(0.4);
-  }
-  45% {
-    opacity: 1;
-    transform: scale(1.5);
+    transform: scale(1);
   }
   100% {
-    opacity: 0.75;
-    transform: scale(1);
+    transform: scale(1.03);
+  }
+}
+
+/* the shield's own soft light, breathing rather than static */
+@keyframes heroGlowBreathe {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* a single mote of light riding the checkpoint stack's connector line,
+   very slowly, like a craft climbing a trajectory rather than a ping-pong */
+@keyframes heroRouteParticle {
+  0% {
+    top: 87%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 18%;
+    opacity: 0;
   }
 }
 
