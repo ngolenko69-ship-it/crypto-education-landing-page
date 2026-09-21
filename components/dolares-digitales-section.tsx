@@ -2,7 +2,7 @@
 
 import { ArrowLeftRight, ArrowRight, CircleDollarSign, ShieldAlert } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useCircularReveal, useReveal } from "@/hooks/use-scroll-reveal"
+import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const cards = [
   {
@@ -24,15 +24,12 @@ const cards = [
 
 export function DolaresDigitalesSection() {
   const { ref, inView, reveal, settle } = useReveal()
-  const { ref: openRef, style: openStyle } = useCircularReveal()
 
   return (
     <section
-      ref={openRef}
       id="dolares-digitales"
       aria-labelledby="dolares-digitales-title"
       className="relative w-full scroll-mt-20 overflow-hidden md:scroll-mt-24"
-      style={openStyle}
     >
       {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">

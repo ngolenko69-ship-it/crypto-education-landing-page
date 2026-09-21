@@ -64,6 +64,7 @@ export function GoldenRoute() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const isMobile = () => window.matchMedia("(max-width: 1023px)").matches
     const clampPct = (n: number) => Math.min(100, Math.max(0, n))
+    const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
 
     const scrollY = () => window.scrollY || document.documentElement.scrollTop
 
@@ -182,6 +183,26 @@ export function GoldenRoute() {
       return `M ${e.x} ${e.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${a.x} ${a.y}`
     }
 
+    // The section's own "open" reveal, driven by the exact same progress
+    // that moves the comet — so it is already softly appearing by the time
+    // the comet visually lands, instead of a separate scroll trigger that
+    // could fire early, late, or with a jarring pop. Anchored at the real
+    // point the comet arrives (arrivalOriginPct), not a generic corner.
+    const REVEAL_START = 0.18
+    const REVEAL_END = 0.8
+    const applyReveal = (gr: (typeof groups)[number]) => {
+      if (!gr.arrivalSection) return
+      if (reduced) {
+        gr.arrivalSection.style.clipPath = ""
+        return
+      }
+      const t = clamp((gr.current - REVEAL_START) / (REVEAL_END - REVEAL_START))
+      gr.arrivalSection.style.clipPath =
+        t >= 1
+          ? ""
+          : `circle(${travelEase(t) * 150}% at ${gr.arrivalOriginPct.x}% ${gr.arrivalOriginPct.y}%)`
+    }
+
     const recompute = () => {
       const h = document.documentElement.scrollHeight
       const w = document.documentElement.clientWidth
@@ -221,6 +242,11 @@ export function GoldenRoute() {
             }
           }
         }
+
+        // establishes the initial hidden state on first measure, and keeps
+        // an already-revealed section correctly open across a later resize
+        // (this reflects gr.current as it stands, never resets progress)
+        applyReveal(gr)
       }
     }
 
@@ -235,7 +261,6 @@ export function GoldenRoute() {
       }, t),
     )
 
-    const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
     const tailOffsets = isMobile() ? TAIL_OFFSETS_MOBILE : TAIL_OFFSETS_DESKTOP
     const windowLen = isMobile() ? 110 : 200
     const sizes = isMobile()
@@ -286,8 +311,15 @@ export function GoldenRoute() {
           gr.windowPath.style.opacity = "0"
           if (gr.arrivalSection) gr.arrivalSection.style.transform = ""
           if (gr.exitSection) gr.exitSection.style.transform = ""
+          applyReveal(gr)
           continue
         }
+
+        // the section itself softly opens from the exact point the comet
+        // will land, well before the comet's own arrival bloom — so it
+        // reads as "the comet arrives into an already-forming scene"
+        // rather than a section popping in after the fact
+        applyReveal(gr)
 
         // the camera settles as we fly into the next section: it starts
         // slightly zoomed in from the exact point the comet lands, and

@@ -1,7 +1,7 @@
 "use client"
 
 import { Network, Users, BookOpen, ShieldCheck } from "lucide-react"
-import { useCircularReveal, useReveal } from "@/hooks/use-scroll-reveal"
+import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const cards = [
   {
@@ -28,15 +28,12 @@ const cards = [
 
 export function SobreNosotrosSection() {
   const { ref, inView, reveal, settle } = useReveal()
-  const { ref: openRef, style: openStyle } = useCircularReveal()
 
   return (
     <section
-      ref={openRef}
       id="sobre-nosotros"
       aria-labelledby="nosotros-title"
       className="relative flex w-full scroll-mt-20 items-center overflow-hidden md:scroll-mt-24 lg:min-h-[760px]"
-      style={openStyle}
     >
       {/* ---------- cinematic background image layer ---------- */}
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
