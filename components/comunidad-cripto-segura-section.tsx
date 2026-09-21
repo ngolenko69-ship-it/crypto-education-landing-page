@@ -164,7 +164,7 @@ export function ComunidadCriptoSeguraSection() {
               className="h-14 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)] sm:w-auto"
             >
               Unirme a la comunidad
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
             </Button>
           </div>
 
@@ -190,7 +190,7 @@ export function ComunidadCriptoSeguraSection() {
           {cards.map(({ icon: Icon, title, description }, i) => (
             <li
               key={title}
-              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0)" : "translateY(20px)",

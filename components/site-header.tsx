@@ -102,7 +102,7 @@ export function SiteHeader() {
             className="rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-5 py-3.5 text-[13px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)] xl:text-sm"
           >
             Empezar la ruta
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
           </Button>
         </div>
 
@@ -147,7 +147,7 @@ export function SiteHeader() {
             className="mt-4 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]"
           >
             Empezar la ruta
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
           </Button>
         </div>
       )}

@@ -175,7 +175,7 @@ export function SobreNosotrosSection() {
             {cards.map(({ icon: Icon, title, description }, i) => (
               <li
                 key={title}
-                className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+                className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? "translateY(0)" : "translateY(20px)",
