@@ -12,7 +12,7 @@ const IMAGE_ALT =
 export function RoadmapBackdrop() {
   return (
     <div
-      className="pointer-events-none absolute inset-y-0 right-0 hidden w-[70%] items-center justify-end overflow-hidden xl:w-[66%] lg:flex"
+      className="pointer-events-none absolute inset-0 hidden items-center justify-end overflow-hidden lg:flex"
       aria-hidden="true"
     >
       <div className="relative flex h-full items-center justify-end">
@@ -53,12 +53,14 @@ export function RoadmapBackdrop() {
         </div>
       </div>
 
-      {/* left dark wash so the headline always keeps strong contrast */}
+      {/* left dark wash, now spanning the full slide so the artwork reads as
+          the section's own background instead of a picture in a box —
+          opaque behind the text column, fully clear by the artwork */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.6) 12%, transparent 34%)",
+            "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.88) 28%, oklch(0.11 0.015 158 / 0.42) 44%, transparent 60%)",
         }}
       />
     </div>
