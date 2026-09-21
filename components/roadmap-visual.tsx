@@ -134,9 +134,9 @@ export function RoadmapBackdrop() {
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "12%",
+          height: "18%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.9) 0%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158) 35%, transparent 100%)",
         }}
       />
     </div>

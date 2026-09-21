@@ -35,7 +35,7 @@ export default function Home() {
 
         <main
           id="inicio"
-          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pb-12 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-0"
+          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-0"
         >
           <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-9rem)]">
             {/* Desktop: cinematic roadmap image blended into the background */}
@@ -59,7 +59,7 @@ export default function Home() {
                 element sitting on the plain page background below it; width
                 capped so it clears the checkpoint stack on the right
                 instead of running underneath it */}
-            <div className="relative z-10 mt-10 w-full max-w-xl lg:-ml-8 lg:mt-12 lg:max-w-[45rem]">
+            <div className="relative z-10 mt-10 w-full max-w-xl lg:ml-10 lg:mt-12 lg:max-w-[45rem]">
               <BenefitsBar />
             </div>
           </section>
