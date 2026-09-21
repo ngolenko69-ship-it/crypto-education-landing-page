@@ -15,10 +15,15 @@ export function RoadmapBackdrop() {
       className="pointer-events-none absolute inset-0 hidden items-center justify-end overflow-hidden lg:flex"
       aria-hidden="true"
     >
+      {/* deep dark-green base behind everything — the exact tone every other
+          section starts from, so the hero's own canvas matches theirs
+          instead of showing the page-wide ambient gradient through it */}
+      <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
+
       <div className="relative flex h-full items-center justify-end">
         {/* soft green-gold aura behind the scene for a seamless blend */}
         <div
-          className="absolute right-0 top-1/2 h-[85%] w-[85%] -translate-y-1/2"
+          className="absolute right-0 top-1/2 h-[90%] w-[90%] -translate-y-1/2"
           style={{
             background:
               "radial-gradient(closest-side, oklch(0.34 0.05 150 / 0.4) 0%, oklch(0.66 0.1 84 / 0.14) 45%, transparent 78%)",
@@ -27,17 +32,18 @@ export function RoadmapBackdrop() {
         />
 
         {/* full scene, sized to its own aspect ratio so nothing is cropped,
-            with every edge feathered into the background */}
-        <div className="relative inline-block h-[94%]">
+            filling the section top-to-bottom with every edge feathered into
+            the base tone above */}
+        <div className="relative inline-block h-full">
           <img
             src="/images/hero-roadmap-visual.png"
             alt=""
             className="relative h-full w-auto max-w-none object-contain"
             style={{
               WebkitMaskImage:
-                "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
+                "radial-gradient(130% 128% at 62% 48%, black 58%, transparent 98%), linear-gradient(to right, transparent 0%, black 18%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 93%, transparent 100%)",
               maskImage:
-                "radial-gradient(120% 118% at 62% 48%, black 55%, transparent 96%), linear-gradient(to right, transparent 0%, black 20%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 91%, transparent 100%)",
+                "radial-gradient(130% 128% at 62% 48%, black 58%, transparent 98%), linear-gradient(to right, transparent 0%, black 18%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 93%, transparent 100%)",
               WebkitMaskComposite: "source-in",
               maskComposite: "intersect",
             }}
@@ -53,14 +59,44 @@ export function RoadmapBackdrop() {
         </div>
       </div>
 
-      {/* left dark wash, now spanning the full slide so the artwork reads as
-          the section's own background instead of a picture in a box —
-          opaque behind the text column, fully clear by the artwork */}
+      {/* soft gold glow lifting the shield / route focal point, same recipe
+          every other section uses on its own focal point */}
+      <div
+        className="absolute inset-y-0 right-0"
+        style={{
+          width: "54%",
+          background:
+            "radial-gradient(60% 58% at 68% 46%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 74%)",
+        }}
+      />
+
+      {/* left dark wash, spanning the full slide so the artwork reads as the
+          section's own background instead of a picture in a box — opaque
+          behind the text column, fully clear by the artwork */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to right, oklch(0.11 0.015 158) 0%, oklch(0.11 0.015 158 / 0.88) 28%, oklch(0.11 0.015 158 / 0.42) 44%, transparent 60%)",
+            "linear-gradient(to right, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.9) 28%, oklch(0.09 0.012 158 / 0.44) 44%, transparent 60%)",
+        }}
+      />
+
+      {/* bottom fade into whatever follows */}
+      <div
+        className="absolute inset-x-0 bottom-0"
+        style={{
+          height: "16%",
+          background:
+            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 55%, transparent 100%)",
+        }}
+      />
+
+      {/* right edge vignette so it never reads as a flat cut-off */}
+      <div
+        className="absolute inset-y-0 right-0"
+        style={{
+          width: "10%",
+          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.55), transparent)",
         }}
       />
     </div>
