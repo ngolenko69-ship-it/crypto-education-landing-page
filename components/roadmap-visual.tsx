@@ -25,7 +25,7 @@ export function RoadmapBackdrop() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block"
+      className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-screen -translate-x-1/2 overflow-hidden lg:block"
       aria-hidden="true"
     >
       {/* Layer 0 — base atmosphere: the exact tone every other section

@@ -35,7 +35,7 @@ export default function Home() {
 
         <main
           id="inicio"
-          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pb-12 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-2"
+          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pb-12 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-0"
         >
           <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-9rem)]">
             {/* Desktop: cinematic roadmap image blended into the background */}
