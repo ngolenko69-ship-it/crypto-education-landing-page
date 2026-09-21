@@ -65,23 +65,26 @@ export function RoadmapBackdrop() {
         />
       </div>
 
-      {/* Layer 2 — premium dark gradient from the left so the text sits
-          inside the scene's own shadow rather than a separate opaque panel */}
+      {/* Layer 2 — premium dark gradient, but reaching transparent well
+          before the shield so only the text column sits in shadow; the
+          shield, skyline and checkpoint stack stay at full, vivid brightness
+          exactly like the source scene */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.97) 0%, oklch(0.07 0.012 158 / 0.88) 30%, oklch(0.08 0.013 158 / 0.5) 56%, oklch(0.08 0.013 158 / 0.12) 76%, transparent 92%)",
+            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.95) 0%, oklch(0.07 0.012 158 / 0.8) 26%, oklch(0.08 0.013 158 / 0.4) 44%, oklch(0.08 0.013 158 / 0.1) 58%, transparent 68%)",
         }}
       />
 
-      {/* Layer 3 — soft gold light breathing from the shield, the route's
-          own destination point */}
+      {/* Layer 3 — warm gold light breathing from the shield, the route's
+          own destination point — brighter than a subtle accent, since the
+          shield is the scene's whole reason for being */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(40% 48% at 64% 47%, oklch(0.66 0.1 84 / 0.24) 0%, transparent 72%)",
+            "radial-gradient(46% 54% at 63% 46%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
           animation: reduced ? "none" : "heroGlowBreathe 7s ease-in-out infinite",
         }}
       />
@@ -105,29 +108,23 @@ export function RoadmapBackdrop() {
         />
       )}
 
-      {/* Layer 4 — cinematic vignette: top meets the header, bottom already
-          prepares the next section, right edge softens the frame */}
+      {/* Layer 4 — a light touch of vignette, just enough to meet the header
+          and hand off to the next section without a hard edge; kept subtle
+          so it never reads as a second layer of darkness on top of Layer 2 */}
       <div
         className="absolute inset-x-0 top-0"
         style={{
-          height: "14%",
+          height: "8%",
           background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.4) 60%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.85) 0%, transparent 100%)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "20%",
+          height: "12%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 55%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-y-0 right-0"
-        style={{
-          width: "5%",
-          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.4), transparent)",
+            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.9) 0%, transparent 100%)",
         }}
       />
     </div>
