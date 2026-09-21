@@ -32,8 +32,13 @@ export function RoadmapBackdrop() {
           starts from, so the hero's canvas matches theirs */}
       <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
 
-      {/* Layer 1 — the scene itself: full-bleed cover, fading in once on
-          load, then breathing with an imperceptibly slow zoom */}
+      {/* Layer 1 — the scene itself, sized to its own true aspect ratio and
+          pinned to the right edge (ml-auto) rather than force-cropped to
+          the viewport's aspect ratio. This guarantees the shield and every
+          checkpoint stay fully visible on any screen — the trade-off is a
+          calm dark margin on the left on very wide screens, which is
+          exactly where the text sits anyway. Fades in once on load, then
+          breathes with an imperceptibly slow zoom. */}
       <div
         className="absolute inset-0"
         style={
@@ -45,24 +50,62 @@ export function RoadmapBackdrop() {
               }
         }
       >
-        <img
-          src="/images/hero-shield-skyline-background.webp"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[center_right]"
+        <div
+          className="absolute inset-y-0 right-0 h-full"
           style={{
-            transformOrigin: "68% 46%",
+            aspectRatio: "1672 / 941",
             animation: reduced ? "none" : "heroSlowZoom 19s ease-in-out infinite alternate",
           }}
-        />
+        >
+          <img
+            src="/images/hero-shield-skyline-background.webp"
+            alt=""
+            className="h-full w-full object-cover"
+          />
 
-        {/* golden route anchor: where the artwork's own "1. Primeros pasos"
-            checkpoint sits, so the route SVG can depart from this exact spot */}
-        <span
-          id="route-exit-hero"
-          aria-hidden="true"
-          className="absolute h-px w-px"
-          style={{ left: "70%", top: "86%" }}
-        />
+          {/* golden route anchor: where the artwork's own "1. Primeros pasos"
+              checkpoint sits, so the route SVG can depart from this exact spot */}
+          <span
+            id="route-exit-hero"
+            aria-hidden="true"
+            className="absolute h-px w-px"
+            style={{ left: "70%", top: "86%" }}
+          />
+
+          {/* Layer 3 — warm gold light breathing from the shield, the
+              route's own destination point. Positioned inside the same
+              precisely-fitted image box as the anchor above, so it tracks
+              the shield's real position instead of drifting with viewport
+              aspect ratio. */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(46% 54% at 63% 46%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
+              animation: reduced ? "none" : "heroGlowBreathe 7s ease-in-out infinite",
+            }}
+          />
+
+          {/* a single mote of light climbing the checkpoint stack's
+              connector, very slowly — a quiet trajectory, not a loop that
+              draws the eye */}
+          {!reduced && (
+            <span
+              aria-hidden="true"
+              className="absolute rounded-full"
+              style={{
+                right: "9.5%",
+                top: "87%",
+                width: 6,
+                height: 6,
+                marginRight: -3,
+                background: "oklch(0.96 0.05 92)",
+                boxShadow: "0 0 8px oklch(0.9 0.09 88 / 0.9), 0 0 22px oklch(0.8 0.11 84 / 0.65)",
+                animation: "heroRouteParticle 15s ease-in-out infinite",
+              }}
+            />
+          )}
+        </div>
       </div>
 
       {/* Layer 2 — premium dark gradient, but reaching transparent well
@@ -76,37 +119,6 @@ export function RoadmapBackdrop() {
             "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.95) 0%, oklch(0.07 0.012 158 / 0.8) 26%, oklch(0.08 0.013 158 / 0.4) 44%, oklch(0.08 0.013 158 / 0.1) 58%, transparent 68%)",
         }}
       />
-
-      {/* Layer 3 — warm gold light breathing from the shield, the route's
-          own destination point — brighter than a subtle accent, since the
-          shield is the scene's whole reason for being */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(46% 54% at 63% 46%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
-          animation: reduced ? "none" : "heroGlowBreathe 7s ease-in-out infinite",
-        }}
-      />
-
-      {/* a single mote of light climbing the checkpoint stack's connector,
-          very slowly — a quiet trajectory, not a loop that draws the eye */}
-      {!reduced && (
-        <span
-          aria-hidden="true"
-          className="absolute rounded-full"
-          style={{
-            right: "9.5%",
-            top: "87%",
-            width: 6,
-            height: 6,
-            marginRight: -3,
-            background: "oklch(0.96 0.05 92)",
-            boxShadow: "0 0 8px oklch(0.9 0.09 88 / 0.9), 0 0 22px oklch(0.8 0.11 84 / 0.65)",
-            animation: "heroRouteParticle 15s ease-in-out infinite",
-          }}
-        />
-      )}
 
       {/* Layer 4 — a light touch of vignette, just enough to meet the header
           and hand off to the next section without a hard edge; kept subtle

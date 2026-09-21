@@ -41,8 +41,11 @@ export default function Home() {
             {/* Desktop: cinematic roadmap image blended into the background */}
             <RoadmapBackdrop />
 
-            {/* Left text content, floating above the blended scene */}
-            <div className="relative z-10 w-full max-w-xl lg:max-w-[38rem]">
+            {/* Left text content, floating above the blended scene — pulled
+                closer to the true left edge now that the scene bleeds full
+                viewport width, so it doesn't read as stranded in empty
+                space */}
+            <div className="relative z-10 w-full max-w-xl lg:-ml-8 lg:max-w-[38rem]">
               <HeroContent />
             </div>
 
