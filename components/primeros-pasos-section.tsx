@@ -66,10 +66,10 @@ export function PrimerosPasosSection() {
 
         {/* left text-protection wash — near-opaque on small screens */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[76%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[64%]"
           style={{
             background:
-              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.97) 42%, rgba(4,9,7,0.7) 70%, transparent 100%)",
+              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.85) 45%, rgba(4,9,7,0.35) 72%, transparent 100%)",
           }}
         />
 

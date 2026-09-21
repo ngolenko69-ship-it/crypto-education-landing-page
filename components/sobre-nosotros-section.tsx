@@ -70,10 +70,10 @@ export function SobreNosotrosSection() {
 
         {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[74%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[62%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.96) 32%, oklch(0.08 0.012 158 / 0.62) 60%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
           }}
         />
 

@@ -150,14 +150,17 @@ export function RoadmapBackdrop() {
         }}
       />
 
-      {/* bottom fade already preparing the next section — no hard edge, the
+      {/* bottom fade already preparing the next section — longer and
+          gentler than a typical edge fade so the route's own departure
+          point (anchored around 89% down the artwork) dissolves smoothly
+          rather than sitting on a hard dark band; no hard edge, the
           Golden Route continues the eye downward from here */}
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "20%",
+          height: "30%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 50%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.5) 42%, transparent 100%)",
         }}
       />
 
