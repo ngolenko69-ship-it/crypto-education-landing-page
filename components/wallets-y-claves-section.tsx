@@ -70,7 +70,7 @@ export function WalletsYClavesSection() {
           style={{
             width: "54%",
             background:
-              "radial-gradient(60% 58% at 70% 52%, oklch(0.66 0.1 84 / 0.22) 0%, transparent 74%)",
+              "radial-gradient(60% 58% at 70% 52%, oklch(0.66 0.1 84 / 0.18) 0%, transparent 74%)",
           }}
         />
 

@@ -73,13 +73,15 @@ export function PrimerosPasosSection() {
           }}
         />
 
-        {/* top fade — soft connection from the previous hero */}
+        {/* top fade — soft connection from the previous hero, kept short
+            enough that the artwork's own "1. Primeros pasos" checkpoint
+            label stays legible instead of dissolving into the fade */}
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "26%",
+            height: "15%",
             background:
-              "linear-gradient(to bottom, #040907 0%, rgba(4,9,7,0.7) 45%, transparent 100%)",
+              "linear-gradient(to bottom, rgba(4,9,7,0.85) 0%, rgba(4,9,7,0.4) 55%, transparent 100%)",
           }}
         />
 
