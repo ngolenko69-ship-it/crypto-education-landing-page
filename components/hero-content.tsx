@@ -1,5 +1,8 @@
+"use client"
+
 import { ArrowRight, BellOff, LineChart, Lock, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const trustItems = [
   { icon: BellOff, label: "Sin señales." },
@@ -8,9 +11,14 @@ const trustItems = [
 ]
 
 export function HeroContent() {
+  const { ref, reveal } = useReveal()
+
   return (
-    <div className="max-w-xl">
-      <h1 className="font-serif text-[2.75rem] font-medium leading-[1.02] tracking-[-0.015em] text-balance sm:text-6xl lg:text-[4.25rem] lg:leading-[1]">
+    <div ref={ref} className="max-w-xl">
+      <h1
+        className="font-serif text-[2.75rem] font-medium leading-[1.02] tracking-[-0.015em] text-balance sm:text-6xl lg:text-[4.25rem] lg:leading-[1]"
+        style={reveal({ delay: 180, y: 16, duration: 620 })}
+      >
         <span className="block whitespace-nowrap text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)]">
           Antes de mover
         </span>
@@ -22,13 +30,19 @@ export function HeroContent() {
         </span>
       </h1>
 
-      <p className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+      <p
+        className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
+        style={reveal({ delay: 280, y: 14, duration: 560 })}
+      >
         Aprende stablecoins, P2P, wallets, plataformas cripto y anti-estafas
         antes de entrar en crypto. Evita errores costosos y reconoce fraudes
         antes de confiar en una plataforma, grupo o promesa.
       </p>
 
-      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+      <div
+        className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
+        style={reveal({ delay: 350, y: 14, duration: 560 })}
+      >
         <Button
           size="lg"
           nativeButton={false}
@@ -50,7 +64,10 @@ export function HeroContent() {
         </Button>
       </div>
 
-      <ul className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8">
+      <ul
+        className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8"
+        style={reveal({ delay: 450, y: 12, duration: 560 })}
+      >
         {trustItems.map(({ icon: Icon, label }) => (
           <li key={label} className="flex items-center gap-2.5">
             <Icon className="h-[18px] w-[18px] text-primary" aria-hidden="true" />

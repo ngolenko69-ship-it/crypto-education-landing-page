@@ -1,29 +1,67 @@
+"use client"
+
 import Image from "next/image"
+import { useEffect, useState } from "react"
+import { useReducedMotion } from "@/hooks/use-scroll-reveal"
 
 const IMAGE_ALT =
   "Ruta cripto segura: escudo con Bitcoin y las seis etapas del aprendizaje — 1. Primeros pasos, 2. Dólares digitales, 3. P2P: qué revisar, 4. Wallets y claves, 5. Anti-estafas, 6. Criterio cripto"
 
 /**
- * Desktop-only cinematic background layer.
- * Rendered as an absolute element that bleeds across the right half of the
- * hero and dissolves into the dark-green background on every edge, so it never
- * reads as a rectangular pasted image.
+ * Desktop-only cinematic background layer — the hero's own environment, not
+ * a picture placed inside it. The artwork is scaled slightly past the
+ * section's own height (clipped top/bottom by the wrapper) so its left edge
+ * genuinely bleeds into the text column instead of stopping short of it;
+ * everything below is one dark-green canvas the image, glows and text all
+ * share, matching the base/overlay recipe every other section already uses.
  */
 export function RoadmapBackdrop() {
+  const reduced = useReducedMotion()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
+
   return (
     <div
       className="pointer-events-none absolute inset-0 hidden items-center justify-end overflow-hidden lg:flex"
       aria-hidden="true"
     >
-      {/* deep dark-green base behind everything — the exact tone every other
-          section starts from, so the hero's own canvas matches theirs
-          instead of showing the page-wide ambient gradient through it */}
+      {/* Layer 1 — base atmosphere: the exact tone every other section
+          starts from, so the hero's canvas matches theirs instead of
+          showing the page-wide ambient gradient through it */}
       <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
 
-      <div className="relative flex h-full items-center justify-end">
+      {/* wide ambient color echo behind the whole scene, reinforcing
+          continuity even past where the photo itself can reach */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(70% 75% at 74% 44%, oklch(0.34 0.05 150 / 0.32) 0%, transparent 64%)",
+        }}
+      />
+
+      {/* Layer 2 — hero image, entering with a slow settle rather than
+          snapping in with the rest of the page */}
+      <div
+        className="relative flex h-full items-center justify-end"
+        style={
+          reduced
+            ? undefined
+            : {
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "scale(1)" : "scale(0.985)",
+                transition:
+                  "opacity 600ms cubic-bezier(0.22,1,0.36,1) 100ms, transform 900ms cubic-bezier(0.22,1,0.36,1) 100ms",
+              }
+        }
+      >
         {/* soft green-gold aura behind the scene for a seamless blend */}
         <div
-          className="absolute right-0 top-1/2 h-[90%] w-[90%] -translate-y-1/2"
+          className="absolute right-0 top-1/2 h-[95%] w-[95%] -translate-y-1/2"
           style={{
             background:
               "radial-gradient(closest-side, oklch(0.34 0.05 150 / 0.4) 0%, oklch(0.66 0.1 84 / 0.14) 45%, transparent 78%)",
@@ -31,19 +69,19 @@ export function RoadmapBackdrop() {
           }}
         />
 
-        {/* full scene, sized to its own aspect ratio so nothing is cropped,
-            filling the section top-to-bottom with every edge feathered into
-            the base tone above */}
-        <div className="relative inline-block h-full">
+        {/* full scene, scaled a little past the section's own height so its
+            edges — top, bottom, and crucially the left — genuinely bleed
+            into the surrounding canvas instead of stopping in mid-air */}
+        <div className="relative inline-block h-full xl:h-[112%]">
           <img
             src="/images/hero-roadmap-visual.png"
             alt=""
             className="relative h-full w-auto max-w-none object-contain"
             style={{
               WebkitMaskImage:
-                "radial-gradient(130% 128% at 62% 48%, black 58%, transparent 98%), linear-gradient(to right, transparent 0%, black 18%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 93%, transparent 100%)",
+                "radial-gradient(145% 140% at 60% 48%, black 48%, transparent 96%), linear-gradient(to right, transparent 0%, black 26%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%)",
               maskImage:
-                "radial-gradient(130% 128% at 62% 48%, black 58%, transparent 98%), linear-gradient(to right, transparent 0%, black 18%, black 92%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 93%, transparent 100%)",
+                "radial-gradient(145% 140% at 60% 48%, black 48%, transparent 96%), linear-gradient(to right, transparent 0%, black 26%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 7%, black 93%, transparent 100%)",
               WebkitMaskComposite: "source-in",
               maskComposite: "intersect",
             }}
@@ -56,6 +94,28 @@ export function RoadmapBackdrop() {
             className="absolute h-px w-px"
             style={{ left: "28%", top: "89%" }}
           />
+
+          {/* a single restrained pulse of gold at the route's start as the
+              hero settles in — the path quietly waking up, not an endless
+              animation. Scroll then hands motion off to the Golden Route. */}
+          {!reduced && (
+            <span
+              aria-hidden="true"
+              className="absolute rounded-full"
+              style={{
+                left: "28%",
+                top: "89%",
+                width: 10,
+                height: 10,
+                marginLeft: -5,
+                marginTop: -5,
+                background: "oklch(0.95 0.06 90)",
+                boxShadow: "0 0 10px oklch(0.9 0.09 88 / 0.9), 0 0 26px oklch(0.8 0.11 84 / 0.6)",
+                opacity: 0,
+                animation: mounted ? "routeAwaken 1400ms cubic-bezier(0.22,1,0.36,1) 650ms forwards" : "none",
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -64,30 +124,40 @@ export function RoadmapBackdrop() {
       <div
         className="absolute inset-y-0 right-0"
         style={{
-          width: "54%",
+          width: "58%",
           background:
-            "radial-gradient(60% 58% at 68% 46%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 74%)",
+            "radial-gradient(62% 60% at 66% 46%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 74%)",
         }}
       />
 
-      {/* left dark wash, spanning the full slide so the artwork reads as the
-          section's own background instead of a picture in a box — opaque
-          behind the text column, fully clear by the artwork */}
+      {/* Layer 3 — left dark wash, long and gradual so the text sits inside
+          the scene's own shadow rather than a separate opaque panel */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to right, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.9) 28%, oklch(0.09 0.012 158 / 0.44) 44%, transparent 60%)",
+            "linear-gradient(to right, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.92) 24%, oklch(0.09 0.012 158 / 0.6) 38%, oklch(0.09 0.012 158 / 0.22) 52%, transparent 66%)",
         }}
       />
 
-      {/* bottom fade into whatever follows */}
+      {/* top fade so the scene meets the header without a hard line */}
       <div
-        className="absolute inset-x-0 bottom-0"
+        className="absolute inset-x-0 top-0"
         style={{
           height: "16%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 55%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.45) 60%, transparent 100%)",
+        }}
+      />
+
+      {/* bottom fade already preparing the next section — no hard edge, the
+          Golden Route continues the eye downward from here */}
+      <div
+        className="absolute inset-x-0 bottom-0"
+        style={{
+          height: "20%",
+          background:
+            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 50%, transparent 100%)",
         }}
       />
 
@@ -95,8 +165,8 @@ export function RoadmapBackdrop() {
       <div
         className="absolute inset-y-0 right-0"
         style={{
-          width: "10%",
-          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.55), transparent)",
+          width: "8%",
+          background: "linear-gradient(to left, oklch(0.07 0.01 158 / 0.5), transparent)",
         }}
       />
     </div>
