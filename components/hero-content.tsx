@@ -57,7 +57,7 @@ export function HeroContent() {
           variant="outline"
           nativeButton={false}
           render={<a href="#anti-estafas" />}
-          className="h-14 rounded-full border-primary/45 bg-card/40 px-8 text-[15px] font-semibold text-foreground backdrop-blur-sm transition-all duration-200 hover:border-primary/70 hover:bg-card/60 hover:text-foreground"
+          className="h-14 rounded-full border-primary/45 bg-[oklch(0.08_0.014_158)]/78 px-8 text-[15px] font-semibold text-foreground backdrop-blur-md transition-all duration-200 hover:border-primary/70 hover:bg-[oklch(0.09_0.016_158)]/88 hover:text-foreground"
         >
           <ShieldCheck className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
           Aprender a protegerme de estafas
