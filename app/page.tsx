@@ -53,11 +53,16 @@ export default function Home() {
             <div className="relative z-10 mt-10 lg:hidden">
               <RoadmapMobile />
             </div>
-          </section>
 
-          <div className="relative z-10 mt-8 lg:mt-4">
-            <BenefitsBar />
-          </div>
+            {/* trust bar — kept inside the hero's own cinematic frame so it
+                reads as part of the first slide, not a separate boxed
+                element sitting on the plain page background below it; width
+                capped so it clears the checkpoint stack on the right
+                instead of running underneath it */}
+            <div className="relative z-10 mt-10 w-full max-w-xl lg:-ml-8 lg:mt-12 lg:max-w-[45rem]">
+              <BenefitsBar />
+            </div>
+          </section>
         </main>
 
         <PrimerosPasosSection />
