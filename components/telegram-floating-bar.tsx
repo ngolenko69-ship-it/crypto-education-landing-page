@@ -32,6 +32,8 @@ export function TelegramFloatingBar() {
 
       if (pastTwoViewports || pastDolares) {
         setVisible(true)
+        // one-shot: nothing left to watch for once it's shown
+        window.removeEventListener("scroll", onScroll)
       }
     }
 

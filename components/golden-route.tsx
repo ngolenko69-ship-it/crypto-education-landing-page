@@ -159,6 +159,11 @@ export function GoldenRoute() {
         exitOriginPct: { x: 82, y: 100 },
         exitAnchor: exitAnchorFor(spec.exit),
         arrivalAnchor: arrivalAnchorFor(spec.arrivalDotId),
+        // document-space y of each anchor, cached once per recompute() so
+        // the animation loop never has to force a layout read for it —
+        // these only change on resize/reflow, never on scroll alone
+        exitY: 0,
+        arrivalY: 0,
         total: 0,
         target: 0,
         current: 0,
@@ -186,6 +191,8 @@ export function GoldenRoute() {
         const e = gr.exitAnchor()
         const a = gr.arrivalAnchor()
         if (!e || !a) continue
+        gr.exitY = e.y
+        gr.arrivalY = a.y
         const d = buildCurve(e, a)
         gr.guide.setAttribute("d", d)
         gr.windowPath.setAttribute("d", d)
@@ -219,8 +226,14 @@ export function GoldenRoute() {
 
     recompute()
     // Re-measure shortly after mount too: web fonts / the priority hero
-    // image can still reflow the layout a beat after first paint.
-    const settleTimers = [100, 500, 1500].map((t) => window.setTimeout(recompute, t))
+    // image can still reflow the layout a beat after first paint. Wakes the
+    // loop back up too, in case it had already settled and stopped.
+    const settleTimers = [100, 500, 1500].map((t) =>
+      window.setTimeout(() => {
+        recompute()
+        ensureRunning()
+      }, t),
+    )
 
     const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
     const tailOffsets = isMobile() ? TAIL_OFFSETS_MOBILE : TAIL_OFFSETS_DESKTOP
@@ -238,21 +251,24 @@ export function GoldenRoute() {
     }
 
     let raf = 0
+    let running = false
+
     const tick = () => {
       const vh = window.innerHeight || document.documentElement.clientHeight
       const sy = scrollY()
+      let anyMoving = false
 
       for (const gr of groups) {
         if (!gr.total) continue
 
         // Target progress: 0 as the exit anchor approaches the bottom of the
         // viewport, 1 once the arrival anchor has settled near a
-        // comfortable reading position.
-        const e = gr.exitAnchor()
-        const a = gr.arrivalAnchor()
-        if (!e || !a) continue
-        const span = Math.max(1, a.y - e.y + vh * 0.35)
-        gr.target = reduced ? 1 : clamp((sy + vh - e.y) / span)
+        // comfortable reading position. Anchor y's come from the cache
+        // recompute() fills in — no layout-forcing DOM read on every frame.
+        const span = Math.max(1, gr.arrivalY - gr.exitY + vh * 0.35)
+        gr.target = reduced ? 1 : clamp((sy + vh - gr.exitY) / span)
+
+        if (Math.abs(gr.target - gr.current) >= 0.0008) anyMoving = true
 
         // Ease current progress toward target with inertia rather than
         // snapping straight to it.
@@ -334,14 +350,33 @@ export function GoldenRoute() {
         }
       }
 
+      // Nothing left to ease toward its target and no reduced-motion instant
+      // snap pending — stop polling every frame. A scroll or resize wakes it
+      // back up instead of burning CPU while the user is just reading.
+      if (anyMoving) {
+        raf = requestAnimationFrame(tick)
+      } else {
+        running = false
+      }
+    }
+
+    const ensureRunning = () => {
+      if (running) return
+      running = true
       raf = requestAnimationFrame(tick)
     }
 
-    const onResize = () => recompute()
+    const onScroll = () => ensureRunning()
+    const onResize = () => {
+      recompute()
+      ensureRunning()
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("resize", onResize)
-    raf = requestAnimationFrame(tick)
+    ensureRunning()
 
     return () => {
+      window.removeEventListener("scroll", onScroll)
       window.removeEventListener("resize", onResize)
       settleTimers.forEach((t) => window.clearTimeout(t))
       if (raf) cancelAnimationFrame(raf)

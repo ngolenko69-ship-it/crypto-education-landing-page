@@ -67,6 +67,7 @@ export function CometCursor() {
     const maxOffset = Math.max(...TRAIL_FRAME_OFFSETS)
     let visible = false
     let raf = 0
+    let running = false
 
     const onMove = (e: MouseEvent) => {
       target.x = e.clientX
@@ -76,6 +77,10 @@ export function CometCursor() {
         current.x = target.x
         current.y = target.y
         wrapper.style.opacity = "1"
+      }
+      if (!running) {
+        running = true
+        raf = requestAnimationFrame(tick)
       }
     }
     const onLeave = () => {
@@ -115,9 +120,18 @@ export function CometCursor() {
         el.style.opacity = String(0.45 * (1 - i / TRAIL_FRAME_OFFSETS.length))
       })
 
+      // Settled on the pointer — stop polling every frame until it moves
+      // again instead of redrawing identical positions forever.
+      const dx = target.x - current.x
+      const dy = target.y - current.y
+      if (dx * dx + dy * dy < 0.01) {
+        running = false
+        return
+      }
       raf = requestAnimationFrame(tick)
     }
     raf = requestAnimationFrame(tick)
+    running = true
 
     return () => {
       window.removeEventListener("mousemove", onMove)
