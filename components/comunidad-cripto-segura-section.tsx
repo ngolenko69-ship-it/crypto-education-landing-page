@@ -42,19 +42,27 @@ export function ComunidadCriptoSeguraSection() {
           src="/images/comunidad-cripto-segura-background.png"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[82%_center] opacity-100 lg:object-[center_right]"
-          style={settle()}
+          style={{
+            ...settle(),
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
         />
 
         {/* global dark overlay so the image never overpowers the text */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.14)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.08)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.16)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.09)" }}
         />
 
         {/* soft gold glow to lift the community portal focal point on the right */}
@@ -63,16 +71,16 @@ export function ComunidadCriptoSeguraSection() {
           style={{
             width: "54%",
             background:
-              "radial-gradient(60% 58% at 70% 52%, oklch(0.66 0.1 84 / 0.2) 0%, transparent 74%)",
+              "radial-gradient(60% 58% at 70% 52%, oklch(0.66 0.1 84 / 0.17) 0%, transparent 74%)",
           }}
         />
 
         {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[78%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[66%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.96) 34%, oklch(0.08 0.012 158 / 0.66) 64%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
           }}
         />
 
@@ -118,7 +126,10 @@ export function ComunidadCriptoSeguraSection() {
             className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
             style={reveal({ delay: 0, y: 12, duration: 500 })}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
+            <span
+              id="route-dot-comunidad"
+              className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
+            />
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
               Paso 6 · Comunidad cripto segura
             </span>
@@ -153,7 +164,7 @@ export function ComunidadCriptoSeguraSection() {
               className="h-14 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)] sm:w-auto"
             >
               Unirme a la comunidad
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
             </Button>
           </div>
 
@@ -179,7 +190,7 @@ export function ComunidadCriptoSeguraSection() {
           {cards.map(({ icon: Icon, title, description }, i) => (
             <li
               key={title}
-              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0)" : "translateY(20px)",

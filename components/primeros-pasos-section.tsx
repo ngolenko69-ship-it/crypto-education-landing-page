@@ -37,13 +37,21 @@ export function PrimerosPasosSection() {
           src="/images/primeros-pasos-background.webp"
           alt=""
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
-          style={settle()}
+          style={{
+            ...settle(),
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
         />
 
         {/* base dark green overlay to unify the image with the site background (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.014 158 / 0.24)" }}
+          style={{ background: "oklch(0.09 0.014 158 / 0.14)" }}
         />
 
         {/* soft gold glow to reveal the shield / route on the right */}
@@ -58,20 +66,24 @@ export function PrimerosPasosSection() {
 
         {/* left text-protection wash — near-opaque on small screens */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[76%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[64%]"
           style={{
             background:
-              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.97) 42%, rgba(4,9,7,0.7) 70%, transparent 100%)",
+              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.85) 45%, rgba(4,9,7,0.35) 72%, transparent 100%)",
           }}
         />
 
-        {/* top fade — soft connection from the previous hero */}
+        {/* top fade — a fully solid sliver right at the seam so it matches
+            the hero's now-solid bottom band exactly (no visible cut between
+            slides), then releases quickly, kept short enough that the
+            artwork's own "1. Primeros pasos" checkpoint label stays
+            legible instead of dissolving into the fade */}
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "26%",
+            height: "15%",
             background:
-              "linear-gradient(to bottom, #040907 0%, rgba(4,9,7,0.7) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, rgba(4,9,7,0.85) 12%, rgba(4,9,7,0.4) 55%, transparent 100%)",
           }}
         />
 
@@ -106,7 +118,10 @@ export function PrimerosPasosSection() {
             className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
             style={reveal({ delay: 0, y: 12, duration: 500 })}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]" />
+            <span
+              id="route-dot-primeros-pasos"
+              className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
+            />
             <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
               Paso 1 · Primeros pasos
             </span>
@@ -141,7 +156,7 @@ export function PrimerosPasosSection() {
               className="h-14 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)] sm:w-auto"
             >
               Obtener curso gratis
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
             </Button>
           </div>
 
@@ -162,7 +177,7 @@ export function PrimerosPasosSection() {
           {learnCards.map(({ icon: Icon, title, description }, i) => (
             <li
               key={title}
-              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/20 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/40 hover:bg-[oklch(0.08_0.015_158)]/72"
+              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0)" : "translateY(20px)",

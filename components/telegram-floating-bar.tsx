@@ -8,14 +8,19 @@ const DISMISS_KEY = "ruta_telegram_bar_dismissed"
 
 export function TelegramFloatingBar() {
   const [visible, setVisible] = useState(false)
+  // Starts false on both server and client so hydration never diverges;
+  // sessionStorage can only be read once mounted in the browser.
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    if (sessionStorage.getItem(DISMISS_KEY) === "1") {
-      setDismissed(true)
-      return
-    }
+    // Syncing with a browser-only store on mount, not a derivable render
+    // value — sessionStorage isn't available during SSR or lazy init.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (sessionStorage.getItem(DISMISS_KEY) === "1") setDismissed(true)
+  }, [])
+
+  useEffect(() => {
+    if (dismissed) return
 
     const dolares = document.getElementById("dolares-digitales")
 
@@ -27,13 +32,15 @@ export function TelegramFloatingBar() {
 
       if (pastTwoViewports || pastDolares) {
         setVisible(true)
+        // one-shot: nothing left to watch for once it's shown
+        window.removeEventListener("scroll", onScroll)
       }
     }
 
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
     return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+  }, [dismissed])
 
   const handleClose = () => {
     setVisible(false)
