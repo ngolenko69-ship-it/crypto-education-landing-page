@@ -52,10 +52,7 @@ export function RoadmapBackdrop() {
       >
         <div
           className="absolute inset-y-0 right-0 h-full"
-          style={{
-            aspectRatio: "1672 / 941",
-            animation: reduced ? "none" : "heroSlowZoom 19s ease-in-out infinite alternate",
-          }}
+          style={{ aspectRatio: "1672 / 941" }}
         >
           <img
             src="/images/hero-shield-skyline-background.webp"
@@ -72,17 +69,16 @@ export function RoadmapBackdrop() {
             style={{ left: "70%", top: "86%" }}
           />
 
-          {/* Layer 3 — warm gold light breathing from the shield, the
-              route's own destination point. Positioned inside the same
-              precisely-fitted image box as the anchor above, so it tracks
-              the shield's real position instead of drifting with viewport
-              aspect ratio. */}
+          {/* Layer 3 — warm gold light on the shield, the route's own
+              destination point. Positioned inside the same precisely-fitted
+              image box as the anchor above, so it tracks the shield's real
+              position instead of drifting with viewport aspect ratio. A
+              static glow — the shield itself no longer animates in any way. */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
               background:
                 "radial-gradient(46% 54% at 63% 46%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
-              animation: reduced ? "none" : "heroGlowBreathe 7s ease-in-out infinite",
             }}
           />
 
