@@ -32,13 +32,29 @@ export function RoadmapBackdrop() {
           starts from, so the hero's canvas matches theirs */}
       <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
 
+      {/* Layer 0.5 — ambient fill: a soft, blurred continuation of the same
+          scene filling the whole section. On ultra-wide screens, where the
+          precisely-fitted artwork (Layer 1) doesn't reach the left edge,
+          this shows through as atmosphere instead of a flat void; on every
+          other screen it sits fully hidden behind Layer 1. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url(/images/hero-shield-skyline-background.webp)",
+          backgroundSize: "cover",
+          backgroundPosition: "right center",
+          filter: "blur(70px) saturate(1.15) brightness(0.6)",
+          transform: "scale(1.2)",
+        }}
+      />
+
       {/* Layer 1 — the scene itself, sized to its own true aspect ratio and
           pinned to the right edge (ml-auto) rather than force-cropped to
           the viewport's aspect ratio. This guarantees the shield and every
           checkpoint stay fully visible on any screen — the trade-off is a
-          calm dark margin on the left on very wide screens, which is
-          exactly where the text sits anyway. Fades in once on load, then
-          breathes with an imperceptibly slow zoom. */}
+          calm dark margin on the left on very wide screens, now softened
+          by Layer 0.5 above instead of reading as a hard black edge. Fades
+          in once on load, then breathes with an imperceptibly slow zoom. */}
       <div
         className="absolute inset-0"
         style={
@@ -58,6 +74,7 @@ export function RoadmapBackdrop() {
             src="/images/hero-shield-skyline-background.webp"
             alt=""
             className="h-full w-full object-cover"
+            style={{ filter: "saturate(1.14) brightness(1.05) contrast(1.02)" }}
           />
 
           {/* golden route anchor: where the artwork's own "1. Primeros pasos"
@@ -107,12 +124,13 @@ export function RoadmapBackdrop() {
       {/* Layer 2 — premium dark gradient, but reaching transparent well
           before the shield so only the text column sits in shadow; the
           shield, skyline and checkpoint stack stay at full, vivid brightness
-          exactly like the source scene */}
+          exactly like the source scene. Lightened from the original night
+          version so the new dawn scene's color isn't crushed. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.95) 0%, oklch(0.07 0.012 158 / 0.8) 26%, oklch(0.08 0.013 158 / 0.4) 44%, oklch(0.08 0.013 158 / 0.1) 58%, transparent 68%)",
+            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.8) 0%, oklch(0.07 0.012 158 / 0.58) 24%, oklch(0.08 0.013 158 / 0.26) 40%, oklch(0.08 0.013 158 / 0.06) 54%, transparent 62%)",
         }}
       />
 
@@ -124,7 +142,7 @@ export function RoadmapBackdrop() {
         style={{
           height: "8%",
           background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.85) 0%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.6) 0%, transparent 100%)",
         }}
       />
       <div
@@ -132,7 +150,7 @@ export function RoadmapBackdrop() {
         style={{
           height: "18%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158) 35%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.95) 0%, oklch(0.09 0.012 158 / 0.5) 35%, transparent 100%)",
         }}
       />
     </div>
@@ -163,6 +181,7 @@ export function RoadmapMobile() {
           height={941}
           priority
           className="h-auto w-full object-cover"
+          style={{ filter: "saturate(1.14) brightness(1.05) contrast(1.02)" }}
         />
 
         {/* top fade so the scene dissolves into the section above it */}
