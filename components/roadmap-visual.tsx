@@ -43,7 +43,7 @@ export function RoadmapBackdrop() {
           backgroundImage: "url(/images/hero-shield-skyline-background.webp)",
           backgroundSize: "cover",
           backgroundPosition: "right center",
-          filter: "blur(70px) saturate(1.15) brightness(0.6)",
+          filter: "blur(70px) saturate(1.2) brightness(0.72)",
           transform: "scale(1.2)",
         }}
       />
@@ -68,13 +68,13 @@ export function RoadmapBackdrop() {
       >
         <div
           className="absolute inset-y-0 right-0 h-full"
-          style={{ aspectRatio: "1915 / 821" }}
+          style={{ aspectRatio: "3351 / 1437" }}
         >
           <img
             src="/images/hero-shield-skyline-background.webp"
             alt=""
             className="h-full w-full object-cover"
-            style={{ filter: "saturate(1.14) brightness(1.05) contrast(1.02)" }}
+            style={{ filter: "saturate(1.2) brightness(1.1) contrast(1.03)" }}
           />
 
           {/* golden route anchor: where the artwork's own "1. Primeros pasos"
@@ -130,7 +130,7 @@ export function RoadmapBackdrop() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.8) 0%, oklch(0.07 0.012 158 / 0.58) 24%, oklch(0.08 0.013 158 / 0.26) 40%, oklch(0.08 0.013 158 / 0.06) 54%, transparent 62%)",
+            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.76) 0%, oklch(0.07 0.012 158 / 0.52) 22%, oklch(0.08 0.013 158 / 0.22) 36%, oklch(0.08 0.013 158 / 0.05) 48%, transparent 58%)",
         }}
       />
 
@@ -142,15 +142,15 @@ export function RoadmapBackdrop() {
         style={{
           height: "8%",
           background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.6) 0%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.42) 0%, transparent 100%)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "18%",
+          height: "16%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.95) 0%, oklch(0.09 0.012 158 / 0.5) 35%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.85) 0%, oklch(0.09 0.012 158 / 0.35) 35%, transparent 100%)",
         }}
       />
     </div>
@@ -177,11 +177,11 @@ export function RoadmapMobile() {
         <Image
           src="/images/hero-shield-skyline-background.webp"
           alt=""
-          width={1915}
-          height={821}
+          width={3351}
+          height={1437}
           priority
           className="h-auto w-full object-cover"
-          style={{ filter: "saturate(1.14) brightness(1.05) contrast(1.02)" }}
+          style={{ filter: "saturate(1.2) brightness(1.1) contrast(1.03)" }}
         />
 
         {/* top fade so the scene dissolves into the section above it */}
@@ -190,7 +190,7 @@ export function RoadmapMobile() {
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to bottom, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.5) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.1 0.014 158 / 0.85) 0%, oklch(0.1 0.014 158 / 0.35) 45%, transparent 100%)",
           }}
         />
 
@@ -200,7 +200,7 @@ export function RoadmapMobile() {
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to top, oklch(0.1 0.014 158) 0%, oklch(0.1 0.014 158 / 0.5) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.1 0.014 158 / 0.85) 0%, oklch(0.1 0.014 158 / 0.35) 45%, transparent 100%)",
           }}
         />
 
