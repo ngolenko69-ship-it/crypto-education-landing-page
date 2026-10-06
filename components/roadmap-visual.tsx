@@ -68,7 +68,7 @@ export function RoadmapBackdrop() {
       >
         <div
           className="absolute inset-y-0 right-0 h-full"
-          style={{ aspectRatio: "1672 / 941" }}
+          style={{ aspectRatio: "1915 / 821" }}
         >
           <img
             src="/images/hero-shield-skyline-background.webp"
@@ -83,7 +83,7 @@ export function RoadmapBackdrop() {
             id="route-exit-hero"
             aria-hidden="true"
             className="absolute h-px w-px"
-            style={{ left: "70%", top: "86%" }}
+            style={{ left: "82.6%", top: "76.6%" }}
           />
 
           {/* Layer 3 — warm gold light on the shield, the route's own
@@ -95,7 +95,7 @@ export function RoadmapBackdrop() {
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(46% 54% at 63% 46%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
+                "radial-gradient(40% 54% at 70% 41%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
             }}
           />
 
@@ -107,8 +107,8 @@ export function RoadmapBackdrop() {
               aria-hidden="true"
               className="absolute rounded-full"
               style={{
-                right: "9.5%",
-                top: "87%",
+                right: "17%",
+                top: "79%",
                 width: 6,
                 height: 6,
                 marginRight: -3,
@@ -177,8 +177,8 @@ export function RoadmapMobile() {
         <Image
           src="/images/hero-shield-skyline-background.webp"
           alt=""
-          width={1672}
-          height={941}
+          width={1915}
+          height={821}
           priority
           className="h-auto w-full object-cover"
           style={{ filter: "saturate(1.14) brightness(1.05) contrast(1.02)" }}
@@ -210,7 +210,7 @@ export function RoadmapMobile() {
           id="route-exit-hero-mobile"
           aria-hidden="true"
           className="absolute h-px w-px"
-          style={{ left: "69%", top: "89%" }}
+          style={{ left: "82.6%", top: "76.6%" }}
         />
       </div>
     </div>
