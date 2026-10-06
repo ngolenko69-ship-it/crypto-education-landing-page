@@ -32,7 +32,10 @@ export function HeroContent() {
 
       <p
         className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
-        style={reveal({ delay: 280, y: 14, duration: 560 })}
+        style={{
+          ...reveal({ delay: 280, y: 14, duration: 560 }),
+          textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+        }}
       >
         Aprende stablecoins, P2P, wallets, plataformas cripto y anti-estafas
         antes de entrar en crypto. Evita errores costosos y reconoce fraudes
@@ -70,8 +73,14 @@ export function HeroContent() {
       >
         {trustItems.map(({ icon: Icon, label }) => (
           <li key={label} className="flex items-center gap-2.5">
-            <Icon className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
-            <span className="text-[15px] font-medium text-foreground/80">
+            <Icon
+              className="h-[18px] w-[18px] text-primary drop-shadow-[0_1px_6px_oklch(0_0_0/0.6)]"
+              aria-hidden="true"
+            />
+            <span
+              className="text-[15px] font-medium text-foreground/80"
+              style={{ textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)" }}
+            >
               {label}
             </span>
           </li>

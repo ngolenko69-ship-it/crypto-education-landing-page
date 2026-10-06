@@ -74,7 +74,7 @@ export function RoadmapBackdrop() {
             src="/images/hero-shield-skyline-background.webp"
             alt=""
             className="h-full w-full object-cover"
-            style={{ filter: "saturate(1.2) brightness(1.1) contrast(1.03)" }}
+            style={{ filter: "saturate(1.22) brightness(1.18) contrast(1.03)" }}
           />
 
           {/* golden route anchor: where the artwork's own "1. Primeros pasos"
@@ -130,7 +130,7 @@ export function RoadmapBackdrop() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.76) 0%, oklch(0.07 0.012 158 / 0.52) 22%, oklch(0.08 0.013 158 / 0.22) 36%, oklch(0.08 0.013 158 / 0.05) 48%, transparent 58%)",
+            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.5) 0%, oklch(0.07 0.012 158 / 0.3) 20%, oklch(0.08 0.013 158 / 0.12) 34%, oklch(0.08 0.013 158 / 0.02) 46%, transparent 52%)",
         }}
       />
 
@@ -142,15 +142,15 @@ export function RoadmapBackdrop() {
         style={{
           height: "8%",
           background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.42) 0%, transparent 100%)",
+            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.28) 0%, transparent 100%)",
         }}
       />
       <div
         className="absolute inset-x-0 bottom-0"
         style={{
-          height: "16%",
+          height: "14%",
           background:
-            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.85) 0%, oklch(0.09 0.012 158 / 0.35) 35%, transparent 100%)",
+            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.62) 0%, oklch(0.09 0.012 158 / 0.22) 35%, transparent 100%)",
         }}
       />
     </div>
@@ -181,7 +181,7 @@ export function RoadmapMobile() {
           height={1437}
           priority
           className="h-auto w-full object-cover"
-          style={{ filter: "saturate(1.2) brightness(1.1) contrast(1.03)" }}
+          style={{ filter: "saturate(1.22) brightness(1.18) contrast(1.03)" }}
         />
 
         {/* top fade so the scene dissolves into the section above it */}
@@ -190,7 +190,7 @@ export function RoadmapMobile() {
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to bottom, oklch(0.1 0.014 158 / 0.85) 0%, oklch(0.1 0.014 158 / 0.35) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.1 0.014 158 / 0.6) 0%, oklch(0.1 0.014 158 / 0.22) 45%, transparent 100%)",
           }}
         />
 
@@ -200,7 +200,7 @@ export function RoadmapMobile() {
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(to top, oklch(0.1 0.014 158 / 0.85) 0%, oklch(0.1 0.014 158 / 0.35) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.1 0.014 158 / 0.6) 0%, oklch(0.1 0.014 158 / 0.22) 45%, transparent 100%)",
           }}
         />
 

@@ -39,6 +39,7 @@ export function PrimerosPasosSection() {
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
           style={{
             ...settle(),
+            filter: "saturate(1.15) brightness(1.12) contrast(1.02)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
@@ -51,7 +52,7 @@ export function PrimerosPasosSection() {
         {/* base dark green overlay to unify the image with the site background (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.014 158 / 0.14)" }}
+          style={{ background: "oklch(0.09 0.014 158 / 0.08)" }}
         />
 
         {/* soft gold glow to reveal the shield / route on the right */}
@@ -64,12 +65,14 @@ export function PrimerosPasosSection() {
           }}
         />
 
-        {/* left text-protection wash — near-opaque on small screens */}
+        {/* left text-protection wash — near-opaque on small screens, much
+            lighter on desktop now that the paragraph/trust-line text below
+            carries its own shadow for contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[64%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[52%]"
           style={{
             background:
-              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.85) 45%, rgba(4,9,7,0.35) 72%, transparent 100%)",
+              "linear-gradient(to right, #040907 0%, rgba(4,9,7,0.6) 45%, rgba(4,9,7,0.18) 72%, transparent 100%)",
           }}
         />
 
@@ -83,7 +86,7 @@ export function PrimerosPasosSection() {
           style={{
             height: "15%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, rgba(4,9,7,0.85) 12%, rgba(4,9,7,0.4) 55%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, rgba(4,9,7,0.55) 12%, rgba(4,9,7,0.22) 55%, transparent 100%)",
           }}
         />
 
@@ -91,9 +94,9 @@ export function PrimerosPasosSection() {
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
-            height: "30%",
+            height: "26%",
             background:
-              "linear-gradient(to top, #040907 0%, rgba(4,9,7,0.72) 45%, transparent 100%)",
+              "linear-gradient(to top, #040907 0%, rgba(4,9,7,0.5) 45%, transparent 100%)",
           }}
         />
 
@@ -102,7 +105,7 @@ export function PrimerosPasosSection() {
           className="absolute inset-y-0 right-0"
           style={{
             width: "20%",
-            background: "linear-gradient(to left, rgba(2,4,3,0.5), transparent)",
+            background: "linear-gradient(to left, rgba(2,4,3,0.32), transparent)",
           }}
         />
       </div>
@@ -129,18 +132,21 @@ export function PrimerosPasosSection() {
 
           <h1
             id="primeros-pasos-title"
-            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-5xl lg:text-[3.6rem]"
+            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-5xl lg:text-[3.6rem]"
             style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             El primer paso es entender,{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
               no arriesgar.
             </span>
           </h1>
 
           <p
             className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
-            style={reveal({ delay: 260, y: 16, duration: 600 })}
+            style={{
+              ...reveal({ delay: 260, y: 16, duration: 600 }),
+              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+            }}
           >
             Crypto ya forma parte de pagos, transferencias, dólares digitales y
             wallets. No necesitas saberlo todo desde el primer día: solo una ruta
@@ -163,7 +169,10 @@ export function PrimerosPasosSection() {
           {/* trust line */}
           <p
             className="mt-5 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]"
-            style={reveal({ delay: 480, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 480, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Contenido educativo. Sin señales. Sin promesas de ganancias.
           </p>
