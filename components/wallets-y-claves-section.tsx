@@ -38,11 +38,12 @@ export function WalletsYClavesSection() {
 
         {/* the vault / key PNG as a full-bleed cover layer on the right */}
         <img
-          src="/images/wallets-y-claves-background.png"
+          src="/images/wallets-y-claves-background.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[84%_center] opacity-100 lg:object-[center_right]"
           style={{
             ...settle(),
+            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
@@ -55,13 +56,13 @@ export function WalletsYClavesSection() {
         {/* global dark overlay so the image never overpowers the text (lightened for +visibility) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.07)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.06)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.09)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.07)" }}
         />
 
         {/* soft gold glow to lift the focal point (route, vault, key) on the right */}
@@ -74,12 +75,14 @@ export function WalletsYClavesSection() {
           }}
         />
 
-        {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
+        {/* left dark protection gradient — near-opaque on mobile, lighter and
+            narrower on desktop now that the paragraph/trust-line text below
+            carries its own shadow for contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[66%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[52%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.6) 45%, oklch(0.08 0.012 158 / 0.18) 72%, transparent 100%)",
           }}
         />
 
@@ -89,7 +92,7 @@ export function WalletsYClavesSection() {
           style={{
             height: "26%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.65) 0%, oklch(0.09 0.012 158 / 0.25) 45%, transparent 100%)",
           }}
         />
 
@@ -99,7 +102,7 @@ export function WalletsYClavesSection() {
           style={{
             height: "28%",
             background:
-              "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.65) 0%, oklch(0.09 0.012 158 / 0.25) 45%, transparent 100%)",
           }}
         />
 
@@ -109,7 +112,7 @@ export function WalletsYClavesSection() {
           style={{
             width: "16%",
             background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.7), transparent)",
+              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
           }}
         />
       </div>
@@ -136,18 +139,21 @@ export function WalletsYClavesSection() {
 
           <h2
             id="wallets-y-claves-title"
-            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-5xl lg:text-[3.4rem]"
+            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-5xl lg:text-[3.4rem]"
             style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             No proteges una app.{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
               Proteges tu acceso.
             </span>
           </h2>
 
           <p
             className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
-            style={reveal({ delay: 260, y: 16, duration: 600 })}
+            style={{
+              ...reveal({ delay: 260, y: 16, duration: 600 }),
+              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+            }}
           >
             Una wallet puede parecer simple, pero tus claves, códigos y frase
             semilla son la parte más sensible. Aprende qué proteger, qué no
@@ -170,7 +176,10 @@ export function WalletsYClavesSection() {
           {/* small helper line under CTA */}
           <p
             className="mt-4 text-sm text-muted-foreground"
-            style={reveal({ delay: 460, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 460, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Aprende a proteger claves, accesos y frase semilla.
           </p>
@@ -178,7 +187,10 @@ export function WalletsYClavesSection() {
           {/* trust line */}
           <p
             className="mt-4 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]"
-            style={reveal({ delay: 540, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 540, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Contenido educativo. Sin señales. Sin promesas de ganancias.
           </p>
