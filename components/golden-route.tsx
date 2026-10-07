@@ -349,15 +349,20 @@ export function GoldenRoute() {
         const bloom = clamp((gr.current - 0.83) / 0.14) * clamp((0.985 - gr.current) / 0.03)
         const boost = 1 + bloom * 1.6
 
+        // the wide blurred halo lands on the badge's own label text in the
+        // final approach; fade it out there so the label stays legible —
+        // the sharp core and the badge-dot pulse carry the arrival instead
+        const haloFade = 1 - clamp((gr.current - 0.84) / 0.12)
+
         gr.cometHalo.setAttribute("cx", String(head.x))
         gr.cometHalo.setAttribute("cy", String(head.y))
         gr.cometHalo.setAttribute("r", String(sizes.halo * boost))
-        gr.cometHalo.style.opacity = String(cometOpacity * 0.6)
+        gr.cometHalo.style.opacity = String(cometOpacity * 0.6 * haloFade)
 
         gr.cometGlow.setAttribute("cx", String(head.x))
         gr.cometGlow.setAttribute("cy", String(head.y))
         gr.cometGlow.setAttribute("r", String(sizes.glow * boost))
-        gr.cometGlow.style.opacity = String(cometOpacity * 0.85)
+        gr.cometGlow.style.opacity = String(cometOpacity * 0.85 * (0.35 + 0.65 * haloFade))
 
         gr.cometCore.setAttribute("cx", String(head.x))
         gr.cometCore.setAttribute("cy", String(head.y))

@@ -141,25 +141,28 @@ export function LegalTrustFooterSection() {
               id="route-dot-legal"
               className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
             />
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.95_0.03_88)] [text-shadow:0_1px_6px_oklch(0_0_0/0.7)]">
               Confianza y transparencia
             </span>
           </span>
 
           <h2
             id="legal-title"
-            className="mt-6 font-serif text-[2rem] font-medium leading-[1.08] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-[2.5rem] lg:text-[2.9rem]"
+            className="mt-6 font-serif text-[2rem] font-medium leading-[1.08] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-[2.5rem] lg:text-[2.9rem]"
             style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             Seguridad también significa{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
               claridad.
             </span>
           </h2>
 
           <p
-            className="mt-6 max-w-xl text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base"
-            style={reveal({ delay: 260, y: 16, duration: 600 })}
+            className="mt-6 max-w-xl text-pretty text-[15px] leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-base"
+            style={{
+              ...reveal({ delay: 260, y: 16, duration: 600 }),
+              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+            }}
           >
             Ruta Cripto Segura es un proyecto educativo sobre seguridad cripto,
             prevención de estafas y buenas prácticas digitales. Nuestro objetivo
@@ -184,7 +187,7 @@ export function LegalTrustFooterSection() {
                 </span>
                 <div>
                   <h3 className="text-[14px] font-semibold text-foreground">{title}</h3>
-                  <p className="mt-1 text-[13px] leading-snug text-muted-foreground">
+                  <p className="mt-1 text-[13px] leading-snug text-[oklch(0.84_0.02_88)]">
                     {description}
                   </p>
                 </div>
@@ -202,7 +205,7 @@ export function LegalTrustFooterSection() {
               <Link
                 key={href}
                 href={href}
-                className="group relative text-[13px] font-medium tracking-wide text-[oklch(0.82_0.03_88)] transition-colors duration-200 hover:text-gold"
+                className="group relative text-[13px] font-medium tracking-wide text-[oklch(0.9_0.03_88)] [text-shadow:0_1px_8px_oklch(0_0_0/0.6)] transition-colors duration-200 hover:text-gold"
               >
                 {label}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all duration-300 group-hover:w-full" />
@@ -221,8 +224,11 @@ export function LegalTrustFooterSection() {
 
           {/* bottom disclaimer */}
           <p
-            className="mt-6 max-w-xl text-[12.5px] leading-relaxed text-[oklch(0.74_0.02_88)]"
-            style={reveal({ delay: 720, y: 12, duration: 600 })}
+            className="mt-6 max-w-xl text-[13px] leading-relaxed text-[oklch(0.84_0.02_88)]"
+            style={{
+              ...reveal({ delay: 720, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Ruta Cripto Segura es un proyecto educativo sobre seguridad cripto,
             prevención de estafas y buenas prácticas digitales. No somos una
@@ -233,7 +239,7 @@ export function LegalTrustFooterSection() {
           </p>
 
           {/* trademark note */}
-          <p className="mt-3 text-[11.5px] leading-snug tracking-wide text-[oklch(0.62_0.015_88)]">
+          <p className="mt-3 text-[12px] leading-snug tracking-wide text-[oklch(0.72_0.015_88)] [text-shadow:0_1px_8px_oklch(0_0_0/0.6)]">
             Las marcas mencionadas pertenecen a sus respectivos propietarios.
           </p>
         </div>

@@ -47,7 +47,7 @@ export function SobreNosotrosSection() {
           className="absolute inset-0 h-full w-full object-cover object-[72%_center] lg:object-[center_right]"
           style={{
             ...settle(),
-            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
+            filter: "saturate(1.04) brightness(1.06) contrast(1.01)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
@@ -126,7 +126,7 @@ export function SobreNosotrosSection() {
               id="route-dot-sobre-nosotros"
               className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
             />
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.95_0.03_88)] [text-shadow:0_1px_6px_oklch(0_0_0/0.7)]">
               Sobre nosotros
             </span>
           </span>
@@ -143,7 +143,7 @@ export function SobreNosotrosSection() {
           </h2>
 
           <div
-            className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base"
+            className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-base"
             style={{
               ...reveal({ delay: 260, y: 16, duration: 600 }),
               textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
@@ -169,7 +169,7 @@ export function SobreNosotrosSection() {
 
           {/* small credibility note */}
           <p
-            className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.72_0.02_88)]"
+            className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.8_0.02_88)]"
             style={{
               ...reveal({ delay: 400, y: 12, duration: 600 }),
               textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
@@ -196,7 +196,7 @@ export function SobreNosotrosSection() {
                 </span>
                 <div>
                   <h3 className="text-[15px] font-semibold text-foreground">{title}</h3>
-                  <p className="mt-1 text-[13px] leading-snug text-muted-foreground">
+                  <p className="mt-1 text-[13px] leading-snug text-[oklch(0.84_0.02_88)]">
                     {description}
                   </p>
                 </div>

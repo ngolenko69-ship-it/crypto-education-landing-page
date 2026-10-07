@@ -31,7 +31,7 @@ export function HeroContent() {
       </h1>
 
       <p
-        className="mt-7 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
+        className="mt-7 max-w-lg text-base leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-lg"
         style={{
           ...reveal({ delay: 280, y: 14, duration: 560 }),
           textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
@@ -78,7 +78,7 @@ export function HeroContent() {
               aria-hidden="true"
             />
             <span
-              className="text-[15px] font-medium text-foreground/80"
+              className="text-[15px] font-medium text-foreground/92"
               style={{ textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)" }}
             >
               {label}

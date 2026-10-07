@@ -43,7 +43,7 @@ export function RoadmapBackdrop() {
           backgroundImage: "url(/images/hero-shield-skyline-background.webp)",
           backgroundSize: "cover",
           backgroundPosition: "right center",
-          filter: "blur(70px) saturate(1.2) brightness(0.72)",
+          filter: "blur(70px) saturate(1.05) brightness(0.72)",
           transform: "scale(1.2)",
         }}
       />
@@ -74,7 +74,7 @@ export function RoadmapBackdrop() {
             src="/images/hero-shield-skyline-background.webp"
             alt=""
             className="h-full w-full object-cover"
-            style={{ filter: "saturate(1.22) brightness(1.18) contrast(1.03)" }}
+            style={{ filter: "saturate(1.04) brightness(1.06) contrast(1.01)" }}
           />
 
           {/* golden route anchor: where the artwork's own "1. Primeros pasos"
@@ -181,7 +181,7 @@ export function RoadmapMobile() {
           height={1437}
           priority
           className="h-auto w-full object-cover"
-          style={{ filter: "saturate(1.22) brightness(1.18) contrast(1.03)" }}
+          style={{ filter: "saturate(1.04) brightness(1.06) contrast(1.01)" }}
         />
 
         {/* top fade so the scene dissolves into the section above it */}

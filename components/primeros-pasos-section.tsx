@@ -39,7 +39,7 @@ export function PrimerosPasosSection() {
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
           style={{
             ...settle(),
-            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
+            filter: "saturate(1.04) brightness(1.06) contrast(1.01)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
@@ -124,7 +124,7 @@ export function PrimerosPasosSection() {
               id="route-dot-primeros-pasos"
               className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
             />
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.88_0.03_88)]">
+            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.95_0.03_88)] [text-shadow:0_1px_6px_oklch(0_0_0/0.7)]">
               Paso 1 · Primeros pasos
             </span>
           </span>
@@ -141,7 +141,7 @@ export function PrimerosPasosSection() {
           </h1>
 
           <p
-            className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+            className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-lg"
             style={{
               ...reveal({ delay: 260, y: 16, duration: 600 }),
               textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
@@ -167,7 +167,7 @@ export function PrimerosPasosSection() {
 
           {/* trust line */}
           <p
-            className="mt-5 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]"
+            className="mt-5 text-[13px] tracking-wide text-[oklch(0.8_0.02_88)]"
             style={{
               ...reveal({ delay: 480, y: 12, duration: 600 }),
               textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
@@ -197,7 +197,7 @@ export function PrimerosPasosSection() {
               </span>
               <div>
                 <h3 className="text-[15px] font-semibold text-foreground">{title}</h3>
-                <p className="mt-1 text-[13px] leading-snug text-muted-foreground">
+                <p className="mt-1 text-[13px] leading-snug text-[oklch(0.84_0.02_88)]">
                   {description}
                 </p>
               </div>
