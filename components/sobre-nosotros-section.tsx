@@ -42,15 +42,16 @@ export function SobreNosotrosSection() {
 
         {/* the team / building / partner-logos PNG as a full-bleed cover layer */}
         <img
-          src="/images/sobre-nosotros-ruta-background.png"
+          src="/images/sobre-nosotros-ruta-background.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[72%_center] lg:object-[center_right]"
           style={{
             ...settle(),
+            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
           }}
@@ -59,21 +60,23 @@ export function SobreNosotrosSection() {
         {/* light global dark overlay so the image stays premium and cinematic */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.08)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.06)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.08)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.07)" }}
         />
 
-        {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
+        {/* left dark protection gradient — near-opaque on mobile, lighter and
+            narrower on desktop now that the body text below carries its own
+            shadow for contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[62%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[46%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
           }}
         />
 
@@ -81,9 +84,9 @@ export function SobreNosotrosSection() {
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "24%",
+            height: "10%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 46%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
@@ -91,9 +94,9 @@ export function SobreNosotrosSection() {
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
-            height: "24%",
+            height: "12%",
             background:
-              "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 46%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
@@ -103,7 +106,7 @@ export function SobreNosotrosSection() {
           style={{
             width: "14%",
             background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.66), transparent)",
+              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
           }}
         />
       </div>
@@ -130,18 +133,21 @@ export function SobreNosotrosSection() {
 
           <h2
             id="nosotros-title"
-            className="mt-6 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-[2.7rem] lg:text-[3.1rem]"
+            className="mt-6 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-[2.7rem] lg:text-[3.1rem]"
             style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             Quién está detrás de{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
               Ruta Cripto Segura
             </span>
           </h2>
 
           <div
             className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-muted-foreground sm:text-base"
-            style={reveal({ delay: 260, y: 16, duration: 600 })}
+            style={{
+              ...reveal({ delay: 260, y: 16, duration: 600 }),
+              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+            }}
           >
             <p>
               Detrás de Ruta Cripto Segura hay un equipo enfocado en educación,
@@ -164,7 +170,10 @@ export function SobreNosotrosSection() {
           {/* small credibility note */}
           <p
             className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.72_0.02_88)]"
-            style={reveal({ delay: 400, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 400, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             La información institucional puede estar respaldada por
             documentación, certificaciones o acuerdos correspondientes.
