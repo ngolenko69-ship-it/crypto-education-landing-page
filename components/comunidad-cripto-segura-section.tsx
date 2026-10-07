@@ -39,15 +39,16 @@ export function ComunidadCriptoSeguraSection() {
 
         {/* the community portal PNG as a full-bleed cover layer on the right */}
         <img
-          src="/images/comunidad-cripto-segura-background.png"
+          src="/images/comunidad-cripto-segura-background.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[82%_center] opacity-100 lg:object-[center_right]"
           style={{
             ...settle(),
+            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
           }}
@@ -56,13 +57,13 @@ export function ComunidadCriptoSeguraSection() {
         {/* global dark overlay so the image never overpowers the text */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.08)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.06)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.09)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.07)" }}
         />
 
         {/* soft gold glow to lift the community portal focal point on the right */}
@@ -75,12 +76,14 @@ export function ComunidadCriptoSeguraSection() {
           }}
         />
 
-        {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
+        {/* left dark protection gradient — near-opaque on mobile, lighter and
+            narrower on desktop now that the paragraph/trust-line text below
+            carries its own shadow for contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[66%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[36%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
           }}
         />
 
@@ -88,9 +91,9 @@ export function ComunidadCriptoSeguraSection() {
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "26%",
+            height: "10%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
@@ -98,9 +101,9 @@ export function ComunidadCriptoSeguraSection() {
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
-            height: "28%",
+            height: "12%",
             background:
-              "linear-gradient(to top, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.6) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
@@ -110,7 +113,7 @@ export function ComunidadCriptoSeguraSection() {
           style={{
             width: "16%",
             background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.7), transparent)",
+              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
           }}
         />
       </div>
@@ -137,18 +140,21 @@ export function ComunidadCriptoSeguraSection() {
 
           <h2
             id="comunidad-cripto-segura-title"
-            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] sm:text-5xl lg:text-[3.4rem]"
+            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-5xl lg:text-[3.4rem]"
             style={reveal({ delay: 120, y: 22, duration: 800 })}
           >
             La ruta no termina aquí.{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
               Sigue aprendiendo con nosotros.
             </span>
           </h2>
 
           <p
             className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
-            style={reveal({ delay: 260, y: 16, duration: 600 })}
+            style={{
+              ...reveal({ delay: 260, y: 16, duration: 600 }),
+              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
+            }}
           >
             Después de conocer los pasos básicos, puedes unirte a nuestra
             comunidad educativa: compartimos noticias cripto, explicamos riesgos
@@ -171,7 +177,10 @@ export function ComunidadCriptoSeguraSection() {
           {/* small helper line under CTA */}
           <p
             className="mt-4 text-sm text-muted-foreground"
-            style={reveal({ delay: 460, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 460, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Admins y comunidad para aprender con más seguridad.
           </p>
@@ -179,7 +188,10 @@ export function ComunidadCriptoSeguraSection() {
           {/* trust line */}
           <p
             className="mt-4 text-[13px] tracking-wide text-[oklch(0.72_0.02_88)]"
-            style={reveal({ delay: 540, y: 12, duration: 600 })}
+            style={{
+              ...reveal({ delay: 540, y: 12, duration: 600 }),
+              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
+            }}
           >
             Contenido educativo. Sin señales. Sin promesas de ganancias.
           </p>
