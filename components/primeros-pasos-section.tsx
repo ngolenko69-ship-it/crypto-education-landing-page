@@ -39,7 +39,7 @@ export function PrimerosPasosSection() {
           className="h-full w-full object-cover object-[92%_center] lg:object-[72%_center]"
           style={{
             ...settle(),
-            filter: "saturate(1.15) brightness(1.12) contrast(1.02)",
+            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:

@@ -43,7 +43,7 @@ export function DolaresDigitalesSection() {
           className="absolute inset-0 h-full w-full object-cover object-[88%_center] opacity-100 lg:object-[center_right]"
           style={{
             ...settle(),
-            filter: "saturate(1.15) brightness(1.12) contrast(1.02)",
+            filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
