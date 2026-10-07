@@ -45,9 +45,9 @@ export function WalletsYClavesSection() {
             ...settle(),
             filter: "saturate(1.22) brightness(1.18) contrast(1.03)",
             WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
           }}
@@ -79,10 +79,10 @@ export function WalletsYClavesSection() {
             narrower on desktop now that the paragraph/trust-line text below
             carries its own shadow for contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[52%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[36%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.6) 45%, oklch(0.08 0.012 158 / 0.18) 72%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
           }}
         />
 
@@ -90,9 +90,9 @@ export function WalletsYClavesSection() {
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "26%",
+            height: "10%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.65) 0%, oklch(0.09 0.012 158 / 0.25) 45%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
@@ -100,9 +100,9 @@ export function WalletsYClavesSection() {
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
-            height: "28%",
+            height: "12%",
             background:
-              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.65) 0%, oklch(0.09 0.012 158 / 0.25) 45%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
