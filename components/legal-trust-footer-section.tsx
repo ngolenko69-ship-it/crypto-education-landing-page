@@ -53,15 +53,16 @@ export function LegalTrustFooterSection() {
 
         {/* the building / shield / golden-route PNG as a full-bleed cover layer */}
         <img
-          src="/images/legal-trust-footer-background.png"
+          src="/images/legal-trust-footer-background.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover object-[80%_center] lg:object-[center_right]"
           style={{
             ...settle(),
+            filter: "saturate(1.04) brightness(1.06) contrast(1.01)",
             WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             maskImage:
-              "linear-gradient(to right, transparent 0%, black 40%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
+              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
             WebkitMaskComposite: "source-in",
             maskComposite: "intersect",
           }}
@@ -70,21 +71,24 @@ export function LegalTrustFooterSection() {
         {/* light global dark overlay so the image stays premium and cinematic */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.09)" }}
+          style={{ background: "oklch(0.09 0.012 158 / 0.06)" }}
         />
 
         {/* subtle dark-green tint to unify the gold with the site palette */}
         <div
           className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.08)" }}
+          style={{ background: "oklch(0.18 0.03 158 / 0.07)" }}
         />
 
-        {/* left dark protection gradient — near-opaque on mobile, right-limited on desktop */}
+        {/* left dark protection gradient — near-opaque on mobile; on desktop
+            kept at 46% (wider than the step slides) because this section
+            stacks a paragraph, legal links and a long disclaimer, all of
+            which carry their own text-shadow for the rest of the contrast */}
         <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[60%]"
+          className="absolute inset-y-0 left-0 w-full lg:w-[46%]"
           style={{
             background:
-              "linear-gradient(to right, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.85) 45%, oklch(0.08 0.012 158 / 0.35) 72%, transparent 100%)",
+              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
           }}
         />
 
@@ -102,19 +106,24 @@ export function LegalTrustFooterSection() {
         <div
           className="absolute inset-x-0 top-0"
           style={{
-            height: "26%",
+            height: "10%",
             background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158) 0%, oklch(0.09 0.012 158 / 0.55) 46%, transparent 100%)",
+              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
           }}
         />
 
-        {/* bottom fade into the section base */}
+        {/* bottom fade — taller than the step slides on purpose: this is the
+            end of the page, not a seam into another slide, and the legal
+            disclaimer sits here over the brightest part of the scene (lit
+            path, lanterns). It settles the page into the base color and
+            gives the fine print a floor; the building and shield above
+            stay untouched. */}
         <div
           className="absolute inset-x-0 bottom-0"
           style={{
             height: "30%",
             background:
-              "linear-gradient(to top, oklch(0.08 0.012 158) 0%, oklch(0.08 0.012 158 / 0.6) 46%, transparent 100%)",
+              "linear-gradient(to top, oklch(0.08 0.012 158 / 0.92) 0%, oklch(0.08 0.012 158 / 0.7) 35%, oklch(0.08 0.012 158 / 0.3) 65%, transparent 100%)",
           }}
         />
 
@@ -124,7 +133,7 @@ export function LegalTrustFooterSection() {
           style={{
             width: "14%",
             background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.66), transparent)",
+              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
           }}
         />
       </div>
