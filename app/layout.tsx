@@ -39,7 +39,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#0a1410',
+  themeColor: '#07130f',
+  // lets env(safe-area-inset-*) be non-zero on notched phones (launcher offset)
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({

@@ -26,7 +26,7 @@ export function RoadmapBackdrop() {
   }, [])
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-clip xl:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-0 bottom-px z-0 hidden overflow-clip xl:block" aria-hidden="true">
       {/* Layer 0 — base surface, the same tone every section starts from */}
       <div className="absolute inset-0 bg-surface-deep" />
 
@@ -52,8 +52,9 @@ export function RoadmapBackdrop() {
         }
       >
         <div
-          className="absolute inset-y-0 right-0 h-full"
+          className="absolute right-0 top-px"
           style={{
+            height: "calc(100% - 2px)",
             aspectRatio: "3351 / 1437",
             WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 9%, black 100%)",
             maskImage: "linear-gradient(to right, transparent 0%, black 9%, black 100%)",

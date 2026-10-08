@@ -33,7 +33,7 @@ export default function Home() {
           <section
             id="inicio"
             aria-label="Inicio"
-            className="relative w-full overflow-clip xl:flex xl:min-h-[calc(100vh-var(--header-h))] xl:items-center"
+            className="relative w-full overflow-clip xl:flex xl:min-h-[calc(100vh-var(--header-h))] xl:items-center xl:bg-surface-deep"
           >
             <RoadmapBackdrop />
 

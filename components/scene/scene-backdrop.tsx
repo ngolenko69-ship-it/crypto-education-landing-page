@@ -37,8 +37,8 @@ export function SceneBackdrop({ scene, settle, priority = false, noTopSeam = fal
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ ...settle, objectPosition: scene.focalWide, filter: SCENE_FILTER }}
+          className="absolute inset-x-0 top-px w-full object-cover"
+          style={{ ...settle, height: "calc(100% - 2px)", objectPosition: scene.focalWide, filter: SCENE_FILTER }}
         />
       </picture>
 
