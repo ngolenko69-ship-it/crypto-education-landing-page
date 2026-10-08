@@ -25,7 +25,8 @@ const cards = [
 // shield 66-78% / 30-75% plus the four threat icons 80-92% / 22-75%
 const scene: SceneConfig = {
   image: "anti-estafas-background",
-  focalWide: "100% 50%",
+  signLeft: 0.473,
+  focalWide: "75% 50%",
   focalFrame: "80% 48%",
   shield: 0.88,
   glow: "radial-gradient(55% 56% at 74% 50%, rgba(230,197,116,0.13) 0%, transparent 72%)",

@@ -26,7 +26,8 @@ const cards = [
 // community composition (ring shield + member plaques) at 66-92% / 22-85%
 const scene: SceneConfig = {
   image: "comunidad-cripto-segura-background",
-  focalWide: "100% 50%",
+  signLeft: 0.496,
+  focalWide: "75% 50%",
   focalFrame: "78% 50%",
   shield: 0.9,
   glow: "radial-gradient(55% 56% at 74% 50%, rgba(230,197,116,0.14) 0%, transparent 72%)",

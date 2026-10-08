@@ -25,7 +25,8 @@ const cards = [
 // identity-check composition (ring, shield, id cards) at 66-92% / 20-70%
 const scene: SceneConfig = {
   image: "p2p-que-revisar-background",
-  focalWide: "100% 50%",
+  signLeft: 0.53,
+  focalWide: "75% 50%",
   focalFrame: "78% 45%",
   shield: 0.88,
   glow: "radial-gradient(52% 54% at 74% 48%, rgba(230,197,116,0.13) 0%, transparent 72%)",

@@ -25,7 +25,8 @@ const cards = [
 // vault door 73-96% / 18-65%, key 70-76% / 40-65%: the frame keeps both
 const scene: SceneConfig = {
   image: "wallets-y-claves-background",
-  focalWide: "100% 50%",
+  signLeft: 0.522,
+  focalWide: "85% 50%",
   focalFrame: "82% 42%",
   shield: 0.88,
   glow: "radial-gradient(55% 56% at 74% 48%, rgba(230,197,116,0.14) 0%, transparent 72%)",

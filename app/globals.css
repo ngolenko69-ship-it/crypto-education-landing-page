@@ -123,8 +123,8 @@
 
   /* ---- layout ---- */
   --header-h: 4rem;
-  --gutter: clamp(1.25rem, 4vw, 3.5rem);
-  --container: 1440px;
+  --gutter: clamp(1.25rem, 3vw, 3.5rem);
+  --container: 1520px;
   --text-col: 38rem;
 }
 
@@ -404,48 +404,54 @@
    text container).
    --------------------------------------------------------------------------- */
 @utility text-shield {
+  --_f: var(--shield-feather, 10rem);
+  --_p: var(--shield-pad-y, 3.5rem);
   position: absolute;
   pointer-events: none;
   z-index: 0;
-  inset: calc(-1 * var(--shield-pad-y, 3.5rem)) calc(-1 * var(--shield-feather, 18rem)) calc(-1 * var(--shield-pad-y, 3.5rem)) -100vw;
+  inset: calc(-1 * var(--_p)) calc(-1 * var(--_f)) calc(-1 * var(--_p)) -100vw;
   background: var(--surface-deep);
   opacity: var(--shield-strength, 0.86);
   -webkit-mask-image:
     linear-gradient(
       to right,
       black 0,
-      black calc(100% - var(--shield-feather, 18rem)),
-      rgba(0, 0, 0, 0.82) calc(100% - var(--shield-feather, 18rem) + 3rem),
-      rgba(0, 0, 0, 0.5) calc(100% - var(--shield-feather, 18rem) * 0.55),
-      rgba(0, 0, 0, 0.18) calc(100% - var(--shield-feather, 18rem) * 0.22),
+      black calc(100% - var(--_f)),
+      rgba(0, 0, 0, 0.6) calc(100% - var(--_f) * 0.93),
+      rgba(0, 0, 0, 0.38) calc(100% - var(--_f) * 0.82),
+      rgba(0, 0, 0, 0.2) calc(100% - var(--_f) * 0.68),
+      rgba(0, 0, 0, 0.1) calc(100% - var(--_f) * 0.5),
+      rgba(0, 0, 0, 0.04) calc(100% - var(--_f) * 0.29),
       transparent 100%
     ),
     linear-gradient(
       to bottom,
       transparent 0,
-      rgba(0, 0, 0, 0.7) calc(var(--shield-pad-y, 3.5rem) * 0.55),
-      black var(--shield-pad-y, 3.5rem),
-      black calc(100% - var(--shield-pad-y, 3.5rem)),
-      rgba(0, 0, 0, 0.7) calc(100% - var(--shield-pad-y, 3.5rem) * 0.55),
+      rgba(0, 0, 0, 0.7) calc(var(--_p) * 0.55),
+      black var(--_p),
+      black calc(100% - var(--_p)),
+      rgba(0, 0, 0, 0.7) calc(100% - var(--_p) * 0.55),
       transparent 100%
     );
   mask-image:
     linear-gradient(
       to right,
       black 0,
-      black calc(100% - var(--shield-feather, 18rem)),
-      rgba(0, 0, 0, 0.82) calc(100% - var(--shield-feather, 18rem) + 3rem),
-      rgba(0, 0, 0, 0.5) calc(100% - var(--shield-feather, 18rem) * 0.55),
-      rgba(0, 0, 0, 0.18) calc(100% - var(--shield-feather, 18rem) * 0.22),
+      black calc(100% - var(--_f)),
+      rgba(0, 0, 0, 0.6) calc(100% - var(--_f) * 0.93),
+      rgba(0, 0, 0, 0.38) calc(100% - var(--_f) * 0.82),
+      rgba(0, 0, 0, 0.2) calc(100% - var(--_f) * 0.68),
+      rgba(0, 0, 0, 0.1) calc(100% - var(--_f) * 0.5),
+      rgba(0, 0, 0, 0.04) calc(100% - var(--_f) * 0.29),
       transparent 100%
     ),
     linear-gradient(
       to bottom,
       transparent 0,
-      rgba(0, 0, 0, 0.7) calc(var(--shield-pad-y, 3.5rem) * 0.55),
-      black var(--shield-pad-y, 3.5rem),
-      black calc(100% - var(--shield-pad-y, 3.5rem)),
-      rgba(0, 0, 0, 0.7) calc(100% - var(--shield-pad-y, 3.5rem) * 0.55),
+      rgba(0, 0, 0, 0.7) calc(var(--_p) * 0.55),
+      black var(--_p),
+      black calc(100% - var(--_p)),
+      rgba(0, 0, 0, 0.7) calc(100% - var(--_p) * 0.55),
       transparent 100%
     );
   -webkit-mask-composite: source-in;
@@ -466,9 +472,9 @@
 }
 @supports (backdrop-filter: blur(1px)) {
   .surface-card {
-    background-color: color-mix(in srgb, var(--surface) 90%, transparent);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background-color: color-mix(in srgb, var(--surface) 95%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 .surface-card:hover {

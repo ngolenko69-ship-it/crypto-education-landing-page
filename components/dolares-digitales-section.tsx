@@ -25,7 +25,8 @@ const cards = [
 // sign at 60-72% / 10-30%, the coin at 77-90% / 25-65%
 const scene: SceneConfig = {
   image: "dolares-digitales-background",
-  focalWide: "100% 50%",
+  signLeft: 0.585,
+  focalWide: "80% 50%",
   focalFrame: "80% 45%",
   shield: 0.88,
   glow: "radial-gradient(52% 54% at 72% 48%, rgba(230,197,116,0.14) 0%, transparent 72%)",

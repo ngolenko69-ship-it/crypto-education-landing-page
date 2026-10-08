@@ -44,7 +44,7 @@ type GridProps = {
 }
 
 export function CardGrid({ items, inView, startDelay = 560, columns = 3, className = "", id }: GridProps) {
-  const cols = columns === 3 ? "sm:grid-cols-3 xl:grid-cols-1 2xl:grid-cols-3" : "sm:grid-cols-2"
+  const cols = columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
   return (
     <ul id={id} className={`grid grid-cols-1 gap-4 ${cols} ${className}`}>
       {items.map((item, i) => (

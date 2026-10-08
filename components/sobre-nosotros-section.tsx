@@ -37,6 +37,7 @@ const cards = [
 // the group so no face is cut on phones
 const scene: SceneConfig = {
   image: "sobre-nosotros-ruta-background",
+  signLeft: 0.522,
   focalWide: "100% 62%",
   focalFrame: "66% 55%",
   frameAspect: "16 / 9",
@@ -51,15 +52,15 @@ export function SobreNosotrosSection() {
     <section
       id="sobre-nosotros"
       aria-labelledby="nosotros-title"
-      className="relative w-full overflow-clip bg-surface-deep"
+      className="relative w-full overflow-clip bg-surface-deep xl:[--col-w:min(36rem,32vw)] 2xl:[--col-w:min(36rem,34vw)] xl:[--shield-feather:3rem] 2xl:[--shield-feather:5rem] min-[1792px]:[--shield-feather:8rem]"
     >
       {/* ---------- scene band: compact intro over the sky/trees, team untouched ---------- */}
       <div className="relative xl:flex xl:min-h-[clamp(560px,38vw,720px)] xl:flex-col xl:justify-start">
         <SceneBackdrop scene={scene} settle={introSettle()} />
 
         <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pt-16 sm:pt-20 xl:pt-20">
-          <div className="relative xl:max-w-[min(var(--text-col),34vw)] xl:[--shield-feather:8rem]">
-            <TextShield strength={scene.shield} feather="var(--shield-feather)" padY="3rem" />
+          <div className="relative xl:max-w-[var(--col-w)]">
+            <TextShield strength={scene.shield} padY="3rem" />
 
             <div ref={introRef} className="relative z-10 flex flex-col items-start text-left">
               <SectionBadge dotId="route-dot-sobre-nosotros" style={introReveal({ delay: 0, y: 12, duration: 500 })}>

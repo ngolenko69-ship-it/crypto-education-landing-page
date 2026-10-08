@@ -7,7 +7,13 @@
 export type SceneConfig = {
   /** base file name inside /public/images, without extension */
   image: string
-  /** object-position for the full-bleed layer (xl and up) */
+  /**
+   * Left edge of the scene's own step sign (the "Paso N" plaque), as a fraction of
+   * the scene width. The full-bleed layer slides so this edge always lands just past
+   * the end of the dark text layer, at every desktop width.
+   */
+  signLeft: number
+  /** object-position fallback for browsers without container-query units */
   focalWide: string
   /** object-position for the framed crop (below xl) */
   focalFrame: string
@@ -35,6 +41,9 @@ export function sceneSources(image: string) {
  */
 export const BLANK_PIXEL =
   "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+
+/** Master aspect ratio (3351 x 1437; the 1680 variants match it). */
+export const SCENE_ASPECT = 2.333
 
 /** The one photographic grade every scene shares (near neutral). */
 export const SCENE_FILTER = "saturate(1.04) brightness(1.06) contrast(1.01)"

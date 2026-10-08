@@ -41,8 +41,8 @@ export default function Home() {
               {/* one protected column: copy, CTAs, trust line and benefits
                   share a single left edge; the shield covers all of it on
                   desktop and ends well before the shield artwork */}
-              <div className="relative xl:max-w-[min(40rem,38vw)] xl:[--shield-feather:8rem]">
-                <TextShield strength={0.86} feather="var(--shield-feather)" padY="4rem" />
+              <div className="relative xl:max-w-[min(40rem,38vw)] xl:[--shield-feather:6rem] 2xl:[--shield-feather:9rem] min-[1792px]:[--shield-feather:12rem]">
+                <TextShield strength={0.86} padY="4rem" />
 
                 <div className="relative z-10">
                   <HeroContent />

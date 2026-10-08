@@ -1,7 +1,7 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { BLANK_PIXEL, SCENE_FILTER, sceneSources, type SceneConfig } from "./scene-config"
+import { BLANK_PIXEL, SCENE_ASPECT, SCENE_FILTER, sceneSources, type SceneConfig } from "./scene-config"
 
 type Props = {
   scene: SceneConfig
@@ -22,8 +22,23 @@ type Props = {
  */
 export function SceneBackdrop({ scene, settle, priority = false, noTopSeam = false }: Props) {
   const { src, srcSet } = sceneSources(scene.image)
+
+  // Rendered scene width when the photo is height-fit (the usual case on desktop):
+  // the layer is 2px shorter than its container (see top-px / calc(100% - 2px)).
+  const sceneWidth = `((100cqh - 2px) * ${SCENE_ASPECT})`
+  // Where the dark text layer ends: content left edge + copy column + 60% of the
+  // feathered tail (alpha is already below 0.1 there).
+  const shieldEnd = `max(0px, (100cqw - var(--container)) / 2) + var(--gutter) + var(--col-w, 36rem) + var(--shield-feather, 10rem) * 0.6`
+  // Horizontal offset that puts the sign's left edge exactly at shieldEnd; clamped so the
+  // photo never leaves a gap on either side (when it is width-fit the offset is 0).
+  const objectPosition = `max(min(0px, 100cqw - ${sceneWidth}), min(0px, ${shieldEnd} - ${sceneWidth} * ${scene.signLeft})) 50%`
+
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-clip xl:block" aria-hidden="true">
+    <div
+      className="pointer-events-none absolute inset-0 z-0 hidden overflow-clip xl:block"
+      style={{ containerType: "size" }}
+      aria-hidden="true"
+    >
       <div className="absolute inset-0 bg-surface-deep" />
 
       <picture>
@@ -37,8 +52,16 @@ export function SceneBackdrop({ scene, settle, priority = false, noTopSeam = fal
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
-          className="absolute inset-x-0 top-px w-full object-cover"
-          style={{ ...settle, height: "calc(100% - 2px)", objectPosition: scene.focalWide, filter: SCENE_FILTER }}
+          className="absolute inset-x-0 top-px w-full object-cover object-[var(--fx-fallback)]"
+          style={
+            {
+              ...settle,
+              height: "calc(100% - 2px)",
+              "--fx-fallback": scene.focalWide,
+              objectPosition,
+              filter: SCENE_FILTER,
+            } as React.CSSProperties
+          }
         />
       </picture>
 

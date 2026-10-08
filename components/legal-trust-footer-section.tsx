@@ -46,6 +46,7 @@ const legalLinks = [
 // facade at 65-100% / 15-85%, R-shield at 80-95% / 50-95%
 const scene: SceneConfig = {
   image: "legal-trust-footer-background",
+  signLeft: 0.68,
   focalWide: "100% 55%",
   focalFrame: "82% 55%",
   frameAspect: "16 / 9",
@@ -59,7 +60,7 @@ export function LegalTrustFooterSection() {
     <footer
       id="legal"
       aria-labelledby="legal-title"
-      className="relative w-full overflow-clip bg-surface-deep"
+      className="relative w-full overflow-clip bg-surface-deep xl:[--col-w:min(42rem,38vw)] xl:[--shield-feather:3rem] 2xl:[--shield-feather:5rem] min-[1792px]:[--shield-feather:8rem]"
     >
       {/* ---------- scene band: badge, headline, intro and the four trust cards ---------- */}
       <div className="relative">
@@ -73,8 +74,8 @@ export function LegalTrustFooterSection() {
         />
 
         <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-14 pt-16 sm:pt-20 xl:pb-16 xl:pt-20">
-          <div className="relative xl:max-w-[min(42rem,38vw)] xl:[--shield-feather:11rem] 2xl:[--shield-feather:14rem]">
-            <TextShield strength={scene.shield} feather="var(--shield-feather)" />
+          <div className="relative xl:max-w-[var(--col-w)]">
+            <TextShield strength={scene.shield} />
 
             <div ref={ref} className="relative z-10 flex flex-col items-start text-left">
               <SectionBadge dotId="route-dot-legal" style={reveal({ delay: 0, y: 12, duration: 500 })}>

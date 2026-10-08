@@ -52,17 +52,18 @@ export function StepSection({
     <section
       id={id}
       aria-labelledby={titleId}
-      className="relative w-full overflow-clip bg-surface-deep"
+      className="relative w-full overflow-clip bg-surface-deep xl:[--col-w:min(36rem,32vw)] 2xl:[--col-w:min(36rem,34vw)] xl:[--shield-feather:3rem] 2xl:[--shield-feather:5rem] min-[1792px]:[--shield-feather:8rem]"
     >
       <SceneBackdrop scene={scene} settle={settle()} />
 
-      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-16 sm:py-20 xl:py-20">
-        {/* protected zone: copy column + cards share one left edge */}
-        <div className="relative xl:max-w-[min(48rem,42vw)] xl:[--shield-feather:11rem] 2xl:[--shield-feather:14rem]">
-          <TextShield strength={scene.shield ?? 0.84} feather="var(--shield-feather)" />
+      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-16 sm:py-20 xl:py-14 2xl:py-16">
+        {/* protected zone = the copy column only; the cards row below is wider but carries
+            its own opaque surface, so the dark layer never has to reach the scene's signs */}
+        <div className="relative xl:max-w-[var(--col-w)]">
+          <TextShield strength={scene.shield ?? 0.84} />
 
           <div ref={ref} className="relative z-10 flex flex-col items-start text-left">
-            <div className="flex max-w-2xl flex-col items-start xl:max-w-[min(var(--text-col),36vw)]">
+            <div className="flex max-w-2xl flex-col items-start xl:max-w-none">
               <SectionBadge dotId={dotId} style={reveal({ delay: 0, y: 12, duration: 500 })}>
                 {badge}
               </SectionBadge>
@@ -102,7 +103,7 @@ export function StepSection({
 
             <SceneFrame scene={scene} className="mt-10 w-full" />
 
-            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-9 w-full xl:mt-10" />
+            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-9 w-full xl:mt-10 xl:w-[min(52rem,52vw)] xl:max-w-none" />
           </div>
         </div>
       </div>

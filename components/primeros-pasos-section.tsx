@@ -26,6 +26,7 @@ const learnCards = [
 // the full-bleed layer keeps the right edge; the frame centres on the door/shield
 const scene: SceneConfig = {
   image: "primeros-pasos-background",
+  signLeft: 0.65,
   focalWide: "100% 50%",
   focalFrame: "84% 45%",
   shield: 0.88,
