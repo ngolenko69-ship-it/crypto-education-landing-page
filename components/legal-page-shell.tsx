@@ -9,7 +9,7 @@ export function LegalPageShell({
   children: React.ReactNode
 }) {
   return (
-    <div className="bg-cinematic relative min-h-screen overflow-hidden">
+    <div className="bg-cinematic relative min-h-screen overflow-x-clip">
       <div
         className="bg-grid pointer-events-none absolute inset-0"
         aria-hidden="true"

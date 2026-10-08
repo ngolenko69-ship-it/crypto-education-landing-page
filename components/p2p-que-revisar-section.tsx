@@ -1,8 +1,8 @@
 "use client"
 
-import { ArrowRight, BadgeCheck, ClipboardList, ShieldAlert } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useReveal } from "@/hooks/use-scroll-reveal"
+import { BadgeCheck, ClipboardList, ShieldAlert } from "lucide-react"
+import { StepSection } from "@/components/scene/step-section"
+import type { SceneConfig } from "@/components/scene/scene-config"
 
 const cards = [
   {
@@ -22,204 +22,34 @@ const cards = [
   },
 ]
 
+// identity-check composition (ring, shield, id cards) at 66-92% / 20-70%
+const scene: SceneConfig = {
+  image: "p2p-que-revisar-background",
+  focalWide: "100% 50%",
+  focalFrame: "78% 45%",
+  shield: 0.88,
+  glow: "radial-gradient(52% 54% at 74% 48%, rgba(230,197,116,0.13) 0%, transparent 72%)",
+}
+
 export function P2pQueRevisarSection() {
-  const { ref, inView, reveal, settle } = useReveal()
-
   return (
-    <section
+    <StepSection
       id="p2p-seguro"
-      aria-labelledby="p2p-que-revisar-title"
-      className="relative w-full scroll-mt-20 overflow-hidden md:scroll-mt-24"
-    >
-      {/* ---------- cinematic background image layer ---------- */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        {/* deep dark-green base behind everything */}
-        <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
-
-        {/* the P2P security PNG as a full-bleed cover layer on the right */}
-        <img
-          src="/images/p2p-que-revisar-background.webp"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[86%_center] opacity-100 lg:object-[center_right]"
-          style={{
-            ...settle(),
-            filter: "saturate(1.04) brightness(1.06) contrast(1.01)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-          }}
-        />
-
-        {/* global dark overlay so the image never overpowers the text (lightened for +visibility) */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.08)" }}
-        />
-
-        {/* subtle dark-green tint to unify the gold with the site palette */}
-        <div
-          className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.08)" }}
-        />
-
-        {/* soft gold glow to lift the focal point on the right */}
-        <div
-          className="absolute inset-y-0 right-0 hidden lg:block"
-          style={{
-            width: "48%",
-            background:
-              "radial-gradient(58% 54% at 72% 50%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 72%)",
-          }}
-        />
-
-        {/* left dark protection gradient — near-opaque on mobile, lighter and
-            narrower on desktop now that the paragraph/trust-line text below
-            carries its own shadow for contrast */}
-        <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[36%]"
-          style={{
-            background:
-              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
-          }}
-        />
-
-        {/* top fade to connect with the transition above */}
-        <div
-          className="absolute inset-x-0 top-0"
-          style={{
-            height: "10%",
-            background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
-          }}
-        />
-
-        {/* bottom fade into the section base */}
-        <div
-          className="absolute inset-x-0 bottom-0"
-          style={{
-            height: "12%",
-            background:
-              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
-          }}
-        />
-
-        {/* right edge vignette */}
-        <div
-          className="absolute inset-y-0 right-0"
-          style={{
-            width: "16%",
-            background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
-          }}
-        />
-      </div>
-
-      {/* ---------- content ---------- */}
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-28">
-        <div
-          ref={ref}
-          className="flex max-w-xl flex-col items-start text-left lg:max-w-[38rem]"
-        >
-          {/* elegant checkpoint badge */}
-          <span
-            className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
-            style={reveal({ delay: 0, y: 12, duration: 500 })}
-          >
-            <span
-              id="route-dot-p2p"
-              className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
-            />
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.95_0.03_88)] [text-shadow:0_1px_6px_oklch(0_0_0/0.7)]">
-              Paso 3 · P2P: qué revisar
-            </span>
-          </span>
-
-          <h2
-            id="p2p-que-revisar-title"
-            className="mt-6 font-serif text-[2.3rem] font-medium leading-[1.06] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-5xl lg:text-[3.4rem]"
-            style={reveal({ delay: 120, y: 22, duration: 800 })}
-          >
-            Antes de enviar dinero,{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
-              aprende qué revisar.
-            </span>
-          </h2>
-
-          <p
-            className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-lg"
-            style={{
-              ...reveal({ delay: 260, y: 16, duration: 600 }),
-              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
-            }}
-          >
-            En P2P no basta con ver un buen precio. Aprende a revisar reputación,
-            condiciones, comprobantes y señales de riesgo antes de confiar.
-          </p>
-
-          {/* single primary CTA */}
-          <div className="mt-9 w-full sm:w-auto" style={reveal({ delay: 380, y: 14, duration: 500 })}>
-            <Button
-              size="lg"
-              nativeButton={false}
-              render={<a href="#primeros-pasos" />}
-              className="h-14 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)] sm:w-auto"
-            >
-              Obtener guía P2P gratis
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
-            </Button>
-          </div>
-
-          {/* small helper line under CTA */}
-          <p
-            className="mt-4 text-sm text-[oklch(0.86_0.02_88)]"
-            style={{
-              ...reveal({ delay: 460, y: 12, duration: 600 }),
-              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
-            }}
-          >
-            Aprende qué revisar antes de confiar en un vendedor.
-          </p>
-
-          {/* trust line */}
-          <p
-            className="mt-4 text-[13px] tracking-wide text-[oklch(0.8_0.02_88)]"
-            style={{
-              ...reveal({ delay: 540, y: 12, duration: 600 }),
-              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
-            }}
-          >
-            Contenido educativo. Sin señales. Sin promesas de ganancias.
-          </p>
-        </div>
-
-        {/* compact glass cards */}
-        <ul className="mt-10 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-4">
-          {cards.map(({ icon: Icon, title, description }, i) => (
-            <li
-              key={title}
-              className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
-              style={{
-                opacity: inView ? 1 : 0,
-                transform: inView ? "translateY(0)" : "translateY(20px)",
-                transitionDelay: `${620 + i * 110}ms`,
-              }}
-            >
-              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-                <Icon className="h-[17px] w-[17px]" strokeWidth={1.75} aria-hidden="true" />
-              </span>
-              <div>
-                <h3 className="text-[15px] font-semibold text-foreground">{title}</h3>
-                <p className="mt-1 text-[13px] leading-snug text-[oklch(0.84_0.02_88)]">
-                  {description}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+      titleId="p2p-que-revisar-title"
+      dotId="route-dot-p2p"
+      badge="Paso 3 · P2P: qué revisar"
+      title={
+        <>
+          Antes de enviar dinero,{" "}
+          <span className="text-gold-phrase">aprende qué revisar.</span>
+        </>
+      }
+      lead="En P2P no basta con ver un buen precio. Aprende a revisar reputación, condiciones, comprobantes y señales de riesgo antes de confiar."
+      cta={{ href: "#primeros-pasos", label: "Obtener guía P2P gratis" }}
+      helper="Aprende qué revisar antes de confiar en un vendedor."
+      trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
+      cards={cards}
+      scene={scene}
+    />
   )
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { ArrowRight, BellOff, LineChart, Lock, ShieldCheck } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Cta } from "@/components/ui/cta"
 import { useReveal } from "@/hooks/use-scroll-reveal"
 
 const trustItems = [
@@ -14,75 +14,43 @@ export function HeroContent() {
   const { ref, reveal } = useReveal()
 
   return (
-    <div ref={ref} className="max-w-xl">
-      <h1
-        className="font-serif text-[2.75rem] font-medium leading-[1.02] tracking-[-0.015em] text-balance sm:text-6xl lg:text-[4.25rem] lg:leading-[1]"
-        style={reveal({ delay: 180, y: 16, duration: 620 })}
-      >
-        <span className="block whitespace-nowrap text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)]">
-          Antes de mover
-        </span>
-        <span className="block text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)]">
-          tu dinero,
-        </span>
-        <span className="block bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text pb-2 leading-[1.05] text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
-          aprende a protegerlo.
-        </span>
+    <div ref={ref} className="flex max-w-2xl flex-col items-start xl:max-w-none">
+      <h1 className="type-h1 heading-shadow" style={reveal({ delay: 180, y: 16, duration: 620 })}>
+        Antes de mover tu dinero,{" "}
+        <span className="text-gold-phrase block pb-1">aprende a protegerlo.</span>
       </h1>
 
-      <p
-        className="mt-7 max-w-lg text-base leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-lg"
-        style={{
-          ...reveal({ delay: 280, y: 14, duration: 560 }),
-          textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
-        }}
-      >
+      <p className="type-lead mt-6 max-w-[34rem]" style={reveal({ delay: 280, y: 14, duration: 560 })}>
         Aprende stablecoins, P2P, wallets, plataformas cripto y anti-estafas
         antes de entrar en crypto. Evita errores costosos y reconoce fraudes
         antes de confiar en una plataforma, grupo o promesa.
       </p>
 
       <div
-        className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
+        className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center"
         style={reveal({ delay: 350, y: 14, duration: 560 })}
       >
-        <Button
-          size="lg"
-          nativeButton={false}
-          render={<a href="#primeros-pasos" />}
-          className="h-14 rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-9 text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_10px_38px_-6px_oklch(0.8_0.11_84/0.65)]"
-        >
+        <Cta href="#primeros-pasos" className="w-full sm:w-auto">
           Empezar la ruta
-          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          nativeButton={false}
-          render={<a href="#anti-estafas" />}
-          className="h-14 rounded-full border-primary/45 bg-[oklch(0.08_0.014_158)]/78 px-8 text-[15px] font-semibold text-foreground backdrop-blur-md transition-all duration-200 hover:border-primary/70 hover:bg-[oklch(0.09_0.016_158)]/88 hover:text-foreground"
-        >
-          <ShieldCheck className="h-[18px] w-[18px] text-primary" aria-hidden="true" />
+          <ArrowRight
+            className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </Cta>
+        <Cta href="#anti-estafas" variant="secondary" className="w-full sm:w-auto">
+          <ShieldCheck className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
           Aprender a protegerme de estafas
-        </Button>
+        </Cta>
       </div>
 
       <ul
-        className="mt-10 flex flex-col gap-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8"
+        className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-3"
         style={reveal({ delay: 450, y: 12, duration: 560 })}
       >
         {trustItems.map(({ icon: Icon, label }) => (
           <li key={label} className="flex items-center gap-2.5">
-            <Icon
-              className="h-[18px] w-[18px] text-primary drop-shadow-[0_1px_6px_oklch(0_0_0/0.6)]"
-              aria-hidden="true"
-            />
-            <span
-              className="text-[15px] font-medium text-foreground/92"
-              style={{ textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)" }}
-            >
-              {label}
-            </span>
+            <Icon className="h-[18px] w-[18px] shrink-0 text-gold" aria-hidden="true" />
+            <span className="type-small font-medium text-text-primary">{label}</span>
           </li>
         ))}
       </ul>

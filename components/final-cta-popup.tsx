@@ -86,7 +86,7 @@ export function FinalCtaPopup() {
       />
 
       {/* modal */}
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-primary/35 bg-[oklch(0.1_0.014_158)]/95 p-7 text-center shadow-[0_30px_80px_-20px_oklch(0_0_0/0.8),0_0_60px_-24px_oklch(0.8_0.11_84/0.7)] backdrop-blur-xl motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-300 sm:p-9">
+      <div className="relative w-full max-w-md overflow-hidden rounded-[18px] border border-gold/35 bg-surface p-7 text-center shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:duration-300 sm:p-9">
         {/* soft gold glow accent */}
         <div
           className="pointer-events-none absolute -top-16 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full"
@@ -102,7 +102,7 @@ export function FinalCtaPopup() {
           type="button"
           onClick={close}
           aria-label="Cerrar"
-          className="absolute right-3.5 top-3.5 flex h-8 w-8 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors hover:border-primary/50 hover:text-gold"
+          className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--line-gold)] text-text-secondary transition-colors hover:border-gold/50 hover:text-gold-text"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
@@ -119,7 +119,7 @@ export function FinalCtaPopup() {
           </h2>
           <p
             id="final-popup-desc"
-            className="mx-auto mt-4 max-w-sm text-pretty text-[15px] leading-relaxed text-muted-foreground"
+            className="mx-auto mt-4 max-w-sm text-pretty text-[15px] leading-relaxed text-text-secondary"
           >
             Te ayudamos a entender crypto paso a paso, resolver dudas y aprender
             con más seguridad dentro de nuestra comunidad educativa.
@@ -130,7 +130,7 @@ export function FinalCtaPopup() {
               href={TELEGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] text-[15px] font-semibold text-primary-foreground shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.55)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)]"
+              className="cta-base cta-primary w-full"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
               Unirme al Telegram
@@ -138,13 +138,13 @@ export function FinalCtaPopup() {
             <button
               type="button"
               onClick={handleSecondary}
-              className="flex h-12 w-full items-center justify-center rounded-full border border-primary/40 bg-card/40 text-[15px] font-semibold text-foreground backdrop-blur-sm transition-all duration-200 hover:border-primary/65 hover:bg-card/60"
+              className="cta-base cta-secondary w-full"
             >
               Ver la ruta desde el inicio
             </button>
           </div>
 
-          <p className="mt-5 text-[12px] tracking-wide text-[oklch(0.72_0.02_88)]">
+          <p className="type-legal mt-5 tracking-wide">
             Contenido educativo. Sin señales. Sin promesas de ganancias.
           </p>
         </div>

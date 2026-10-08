@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { ArrowRight, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
@@ -17,58 +16,70 @@ const navItems = [
 
 const sectionIds = navItems.map((item) => item.href.slice(1))
 
+/**
+ * Fixed header with one deterministic height (--header-h) at every size, so
+ * the page offset, anchor scroll padding and focus scroll padding all agree.
+ * Full navigation from xl (1280px); 1024-1279 uses the compact menu because
+ * eight Spanish labels plus the CTA do not fit without clipping.
+ */
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState("inicio")
 
-  // Scroll-spy: highlight the nav link for the section currently in view.
+  // Scroll-spy: the section crossing the upper-middle band of the viewport.
+  // The footer is not a menu item on purpose; "Sobre nosotros" stays active there.
   useEffect(() => {
     const sections = sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null)
-
     if (sections.length === 0) return
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // pick the most visible section currently intersecting
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-
-        if (visible[0]) {
-          setActive(visible[0].target.id)
-        }
+        if (visible[0]) setActive(visible[0].target.id)
       },
-      {
-        // account for the fixed navbar height; trigger around the upper third
-        rootMargin: "-45% 0px -50% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
     )
-
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
   }, [])
 
+  // The compact menu closes on Escape and never stays open across a resize to desktop.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    const mq = window.matchMedia("(min-width: 1280px)")
+    const onChange = () => {
+      if (mq.matches) setOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+    mq.addEventListener("change", onChange)
+    return () => {
+      window.removeEventListener("keydown", onKey)
+      mq.removeEventListener("change", onChange)
+    }
+  }, [open])
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-primary/15 bg-[oklch(0.08_0.012_158)]/80 backdrop-blur-xl supports-[backdrop-filter]:bg-[oklch(0.08_0.012_158)]/65">
+    <header className="fixed inset-x-0 top-0 z-50 h-[var(--header-h)] border-b border-gold/15 bg-surface-deep/85 backdrop-blur-xl">
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex max-w-[1500px] items-center justify-between gap-3 px-5 py-2.5 sm:px-8 lg:gap-4 lg:px-10 xl:gap-6"
+        className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between gap-4 px-[var(--gutter)]"
       >
-        <a
-          href="#inicio"
-          className="flex shrink-0 items-center py-0.5 transition-opacity hover:opacity-90"
-        >
+        <a href="#inicio" className="flex shrink-0 items-center py-1 transition-opacity hover:opacity-90">
           <img
             src="/images/ruta-logo.png"
             alt="RUTA Cripto Segura"
-            className="h-9 w-auto object-contain drop-shadow-[0_2px_12px_oklch(0.8_0.11_84/0.25)] lg:h-10"
+            className="h-9 w-auto object-contain drop-shadow-[0_2px_12px_rgba(230,197,116,0.25)]"
           />
         </a>
 
-        <ul className="hidden items-center gap-3.5 lg:flex xl:gap-5">
+        <ul className="hidden items-center gap-4 xl:flex 2xl:gap-5">
           {navItems.map((item) => {
             const isActive = active === item.href.slice(1)
             return (
@@ -76,15 +87,13 @@ export function SiteHeader() {
                 <a
                   href={item.href}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative whitespace-nowrap text-[13px] font-medium tracking-wide transition-colors duration-200 xl:text-sm ${
-                    isActive
-                      ? "text-gold"
-                      : "text-[oklch(0.9_0.02_88)] hover:text-gold"
+                  className={`relative inline-flex min-h-10 items-center whitespace-nowrap text-[13px] font-medium tracking-wide transition-colors duration-200 2xl:text-sm ${
+                    isActive ? "text-gold-text" : "text-text-primary hover:text-gold-text"
                   }`}
                 >
                   {item.label}
                   <span
-                    className={`absolute -bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold shadow-[0_0_8px_oklch(0.8_0.11_84/0.9)] transition-opacity duration-200 ${
+                    className={`absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold shadow-[0_0_8px_rgba(230,197,116,0.9)] transition-opacity duration-200 ${
                       isActive ? "opacity-100" : "opacity-0"
                     }`}
                     aria-hidden="true"
@@ -95,22 +104,22 @@ export function SiteHeader() {
           })}
         </ul>
 
-        <div className="hidden shrink-0 lg:block">
-          <Button
-            nativeButton={false}
-            render={<a href="#primeros-pasos" />}
-            className="rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] px-5 py-3.5 text-[13px] font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)] transition-all duration-200 hover:from-[oklch(0.88_0.11_86)] hover:to-[oklch(0.75_0.13_82)] hover:shadow-[0_8px_30px_-6px_oklch(0.8_0.11_84/0.6)] xl:text-sm"
-          >
+        <div className="hidden shrink-0 xl:block">
+          <a href="#primeros-pasos" className="cta-base cta-primary group/cta min-h-10 px-5 text-[13px] 2xl:text-sm">
             Empezar la ruta
-            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
-          </Button>
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </a>
         </div>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-foreground lg:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--line-gold)] text-text-primary xl:hidden"
           aria-expanded={open}
+          aria-controls="site-menu"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -118,7 +127,10 @@ export function SiteHeader() {
       </nav>
 
       {open && (
-        <div className="border-t border-primary/10 bg-[oklch(0.07_0.012_158)]/95 px-5 pb-6 pt-2 backdrop-blur-xl lg:hidden">
+        <div
+          id="site-menu"
+          className="max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-gold/10 bg-surface-deep/95 px-[var(--gutter)] pb-6 pt-2 backdrop-blur-xl xl:hidden"
+        >
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => {
               const isActive = active === item.href.slice(1)
@@ -130,8 +142,8 @@ export function SiteHeader() {
                     aria-current={isActive ? "true" : undefined}
                     className={`block rounded-lg px-3 py-3 text-base font-medium transition-colors ${
                       isActive
-                        ? "bg-accent text-gold"
-                        : "text-[oklch(0.9_0.03_88)] hover:bg-accent hover:text-gold"
+                        ? "bg-surface-raised text-gold-text"
+                        : "text-text-primary hover:bg-surface-raised hover:text-gold-text"
                     }`}
                   >
                     {item.label}
@@ -140,15 +152,17 @@ export function SiteHeader() {
               )
             })}
           </ul>
-          <Button
-            nativeButton={false}
-            render={<a href="#primeros-pasos" />}
+          <a
+            href="#primeros-pasos"
             onClick={() => setOpen(false)}
-            className="mt-4 w-full rounded-full bg-gradient-to-b from-[oklch(0.85_0.11_86)] to-[oklch(0.72_0.13_82)] py-5 font-semibold text-primary-foreground shadow-[0_6px_24px_-6px_oklch(0.8_0.11_84/0.5)]"
+            className="cta-base cta-primary group/cta mt-4 w-full"
           >
             Empezar la ruta
-            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover/button:translate-x-0.5" aria-hidden="true" />
-          </Button>
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </a>
         </div>
       )}
     </header>

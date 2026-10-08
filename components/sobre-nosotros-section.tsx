@@ -2,6 +2,12 @@
 
 import { Network, Users, BookOpen, ShieldCheck } from "lucide-react"
 import { useReveal } from "@/hooks/use-scroll-reveal"
+import { CardGrid } from "@/components/scene/section-card"
+import { SceneBackdrop } from "@/components/scene/scene-backdrop"
+import { SceneFrame } from "@/components/scene/scene-frame"
+import { SectionBadge } from "@/components/scene/section-badge"
+import { TextShield } from "@/components/scene/text-shield"
+import type { SceneConfig } from "@/components/scene/scene-config"
 
 const cards = [
   {
@@ -26,134 +32,65 @@ const cards = [
   },
 ]
 
+// team at 50-85% / 50-95%, partner signs at 65-90% / 10-30%: the wide layer
+// favours the lower part so faces and feet stay in; the frame is centred on
+// the group so no face is cut on phones
+const scene: SceneConfig = {
+  image: "sobre-nosotros-ruta-background",
+  focalWide: "100% 62%",
+  focalFrame: "66% 55%",
+  frameAspect: "16 / 9",
+  shield: 0.9,
+}
+
 export function SobreNosotrosSection() {
-  const { ref, inView, reveal, settle } = useReveal()
+  const { ref: introRef, reveal: introReveal, settle: introSettle } = useReveal()
+  const { ref: detailsRef, inView: detailsInView, reveal: detailsReveal } = useReveal()
 
   return (
     <section
       id="sobre-nosotros"
       aria-labelledby="nosotros-title"
-      className="relative flex w-full scroll-mt-20 items-center overflow-hidden md:scroll-mt-24 lg:min-h-[760px]"
+      className="relative w-full overflow-clip bg-surface-deep"
     >
-      {/* ---------- cinematic background image layer ---------- */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-        {/* deep dark-green base behind everything */}
-        <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
+      {/* ---------- scene band: compact intro over the sky/trees, team untouched ---------- */}
+      <div className="relative xl:flex xl:min-h-[clamp(560px,38vw,720px)] xl:flex-col xl:justify-start">
+        <SceneBackdrop scene={scene} settle={introSettle()} />
 
-        {/* the team / building / partner-logos PNG as a full-bleed cover layer */}
-        <img
-          src="/images/sobre-nosotros-ruta-background.webp"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-[72%_center] lg:object-[center_right]"
-          style={{
-            ...settle(),
-            filter: "saturate(1.04) brightness(1.06) contrast(1.01)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to right, transparent 0%, black 20%, black 100%), linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%)",
-            WebkitMaskComposite: "source-in",
-            maskComposite: "intersect",
-          }}
-        />
+        <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pt-16 sm:pt-20 xl:pt-20">
+          <div className="relative xl:max-w-[min(var(--text-col),34vw)] xl:[--shield-feather:8rem]">
+            <TextShield strength={scene.shield} feather="var(--shield-feather)" padY="3rem" />
 
-        {/* light global dark overlay so the image stays premium and cinematic */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "oklch(0.09 0.012 158 / 0.06)" }}
-        />
+            <div ref={introRef} className="relative z-10 flex flex-col items-start text-left">
+              <SectionBadge dotId="route-dot-sobre-nosotros" style={introReveal({ delay: 0, y: 12, duration: 500 })}>
+                Sobre nosotros
+              </SectionBadge>
 
-        {/* subtle dark-green tint to unify the gold with the site palette */}
-        <div
-          className="absolute inset-0 mix-blend-multiply"
-          style={{ background: "oklch(0.18 0.03 158 / 0.07)" }}
-        />
+              <h2
+                id="nosotros-title"
+                className="type-h2 heading-shadow mt-6"
+                style={introReveal({ delay: 120, y: 20, duration: 800 })}
+              >
+                Quién está detrás de{" "}
+                <span className="text-gold-phrase">Ruta Cripto Segura</span>
+              </h2>
 
-        {/* left dark protection gradient — near-opaque on mobile, lighter and
-            narrower on desktop now that the body text below carries its own
-            shadow for contrast */}
-        <div
-          className="absolute inset-y-0 left-0 w-full lg:w-[46%]"
-          style={{
-            background:
-              "linear-gradient(to right, oklch(0.08 0.012 158 / 0.88) 0%, oklch(0.08 0.012 158 / 0.45) 55%, transparent 100%)",
-          }}
-        />
+              <p className="type-lead mt-6 max-w-2xl" style={introReveal({ delay: 260, y: 16, duration: 600 })}>
+                Detrás de Ruta Cripto Segura hay un equipo enfocado en educación,
+                seguridad y acompañamiento para personas que quieren entender el
+                mundo cripto sin presión, sin señales y sin promesas.
+              </p>
+            </div>
+          </div>
 
-        {/* top fade to connect with the transition above and calm the logos zone slightly */}
-        <div
-          className="absolute inset-x-0 top-0"
-          style={{
-            height: "10%",
-            background:
-              "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
-          }}
-        />
-
-        {/* bottom fade into the section base */}
-        <div
-          className="absolute inset-x-0 bottom-0"
-          style={{
-            height: "12%",
-            background:
-              "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
-          }}
-        />
-
-        {/* right edge vignette */}
-        <div
-          className="absolute inset-y-0 right-0"
-          style={{
-            width: "14%",
-            background:
-              "linear-gradient(to left, oklch(0.07 0.01 158 / 0.45), transparent)",
-          }}
-        />
+          <SceneFrame scene={scene} className="mt-10" />
+        </div>
       </div>
 
-      {/* ---------- content ---------- */}
-      <div className="relative z-10 mx-auto w-full max-w-[1500px] px-5 py-20 sm:px-8 md:px-10 lg:px-14 lg:py-24">
-        <div
-          ref={ref}
-          className="flex max-w-xl flex-col items-start text-left lg:max-w-[40rem]"
-        >
-          {/* section badge */}
-          <span
-            className="inline-flex items-center gap-2 rounded-full border border-primary/35 bg-[oklch(0.07_0.014_158)]/70 px-3.5 py-1.5 backdrop-blur-sm"
-            style={reveal({ delay: 0, y: 12, duration: 500 })}
-          >
-            <span
-              id="route-dot-sobre-nosotros"
-              className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_10px_oklch(0.8_0.11_84/0.8)]"
-            />
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[oklch(0.95_0.03_88)] [text-shadow:0_1px_6px_oklch(0_0_0/0.7)]">
-              Sobre nosotros
-            </span>
-          </span>
-
-          <h2
-            id="nosotros-title"
-            className="mt-6 font-serif text-[2.2rem] font-medium leading-[1.07] tracking-[-0.02em] text-balance text-[oklch(0.97_0.015_88)] drop-shadow-[0_1px_18px_oklch(0_0_0/0.55)] sm:text-[2.7rem] lg:text-[3.1rem]"
-            style={reveal({ delay: 120, y: 22, duration: 800 })}
-          >
-            Quién está detrás de{" "}
-            <span className="bg-gradient-to-b from-[oklch(0.9_0.1_88)] to-[oklch(0.72_0.13_82)] bg-clip-text text-transparent drop-shadow-[0_2px_26px_oklch(0.8_0.11_84/0.32)]">
-              Ruta Cripto Segura
-            </span>
-          </h2>
-
-          <div
-            className="mt-6 max-w-xl space-y-4 text-pretty text-[15px] leading-relaxed text-[oklch(0.86_0.02_88)] sm:text-base"
-            style={{
-              ...reveal({ delay: 260, y: 16, duration: 600 }),
-              textShadow: "0 1px 14px oklch(0 0 0 / 0.55), 0 1px 3px oklch(0 0 0 / 0.5)",
-            }}
-          >
-            <p>
-              Detrás de Ruta Cripto Segura hay un equipo enfocado en educación,
-              seguridad y acompañamiento para personas que quieren entender el
-              mundo cripto sin presión, sin señales y sin promesas.
-            </p>
+      {/* ---------- calm band: details and cards in the flow, nothing over faces ---------- */}
+      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-16 pt-10 sm:pb-20 sm:pt-12 xl:pb-24 xl:pt-14">
+        <div ref={detailsRef} className="grid gap-10 lg:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:items-start lg:gap-14">
+          <div className="type-body max-w-2xl space-y-4" style={detailsReveal({ delay: 0, y: 14, duration: 600 })}>
             <p>
               Trabajamos con plataformas líderes del ecosistema cripto,
               incluyendo Binance, Bybit y MEXC, y desarrollamos un enfoque
@@ -165,44 +102,13 @@ export function SobreNosotrosSection() {
               mejores decisiones antes de confiar en una plataforma, una persona
               o una promesa.
             </p>
+            <p className="type-legal pt-1 tracking-wide">
+              La información institucional puede estar respaldada por
+              documentación, certificaciones o acuerdos correspondientes.
+            </p>
           </div>
 
-          {/* small credibility note */}
-          <p
-            className="mt-5 max-w-xl text-[13px] leading-snug tracking-wide text-[oklch(0.8_0.02_88)]"
-            style={{
-              ...reveal({ delay: 400, y: 12, duration: 600 }),
-              textShadow: "0 1px 10px oklch(0 0 0 / 0.6), 0 1px 2px oklch(0 0 0 / 0.5)",
-            }}
-          >
-            La información institucional puede estar respaldada por
-            documentación, certificaciones o acuerdos correspondientes.
-          </p>
-
-          {/* compact glass trust cards — 2x2 grid kept on the protected left zone */}
-          <ul className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-            {cards.map(({ icon: Icon, title, description }, i) => (
-              <li
-                key={title}
-                className="flex items-start gap-3.5 rounded-xl border border-[oklch(0.8_0.11_84)]/10 bg-[oklch(0.07_0.014_158)]/60 px-4 py-4 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.05),0_0_30px_-20px_oklch(0.8_0.11_84/0.5)] backdrop-blur-md transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[oklch(0.8_0.11_84)]/25 hover:bg-[oklch(0.08_0.015_158)]/72 hover:shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08),0_0_34px_-16px_oklch(0.8_0.11_84/0.6)]"
-                style={{
-                  opacity: inView ? 1 : 0,
-                  transform: inView ? "translateY(0)" : "translateY(20px)",
-                  transitionDelay: `${500 + i * 110}ms`,
-                }}
-              >
-                <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-primary/10 text-primary">
-                  <Icon className="h-[17px] w-[17px]" strokeWidth={1.75} aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="text-[15px] font-semibold text-foreground">{title}</h3>
-                  <p className="mt-1 text-[13px] leading-snug text-[oklch(0.84_0.02_88)]">
-                    {description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <CardGrid items={cards} inView={detailsInView} startDelay={160} columns={2} />
         </div>
       </div>
     </section>

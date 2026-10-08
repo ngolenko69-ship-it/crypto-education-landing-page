@@ -9,82 +9,77 @@ import { LegalTrustFooterSection } from "@/components/legal-trust-footer-section
 import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
+import { TextShield } from "@/components/scene/text-shield"
 import { SobreNosotrosSection } from "@/components/sobre-nosotros-section"
 import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
-import { TelegramFloatingBar } from "@/components/telegram-floating-bar"
+import { TelegramLauncher } from "@/components/telegram-floating-bar"
 import { FinalCtaPopup } from "@/components/final-cta-popup"
 
 export default function Home() {
   return (
-    <div className="bg-cinematic relative min-h-screen overflow-hidden">
+    <div className="bg-cinematic relative min-h-screen overflow-x-clip">
       {/* subtle map/grid texture */}
-      <div
-        className="bg-grid pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
+      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
 
       {/* atmospheric light points */}
-      <div
-        className="bg-particles pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
+      <div className="bg-particles pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative flex min-h-screen flex-col pt-14 lg:pt-16">
+      <div className="relative flex min-h-screen flex-col pt-[var(--header-h)]">
         <SiteHeader />
 
-        <main
-          id="inicio"
-          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-0"
-        >
-          <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-4rem)]">
-            {/* Desktop: cinematic roadmap image blended into the background */}
+        <main className="relative flex flex-1 flex-col">
+          {/* ---------- Hero ---------- */}
+          <section
+            id="inicio"
+            aria-label="Inicio"
+            className="relative w-full overflow-clip xl:flex xl:min-h-[calc(100vh-var(--header-h))] xl:items-center"
+          >
             <RoadmapBackdrop />
 
-            {/* Left text content, floating above the blended scene — pulled
-                closer to the true left edge now that the scene bleeds full
-                viewport width, so it doesn't read as stranded in empty
-                space */}
-            <div className="relative z-10 w-full max-w-xl lg:-ml-8 lg:max-w-[38rem]">
-              <HeroContent />
-            </div>
+            <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-8 sm:py-12 xl:py-16">
+              {/* one protected column: copy, CTAs, trust line and benefits
+                  share a single left edge; the shield covers all of it on
+                  desktop and ends well before the shield artwork */}
+              <div className="relative xl:max-w-[min(40rem,38vw)] xl:[--shield-feather:8rem]">
+                <TextShield strength={0.86} feather="var(--shield-feather)" padY="4rem" />
 
-            {/* Mobile / tablet: image stacked below the text as its own section */}
-            <div className="relative z-10 mt-10 lg:hidden">
-              <RoadmapMobile />
-            </div>
+                <div className="relative z-10">
+                  <HeroContent />
 
-            {/* trust bar — kept inside the hero's own cinematic frame so it
-                reads as part of the first slide, not a separate boxed
-                element sitting on the plain page background below it; width
-                capped so it clears the checkpoint stack on the right
-                instead of running underneath it */}
-            <div className="relative z-10 mt-10 w-full max-w-xl lg:ml-10 lg:mt-12 lg:max-w-[45rem]">
-              <BenefitsBar />
+                  {/* tablet / phone: the artwork in the reading flow */}
+                  <div className="mt-10 xl:hidden">
+                    <RoadmapMobile />
+                  </div>
+
+                  <div className="mt-10 w-full max-w-2xl xl:mt-12 xl:max-w-none">
+                    <BenefitsBar />
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
+
+          <PrimerosPasosSection />
+          <DolaresDigitalesSection />
+          <P2pQueRevisarSection />
+          <WalletsYClavesSection />
+          <AntiEstafasSection />
+          <ComunidadCriptoSeguraSection />
+          <SobreNosotrosSection />
         </main>
 
-        <PrimerosPasosSection />
-        <DolaresDigitalesSection />
-        <P2pQueRevisarSection />
-        <WalletsYClavesSection />
-        <AntiEstafasSection />
-        <ComunidadCriptoSeguraSection />
-        <SobreNosotrosSection />
         <LegalTrustFooterSection />
       </div>
 
       {/* a small gold comet mark that follows the cursor across the page */}
       <CometCursor />
 
-      {/* the golden route: one continuous comet motif linking every step,
-          measured against the sections' real anchors rather than drawn as
-          a fixed widget between them */}
+      {/* the golden route: one continuous comet motif linking every step */}
       <GoldenRoute />
 
-      {/* conversion overlays: floating community bar + final invitation popup */}
-      <TelegramFloatingBar />
+      {/* conversion overlays: compact community launcher + final invitation popup */}
+      <TelegramLauncher />
       <FinalCtaPopup />
     </div>
   )

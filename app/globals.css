@@ -10,6 +10,15 @@
   --font-sans: var(--font-geist-sans), 'Geist Fallback';
   --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
   --color-gold: var(--gold);
+  --color-surface-deep: var(--surface-deep);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-gold-text: var(--gold-text);
+  --color-gold-button: var(--gold-button);
+  --color-gold-button-text: var(--gold-button-text);
   --color-gold-soft: var(--gold-soft);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -87,6 +96,36 @@
   --sidebar-accent-foreground: oklch(0.9 0.05 85);
   --sidebar-border: oklch(0.78 0.1 82 / 18%);
   --sidebar-ring: oklch(0.78 0.1 82 / 55%);
+
+  /* ---- surface & text tokens (brief starter palette) ---- */
+  --surface-deep: #07130f;
+  --surface: #0d1b15;
+  --surface-raised: #12241c;
+  --text-primary: #f5f3eb;
+  --text-secondary: #d6dad4;
+  --text-tertiary: #b7bdb6;
+  --gold-text: #e6c574;
+  --gold-text-deep: #d9b45e;
+  --gold-button: #dfb44f;
+  --gold-button-text: #10160f;
+  --line-gold: rgba(230, 197, 116, 0.14);
+
+  /* ---- fluid type scale: phone 32-40 -> desktop 56-68 (H1), 42-54 (H2) ---- */
+  --fs-h1: clamp(2rem, 0.8rem + 2.85vw, 4rem);
+  --fs-h2: clamp(2rem, 1rem + 2.3vw, 3.25rem);
+  --fs-h3: clamp(1.4rem, 1.1rem + 0.9vw, 1.75rem);
+  --fs-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  --fs-small: 0.9375rem;
+  --fs-legal: 0.875rem;
+  --lh-heading: 1.1;
+  --lh-body: 1.6;
+
+  /* ---- layout ---- */
+  --header-h: 4rem;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --container: 1440px;
+  --text-col: 38rem;
 }
 
 .dark {
@@ -136,6 +175,22 @@
   html {
     @apply font-sans;
     scroll-behavior: smooth;
+    /* anchors and keyboard focus never land under the fixed header */
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /* one visible focus style everywhere; mouse clicks don't trigger it */
+  :where(a, button, [role='button'], summary, input, textarea, select):focus-visible {
+    outline: 2px solid var(--gold-text);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -275,4 +330,215 @@
 
 .bg-particles {
   animation: twinkle 5s ease-in-out infinite;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Typography: fluid scale driven by the tokens above. Headlines keep the serif,
+   UI stays grotesque; the gold phrase is a flat tone (one per headline).
+   --------------------------------------------------------------------------- */
+@utility type-h1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+@utility type-h2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+@utility type-lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+@utility type-body {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+@utility type-small {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+@utility type-legal {
+  font-size: var(--fs-legal);
+  line-height: 1.55;
+  color: var(--text-tertiary);
+}
+@utility type-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+@utility text-gold-phrase {
+  color: var(--gold-text);
+  background-image: linear-gradient(to bottom, #f0d78e 0%, var(--gold-text) 55%, var(--gold-text-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* moderate, auxiliary heading shadow — contrast comes from the shield layer */
+@utility heading-shadow {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------------------------------------------------------------------------
+   Text shield: the local protection layer behind a copy column. Dense
+   dark-emerald under the whole block, feathered on the right past the text's
+   edge and on top/bottom, so there is no rectangular edge or vertical seam.
+   Rendered as its own layer under the content (never as opacity/blur on the
+   text container).
+   --------------------------------------------------------------------------- */
+@utility text-shield {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  inset: calc(-1 * var(--shield-pad-y, 3.5rem)) calc(-1 * var(--shield-feather, 18rem)) calc(-1 * var(--shield-pad-y, 3.5rem)) -100vw;
+  background: var(--surface-deep);
+  opacity: var(--shield-strength, 0.86);
+  -webkit-mask-image:
+    linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - var(--shield-feather, 18rem)),
+      rgba(0, 0, 0, 0.82) calc(100% - var(--shield-feather, 18rem) + 3rem),
+      rgba(0, 0, 0, 0.5) calc(100% - var(--shield-feather, 18rem) * 0.55),
+      rgba(0, 0, 0, 0.18) calc(100% - var(--shield-feather, 18rem) * 0.22),
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      rgba(0, 0, 0, 0.7) calc(var(--shield-pad-y, 3.5rem) * 0.55),
+      black var(--shield-pad-y, 3.5rem),
+      black calc(100% - var(--shield-pad-y, 3.5rem)),
+      rgba(0, 0, 0, 0.7) calc(100% - var(--shield-pad-y, 3.5rem) * 0.55),
+      transparent 100%
+    );
+  mask-image:
+    linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - var(--shield-feather, 18rem)),
+      rgba(0, 0, 0, 0.82) calc(100% - var(--shield-feather, 18rem) + 3rem),
+      rgba(0, 0, 0, 0.5) calc(100% - var(--shield-feather, 18rem) * 0.55),
+      rgba(0, 0, 0, 0.18) calc(100% - var(--shield-feather, 18rem) * 0.22),
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      rgba(0, 0, 0, 0.7) calc(var(--shield-pad-y, 3.5rem) * 0.55),
+      black var(--shield-pad-y, 3.5rem),
+      black calc(100% - var(--shield-pad-y, 3.5rem)),
+      rgba(0, 0, 0, 0.7) calc(100% - var(--shield-pad-y, 3.5rem) * 0.55),
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ---------------------------------------------------------------------------
+   Cards: one opaque dark-emerald surface, same radius/padding/border everywhere;
+   blur is an enhancement with an opaque fallback. Info cards must not read as
+   buttons: hover only brightens the hairline, never lifts or glows.
+   --------------------------------------------------------------------------- */
+@utility surface-card {
+  background-color: var(--surface);
+  border: 1px solid var(--line-gold);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 200ms ease;
+}
+@supports (backdrop-filter: blur(1px)) {
+  .surface-card {
+    background-color: color-mix(in srgb, var(--surface) 90%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
+.surface-card:hover {
+  border-color: rgba(230, 197, 116, 0.28);
+}
+
+/* ---------------------------------------------------------------------------
+   CTAs: primary = gold with dark label (restrained glow); secondary = clear
+   dark surface with gold hairline. Fixed height, no geometry change on hover.
+   --------------------------------------------------------------------------- */
+@utility cta-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.25rem;
+  padding-inline: 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, color 200ms ease;
+}
+@utility cta-primary {
+  background-image: linear-gradient(to bottom, #ebc866 0%, var(--gold-button) 100%);
+  color: var(--gold-button-text);
+  border: 1px solid rgba(255, 240, 200, 0.18);
+  box-shadow: 0 6px 20px -8px rgba(223, 180, 79, 0.45);
+}
+.cta-primary:hover {
+  background-image: linear-gradient(to bottom, #f0d078 0%, #e4bb5c 100%);
+  box-shadow: 0 8px 24px -8px rgba(223, 180, 79, 0.55);
+}
+.cta-primary:active {
+  background-image: linear-gradient(to bottom, #e0bd5c 0%, #d3a946 100%);
+}
+.cta-primary:disabled,
+.cta-primary[aria-disabled='true'] {
+  opacity: 0.55;
+  box-shadow: none;
+  pointer-events: none;
+}
+@utility cta-secondary {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid rgba(230, 197, 116, 0.42);
+}
+.cta-secondary:hover {
+  background-color: var(--surface-raised);
+  border-color: rgba(230, 197, 116, 0.7);
+}
+.cta-secondary:active {
+  background-color: var(--surface-deep);
+}
+
+/* ---------------------------------------------------------------------------
+   Scene seams: short crossfades only (no stacked vignettes, no empty bands).
+   --------------------------------------------------------------------------- */
+@utility scene-seam-top {
+  background: linear-gradient(to bottom, var(--surface-deep) 0%, rgba(7, 19, 15, 0.55) 45%, transparent 100%);
+}
+@utility scene-seam-bottom {
+  background: linear-gradient(to top, var(--surface-deep) 0%, rgba(7, 19, 15, 0.55) 45%, transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-particles,
+  .route-dot {
+    animation: none !important;
+  }
 }

@@ -62,7 +62,7 @@ export function GoldenRoute() {
     if (!svg) return
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    const isMobile = () => window.matchMedia("(max-width: 1023px)").matches
+    const isMobile = () => window.matchMedia("(max-width: 1279px)").matches
     const clampPct = (n: number) => Math.min(100, Math.max(0, n))
     const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n))
 
@@ -362,7 +362,7 @@ export function GoldenRoute() {
         gr.cometGlow.setAttribute("cx", String(head.x))
         gr.cometGlow.setAttribute("cy", String(head.y))
         gr.cometGlow.setAttribute("r", String(sizes.glow * boost))
-        gr.cometGlow.style.opacity = String(cometOpacity * 0.85 * (0.35 + 0.65 * haloFade))
+        gr.cometGlow.style.opacity = String(cometOpacity * 0.85 * (0.2 + 0.8 * haloFade))
 
         gr.cometCore.setAttribute("cx", String(head.x))
         gr.cometCore.setAttribute("cy", String(head.y))

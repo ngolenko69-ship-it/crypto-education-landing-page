@@ -1,18 +1,20 @@
 "use client"
 
-import Image from "next/image"
 import { useEffect, useState } from "react"
 import { useReducedMotion } from "@/hooks/use-scroll-reveal"
+import { BLANK_PIXEL, SCENE_FILTER, sceneSources } from "@/components/scene/scene-config"
 
 const IMAGE_ALT =
   "Ruta cripto segura: escudo con Bitcoin y las seis etapas del aprendizaje — 1. Primeros pasos, 2. Dólares digitales, 3. P2P: qué revisar, 4. Wallets y claves, 5. Anti-estafas, 6. Criterio cripto"
 
+const HERO = sceneSources("hero-shield-skyline-background")
+
 /**
- * Desktop-only cinematic background layer — the hero's own environment, not
- * a picture placed inside it. The scene fills the section edge-to-edge
- * (object-cover, no frame, no card), with the same dark base + gradient
- * recipe every other section already uses so it reads as one continuous
- * canvas rather than an inserted photo.
+ * Desktop (xl+) hero environment. The artwork is sized to its own 21:9 ratio
+ * and pinned to the right edge, so the shield and all six checkpoints are
+ * always fully visible; a blurred ambient copy fills whatever the fitted
+ * artwork does not reach on ultra-wide screens. Decor only, no pointer events.
+ * The dense protection under the copy is the TextShield in the hero column.
  */
 export function RoadmapBackdrop() {
   const reduced = useReducedMotion()
@@ -24,23 +26,15 @@ export function RoadmapBackdrop() {
   }, [])
 
   return (
-    <div
-      className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-screen -translate-x-1/2 overflow-hidden lg:block"
-      aria-hidden="true"
-    >
-      {/* Layer 0 — base atmosphere: the exact tone every other section
-          starts from, so the hero's canvas matches theirs */}
-      <div className="absolute inset-0 bg-[oklch(0.09_0.012_158)]" />
+    <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-clip xl:block" aria-hidden="true">
+      {/* Layer 0 — base surface, the same tone every section starts from */}
+      <div className="absolute inset-0 bg-surface-deep" />
 
-      {/* Layer 0.5 — ambient fill: a soft, blurred continuation of the same
-          scene filling the whole section. On ultra-wide screens, where the
-          precisely-fitted artwork (Layer 1) doesn't reach the left edge,
-          this shows through as atmosphere instead of a flat void; on every
-          other screen it sits fully hidden behind Layer 1. */}
+      {/* Layer 0.5 — blurred ambient fill for ultra-wide gaps */}
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url(/images/hero-shield-skyline-background.webp)",
+          backgroundImage: `url(${HERO.src})`,
           backgroundSize: "cover",
           backgroundPosition: "right center",
           filter: "blur(70px) saturate(1.05) brightness(0.72)",
@@ -48,37 +42,40 @@ export function RoadmapBackdrop() {
         }}
       />
 
-      {/* Layer 1 — the scene itself, sized to its own true aspect ratio and
-          pinned to the right edge (ml-auto) rather than force-cropped to
-          the viewport's aspect ratio. This guarantees the shield and every
-          checkpoint stay fully visible on any screen — the trade-off is a
-          calm dark margin on the left on very wide screens, now softened
-          by Layer 0.5 above instead of reading as a hard black edge. Fades
-          in once on load, then breathes with an imperceptibly slow zoom. */}
+      {/* Layer 1 — the fitted scene (LCP image: eager, high priority) */}
       <div
         className="absolute inset-0"
         style={
           reduced
             ? undefined
-            : {
-                opacity: mounted ? 1 : 0,
-                transition: "opacity 1500ms cubic-bezier(0.22,1,0.36,1)",
-              }
+            : { opacity: mounted ? 1 : 0, transition: "opacity 1500ms cubic-bezier(0.22,1,0.36,1)" }
         }
       >
         <div
           className="absolute inset-y-0 right-0 h-full"
-          style={{ aspectRatio: "3351 / 1437" }}
+          style={{
+            aspectRatio: "3351 / 1437",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 9%, black 100%)",
+            maskImage: "linear-gradient(to right, transparent 0%, black 9%, black 100%)",
+          }}
         >
-          <img
-            src="/images/hero-shield-skyline-background.webp"
-            alt=""
-            className="h-full w-full object-cover"
-            style={{ filter: "saturate(1.04) brightness(1.06) contrast(1.01)" }}
-          />
+          <picture>
+            {/* below xl this layer is display:none — resolve it to a blank pixel so nothing downloads */}
+            <source media="(max-width: 1279px)" srcSet={BLANK_PIXEL} />
+            <img
+              src={HERO.src}
+              srcSet={HERO.srcSet}
+              sizes="233vh"
+              alt=""
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              className="h-full w-full object-cover"
+              style={{ filter: SCENE_FILTER }}
+            />
+          </picture>
 
-          {/* golden route anchor: where the artwork's own "1. Primeros pasos"
-              checkpoint sits, so the route SVG can depart from this exact spot */}
+          {/* golden route anchor: the artwork's own "1. Primeros pasos" checkpoint */}
           <span
             id="route-exit-hero"
             aria-hidden="true"
@@ -86,22 +83,15 @@ export function RoadmapBackdrop() {
             style={{ left: "82.6%", top: "76.6%" }}
           />
 
-          {/* Layer 3 — warm gold light on the shield, the route's own
-              destination point. Positioned inside the same precisely-fitted
-              image box as the anchor above, so it tracks the shield's real
-              position instead of drifting with viewport aspect ratio. A
-              static glow — the shield itself no longer animates in any way. */}
+          {/* warm light on the shield, the route's destination */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
               background:
-                "radial-gradient(40% 54% at 70% 41%, oklch(0.7 0.1 84 / 0.3) 0%, transparent 74%)",
+                "radial-gradient(40% 54% at 70% 41%, rgba(230,197,116,0.26) 0%, transparent 74%)",
             }}
           />
 
-          {/* a single mote of light climbing the checkpoint stack's
-              connector, very slowly — a quiet trajectory, not a loop that
-              draws the eye */}
           {!reduced && (
             <span
               aria-hidden="true"
@@ -112,8 +102,8 @@ export function RoadmapBackdrop() {
                 width: 6,
                 height: 6,
                 marginRight: -3,
-                background: "oklch(0.96 0.05 92)",
-                boxShadow: "0 0 8px oklch(0.9 0.09 88 / 0.9), 0 0 22px oklch(0.8 0.11 84 / 0.65)",
+                background: "#fff3cf",
+                boxShadow: "0 0 8px rgba(255,236,180,0.9), 0 0 22px rgba(230,197,116,0.65)",
                 animation: "heroRouteParticle 15s ease-in-out infinite",
               }}
             />
@@ -121,98 +111,61 @@ export function RoadmapBackdrop() {
         </div>
       </div>
 
-      {/* Layer 2 — premium dark gradient, but reaching transparent well
-          before the shield so only the text column sits in shadow; the
-          shield, skyline and checkpoint stack stay at full, vivid brightness
-          exactly like the source scene. Lightened from the original night
-          version so the new dawn scene's color isn't crushed. */}
+      {/* Layer 2 — light left wash (the shield itself stays bright) */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-y-0 left-0 w-[50%]"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.055 0.01 158 / 0.5) 0%, oklch(0.07 0.012 158 / 0.3) 20%, oklch(0.08 0.013 158 / 0.12) 34%, oklch(0.08 0.013 158 / 0.02) 46%, transparent 52%)",
+            "linear-gradient(to right, rgba(7,19,15,0.5) 0%, rgba(7,19,15,0.22) 55%, transparent 100%)",
         }}
       />
 
-      {/* Layer 4 — a light touch of vignette, just enough to meet the header
-          and hand off to the next section without a hard edge; kept subtle
-          so it never reads as a second layer of darkness on top of Layer 2 */}
-      <div
-        className="absolute inset-x-0 top-0"
-        style={{
-          height: "8%",
-          background:
-            "linear-gradient(to bottom, oklch(0.09 0.012 158 / 0.28) 0%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-x-0 bottom-0"
-        style={{
-          height: "10%",
-          background:
-            "linear-gradient(to top, oklch(0.09 0.012 158 / 0.55) 0%, oklch(0.09 0.012 158 / 0.15) 60%, transparent 100%)",
-        }}
-      />
+      {/* Layer 3 — short seam into the next scene */}
+      <div className="scene-seam-bottom absolute inset-x-0 bottom-0 h-[8%]" />
     </div>
   )
 }
 
 /**
- * Mobile / tablet block: the image shown as its own responsive section below
- * the text, softly faded top and bottom (no hard card frame).
+ * Tablet / phone: the same artwork as a framed picture in the reading flow,
+ * right after the copy. 4:3 on phones keeps the shield and the checkpoint
+ * stack in frame; wider on tablets. It is the LCP image there, so it loads
+ * eagerly with high priority.
  */
 export function RoadmapMobile() {
   return (
-    <div className="relative w-full lg:hidden" role="img" aria-label={IMAGE_ALT}>
-      <div
-        className="pointer-events-none absolute -inset-4 -z-10"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 55% 45%, oklch(0.66 0.1 84 / 0.16) 0%, transparent 72%)",
-          filter: "blur(10px)",
-        }}
-      />
-      <div className="relative overflow-hidden rounded-2xl">
-        <Image
-          src="/images/hero-shield-skyline-background.webp"
+    <div
+      className="relative w-full overflow-hidden rounded-[18px] border border-[var(--line-gold)] bg-surface xl:hidden"
+      role="img"
+      aria-label={IMAGE_ALT}
+    >
+      <picture>
+        {/* from xl this frame is display:none — resolve it to a blank pixel so nothing downloads */}
+        <source media="(min-width: 1280px)" srcSet={BLANK_PIXEL} />
+        <img
+          src={HERO.src}
+          srcSet={HERO.srcSet}
+          sizes="100vw"
           alt=""
-          width={3351}
-          height={1437}
-          priority
-          className="h-auto w-full object-cover"
-          style={{ filter: "saturate(1.04) brightness(1.06) contrast(1.01)" }}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="block aspect-[4/3] w-full object-cover sm:aspect-[16/9] md:aspect-[21/10]"
+          style={{ objectPosition: "72% 50%", filter: SCENE_FILTER }}
         />
-
-        {/* top fade so the scene dissolves into the section above it */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[20%]"
-          aria-hidden="true"
-          style={{
-            background:
-              "linear-gradient(to bottom, oklch(0.1 0.014 158 / 0.6) 0%, oklch(0.1 0.014 158 / 0.22) 45%, transparent 100%)",
-          }}
-        />
-
-        {/* bottom fade so the scene dissolves into whatever follows */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[22%]"
-          aria-hidden="true"
-          style={{
-            background:
-              "linear-gradient(to top, oklch(0.1 0.014 158 / 0.6) 0%, oklch(0.1 0.014 158 / 0.22) 45%, transparent 100%)",
-          }}
-        />
-
-        {/* golden route anchor: where the artwork's own "1. Primeros pasos"
-            checkpoint sits, so the route SVG can depart from this exact spot */}
-        <span
-          id="route-exit-hero-mobile"
-          aria-hidden="true"
-          className="absolute h-px w-px"
-          style={{ left: "82.6%", top: "76.6%" }}
-        />
-      </div>
+      </picture>
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[16%]"
+        style={{ background: "linear-gradient(to top, rgba(7,19,15,0.45), transparent)" }}
+        aria-hidden="true"
+      />
+      {/* golden route anchor (frame crop: 72% 50% keeps the checkpoint stack in view) */}
+      <span
+        id="route-exit-hero-mobile"
+        aria-hidden="true"
+        className="absolute h-px w-px"
+        style={{ right: "7.5%", top: "76.6%" }}
+      />
     </div>
   )
 }
