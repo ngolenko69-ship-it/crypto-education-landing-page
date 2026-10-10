@@ -1,6 +1,7 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
+import { CookieConsent } from '@/components/consent/cookie-consent'
+import { ConsentGatedAnalytics } from '@/components/consent/consent-gated-analytics'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -56,7 +57,9 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {/* optional technologies only after the visitor agrees (see lib/consent.ts) */}
+        <CookieConsent />
+        <ConsentGatedAnalytics />
       </body>
     </html>
   )

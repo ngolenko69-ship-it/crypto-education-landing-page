@@ -1,5 +1,7 @@
-// Official contact points of Ruta Cripto Segura — the single source for the Contacto page.
-// Kept apart from lib/telegram.ts on purpose: that placeholder feeds the CTAs of the home page.
+// Official contact points of Ruta Cripto Segura — the single source for the Contacto page,
+// the legal pages and every "join the community" button.
+
+export const SITE_URL = "https://crypto-education-landing-page.vercel.app/"
 
 export const CONTACT_EMAIL = "rutacriptosegura@gmail.com"
 export const CONTACT_EMAIL_HREF = `mailto:${CONTACT_EMAIL}`

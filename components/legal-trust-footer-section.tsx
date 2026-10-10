@@ -1,8 +1,10 @@
 "use client"
 
-import Link from "next/link"
 import { BookOpen, BellOff, Wallet, ShieldCheck } from "lucide-react"
 import { useReveal } from "@/hooks/use-scroll-reveal"
+import { CookieSettingsButton } from "@/components/consent/cookie-settings-button"
+import { FooterLinks } from "@/components/site/footer-links"
+import { FooterNotice } from "@/components/site/footer-notice"
 import { CardGrid } from "@/components/scene/section-card"
 import { SceneBackdrop } from "@/components/scene/scene-backdrop"
 import { SceneFrame } from "@/components/scene/scene-frame"
@@ -34,13 +36,6 @@ const trustCards = [
     description:
       "Verifica siempre la información y cumple con las normas aplicables en tu país.",
   },
-]
-
-const legalLinks = [
-  { label: "Aviso legal", href: "/aviso-legal" },
-  { label: "Política de privacidad", href: "/politica-de-privacidad" },
-  { label: "Términos y condiciones", href: "/terminos" },
-  { label: "Contacto", href: "/contacto" },
 ]
 
 // facade at 65-100% / 15-85%, R-shield at 80-95% / 50-95%
@@ -110,19 +105,8 @@ export function LegalTrustFooterSection() {
       <div className="relative z-10 border-t border-[var(--line-gold)] bg-surface-deep">
         <div className="mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-28 pt-10 sm:pb-24 sm:pt-12">
           <nav aria-label="Enlaces legales" className="flex flex-wrap items-center gap-x-7 gap-y-3">
-            {legalLinks.map(({ label, href }) => (
-              <Link
-                key={href}
-                href={href}
-                className="group relative inline-flex min-h-11 items-center text-[15px] font-medium tracking-wide text-text-primary transition-colors duration-200 hover:text-gold-text"
-              >
-                {label}
-                <span
-                  className="absolute bottom-2 left-0 h-px w-0 bg-gold-text transition-all duration-300 group-hover:w-full"
-                  aria-hidden="true"
-                />
-              </Link>
-            ))}
+            <FooterLinks />
+            <CookieSettingsButton variant="footer" />
           </nav>
 
           <div
@@ -143,6 +127,8 @@ export function LegalTrustFooterSection() {
           <p className="type-legal mt-3 tracking-wide">
             Las marcas mencionadas pertenecen a sus respectivos propietarios.
           </p>
+
+          <FooterNotice className="mt-3" />
         </div>
       </div>
     </footer>
