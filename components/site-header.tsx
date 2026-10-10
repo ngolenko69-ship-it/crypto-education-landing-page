@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { ArrowRight, Menu, X } from "lucide-react"
+import { TELEGRAM_CHANNEL_URL } from "@/lib/telegram"
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
@@ -105,12 +106,18 @@ export function SiteHeader() {
         </ul>
 
         <div className="hidden shrink-0 xl:block">
-          <a href="#primeros-pasos" className="cta-base cta-primary group/cta min-h-10 px-5 text-[13px] 2xl:text-sm">
-            Empezar la ruta
+          <a
+            href={TELEGRAM_CHANNEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-base cta-primary group/cta min-h-10 px-5 text-[13px] 2xl:text-sm"
+          >
+            Suscribirme gratis
             <ArrowRight
               className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
               aria-hidden="true"
             />
+            <span className="sr-only"> (se abre en una pestaña nueva)</span>
           </a>
         </div>
 
@@ -153,15 +160,18 @@ export function SiteHeader() {
             })}
           </ul>
           <a
-            href="#primeros-pasos"
+            href={TELEGRAM_CHANNEL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setOpen(false)}
             className="cta-base cta-primary group/cta mt-4 w-full"
           >
-            Empezar la ruta
+            Suscribirme gratis
             <ArrowRight
               className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
               aria-hidden="true"
             />
+            <span className="sr-only"> (se abre en una pestaña nueva)</span>
           </a>
         </div>
       )}

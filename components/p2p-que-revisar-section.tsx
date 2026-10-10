@@ -3,6 +3,7 @@
 import { BadgeCheck, ClipboardList, ShieldAlert } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
+import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
 
 const cards = [
   {
@@ -46,7 +47,7 @@ export function P2pQueRevisarSection() {
         </>
       }
       lead="En P2P no basta con ver un buen precio. Aprende a revisar reputación, condiciones, comprobantes y señales de riesgo antes de confiar."
-      cta={{ href: "#primeros-pasos", label: "Obtener guía P2P gratis" }}
+      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener guía P2P gratis", external: true }}
       helper="Aprende qué revisar antes de confiar en un vendedor."
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={cards}

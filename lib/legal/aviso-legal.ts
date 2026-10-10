@@ -1,5 +1,5 @@
 import type { LegalDoc } from "./types"
-import { EMAIL, OWNER, SITE, TG_ADMIN, TG_COMMUNITY } from "./markup"
+import { EMAIL, OWNER, SITE, TG_CHANNEL, TG_MANAGER } from "./markup"
 
 export const avisoLegal: LegalDoc = {
   title: "Aviso Legal",
@@ -22,8 +22,8 @@ export const avisoLegal: LegalDoc = {
             ["Nombre del proyecto", "Ruta Cripto Segura"],
             ["Actividad", "Educación e información sobre activos digitales y seguridad en el ecosistema cripto."],
             ["Correo electrónico", EMAIL],
-            ["Contacto oficial de Telegram", TG_ADMIN],
-            ["Comunidad educativa", TG_COMMUNITY],
+            ["Contacto oficial de Telegram", TG_MANAGER],
+            ["Canal oficial gratuito", TG_CHANNEL],
             ["Sitio web", SITE],
             ["Responsable legal del sitio", OWNER],
           ],
@@ -155,7 +155,7 @@ export const avisoLegal: LegalDoc = {
           text: "Para consultas generales, correcciones o cuestiones relacionadas con el sitio:",
         },
         { type: "p", text: EMAIL },
-        { type: "facts", rows: [["Telegram", TG_ADMIN]] },
+        { type: "facts", rows: [["Telegram", TG_MANAGER]] },
       ],
     },
   ],

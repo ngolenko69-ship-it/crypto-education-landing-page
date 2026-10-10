@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { Send, X } from "lucide-react"
-import { TELEGRAM_URL } from "@/lib/telegram"
+import { TELEGRAM_CHANNEL_URL } from "@/lib/telegram"
 
 const SEEN_KEY = "ruta_telegram_launcher_seen"
 
@@ -130,13 +130,14 @@ export function TelegramLauncher() {
           </div>
 
           <a
-            href={TELEGRAM_URL}
+            href={TELEGRAM_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="cta-base cta-primary mt-4 w-full"
           >
             <Send className="h-4 w-4" aria-hidden="true" />
             Ir al Telegram
+            <span className="sr-only"> (se abre en una pestaña nueva)</span>
           </a>
         </div>
       )}

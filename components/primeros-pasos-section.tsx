@@ -3,6 +3,7 @@
 import { AlertTriangle, BookOpen, ShieldAlert } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
+import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
 
 const learnCards = [
   {
@@ -47,7 +48,7 @@ export function PrimerosPasosSection() {
         </>
       }
       lead="Crypto ya forma parte de pagos, transferencias, dólares digitales y wallets. No necesitas saberlo todo desde el primer día: solo una ruta clara para empezar con seguridad y evitar errores comunes."
-      cta={{ href: "#que-aprenderas", label: "Obtener curso gratis" }}
+      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener curso gratis", external: true }}
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={learnCards}
       cardsId="que-aprenderas"

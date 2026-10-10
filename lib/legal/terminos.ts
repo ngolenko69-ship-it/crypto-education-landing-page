@@ -1,5 +1,5 @@
 import type { LegalDoc } from "./types"
-import { COOKIES_LINK, EMAIL, PRIVACY_LINK, TG_ADMIN } from "./markup"
+import { COOKIES_LINK, EMAIL, PRIVACY_LINK, TG_MANAGER } from "./markup"
 
 export const terminos: LegalDoc = {
   title: "Términos y Condiciones",
@@ -221,7 +221,7 @@ export const terminos: LegalDoc = {
           type: "facts",
           rows: [
             ["Email", EMAIL],
-            ["Telegram", TG_ADMIN],
+            ["Telegram", TG_MANAGER],
           ],
         },
       ],

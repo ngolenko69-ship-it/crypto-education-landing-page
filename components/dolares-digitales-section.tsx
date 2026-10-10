@@ -3,6 +3,7 @@
 import { ArrowLeftRight, CircleDollarSign, ShieldAlert } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
+import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
 
 const cards = [
   {
@@ -46,7 +47,7 @@ export function DolaresDigitalesSection() {
         </>
       }
       lead="USDT y USDC aparecen cada vez más en pagos, ahorros digitales y transferencias. Antes de usarlos, lo importante es entender qué son, cómo funcionan y qué revisar para no cometer errores."
-      cta={{ href: "#primeros-pasos", label: "Obtener curso gratis" }}
+      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener curso gratis", external: true }}
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={cards}
       scene={scene}

@@ -1,12 +1,12 @@
-import { ArrowUpRight, Compass, Mail, ShieldAlert, UserCheck, Users, type LucideIcon } from "lucide-react"
+import { ArrowUpRight, Compass, Mail, Send, ShieldAlert, UserCheck, type LucideIcon } from "lucide-react"
 import { PageFrame } from "@/components/site/page-frame"
+import { CONTACT_EMAIL, CONTACT_EMAIL_HREF } from "@/lib/contact"
 import {
-  CONTACT_EMAIL,
-  CONTACT_EMAIL_HREF,
-  TELEGRAM_ADMIN_HANDLE,
-  TELEGRAM_ADMIN_URL,
-  TELEGRAM_COMMUNITY_URL,
-} from "@/lib/contact"
+  TELEGRAM_CHANNEL_NAME,
+  TELEGRAM_CHANNEL_URL,
+  TELEGRAM_MANAGER_HANDLE,
+  TELEGRAM_MANAGER_URL,
+} from "@/lib/telegram"
 
 /** One line inside a contact card, in the order it is shown. */
 type CardLine = { kind: "value" | "url" | "text"; text: string }
@@ -22,6 +22,28 @@ type ContactItem = {
 
 const contactItems: ContactItem[] = [
   {
+    icon: Send,
+    title: "Canal oficial gratuito",
+    href: TELEGRAM_CHANNEL_URL,
+    external: true,
+    lines: [
+      { kind: "value", text: TELEGRAM_CHANNEL_NAME },
+      { kind: "url", text: TELEGRAM_CHANNEL_URL },
+      { kind: "text", text: "Noticias, educación cripto y recursos gratuitos para aprender con mayor seguridad." },
+    ],
+  },
+  {
+    icon: UserCheck,
+    title: "Atención y consultas",
+    href: TELEGRAM_MANAGER_URL,
+    external: true,
+    lines: [
+      { kind: "value", text: TELEGRAM_MANAGER_HANDLE },
+      { kind: "url", text: TELEGRAM_MANAGER_URL },
+      { kind: "text", text: "Consultas de usuarios, ayuda con los materiales y propuestas de colaboración." },
+    ],
+  },
+  {
     icon: Mail,
     title: "Correo electrónico",
     href: CONTACT_EMAIL_HREF,
@@ -29,30 +51,6 @@ const contactItems: ContactItem[] = [
     lines: [
       { kind: "value", text: CONTACT_EMAIL },
       { kind: "text", text: "Para consultas generales, privacidad y propuestas de colaboración." },
-    ],
-  },
-  {
-    icon: UserCheck,
-    title: "Administrador en Telegram",
-    href: TELEGRAM_ADMIN_URL,
-    external: true,
-    lines: [
-      { kind: "value", text: TELEGRAM_ADMIN_HANDLE },
-      { kind: "url", text: TELEGRAM_ADMIN_URL },
-      { kind: "text", text: "Para comunicaciones relacionadas con el proyecto." },
-    ],
-  },
-  {
-    icon: Users,
-    title: "Comunidad educativa gratuita",
-    href: TELEGRAM_COMMUNITY_URL,
-    external: true,
-    lines: [
-      {
-        kind: "text",
-        text: "Únete a nuestra comunidad para aprender sobre criptomonedas, seguridad digital y prevención de fraudes.",
-      },
-      { kind: "url", text: TELEGRAM_COMMUNITY_URL },
     ],
   },
 ]

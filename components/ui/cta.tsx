@@ -21,6 +21,7 @@ export function Cta({ href, variant = "primary", external = false, className, ch
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={cls} onClick={onClick}>
         {children}
+        <span className="sr-only"> (se abre en una pestaña nueva)</span>
       </a>
     )
   }

@@ -1,5 +1,5 @@
 import type { LegalDoc } from "./types"
-import { EMAIL, PRIVACY_LINK, TG_ADMIN } from "./markup"
+import { EMAIL, PRIVACY_LINK, TG_MANAGER } from "./markup"
 
 export const politicaDeCookies: LegalDoc = {
   title: "Política de Cookies",
@@ -185,7 +185,7 @@ export const politicaDeCookies: LegalDoc = {
           type: "facts",
           rows: [
             ["Email", EMAIL],
-            ["Telegram", TG_ADMIN],
+            ["Telegram", TG_MANAGER],
           ],
         },
       ],
