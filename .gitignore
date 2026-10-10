@@ -16,8 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files (real values never go to Git; the template with empty values does)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -25,3 +26,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# the free guide is uploaded to Telegram once and never committed or published (see docs/TELEGRAM_BOT.md)
+*.pdf

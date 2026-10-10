@@ -1,24 +1,18 @@
 import type { Metadata } from "next"
+import { LegalDocumentView } from "@/components/legal/legal-document"
 import { LegalPageShell } from "@/components/legal-page-shell"
+import { politicaDePrivacidad } from "@/lib/legal/politica-de-privacidad"
 
 export const metadata: Metadata = {
-  title: "Política de privacidad | Ruta Cripto Segura",
+  title: "Política de Privacidad | Ruta Cripto Segura",
   description:
-    "Política de privacidad de Ruta Cripto Segura y tratamiento de la información de los usuarios.",
+    "Política de privacidad de Ruta Cripto Segura: datos que pueden tratarse, finalidades, servicios externos, Telegram, conservación y derechos de los usuarios.",
 }
 
 export default function PoliticaDePrivacidadPage() {
   return (
-    <LegalPageShell title="Política de privacidad">
-      <p>
-        Esta página está en preparación. Aquí explicaremos cómo se trata la
-        información de los usuarios, qué datos se recogen y con qué finalidad,
-        siempre con transparencia.
-      </p>
-      <p>
-        Nuestro compromiso es mantener una comunicación clara y respetar la
-        privacidad de quienes forman parte de la comunidad educativa.
-      </p>
+    <LegalPageShell title={politicaDePrivacidad.title} current="/politica-de-privacidad">
+      <LegalDocumentView sections={politicaDePrivacidad.sections} />
     </LegalPageShell>
   )
 }

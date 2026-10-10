@@ -31,3 +31,7 @@ To learn more, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+
+## Telegram bot
+
+The free-guide bot (@RutaCriptoSeguraBot) runs inside this project as a webhook (`app/api/telegram/*`, code in `lib/bot`). Setup, deployment, secure PDF upload and the test plan: [docs/TELEGRAM_BOT.md](docs/TELEGRAM_BOT.md) (Russian). Environment variable names: `.env.example`. Tests: `pnpm run test:bot` and `pnpm build && pnpm run test:bot:e2e`.
