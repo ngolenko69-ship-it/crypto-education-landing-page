@@ -204,7 +204,11 @@ export function GoldenRoute() {
     }
 
     const recompute = () => {
-      const h = document.documentElement.scrollHeight
+      // The page's own height. The overlay is a child of that element, so the document's
+      // scrollHeight would include the overlay's previous height: after a resize or a phone
+      // rotation the page could never get shorter again and kept a blank scroll area below
+      // the footer.
+      const h = svg.parentElement?.offsetHeight || document.documentElement.scrollHeight
       const w = document.documentElement.clientWidth
       setDocSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }))
 

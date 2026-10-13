@@ -30,8 +30,10 @@ export type StepSectionProps = {
  * One learning step. Desktop (xl+): the scene fills the section, the copy
  * column sits on the left over its own TextShield, the cards row stays inside
  * the protected zone so it never floats over the bright path or the object.
- * Tablet/phone: calm surface, copy, a framed crop of the scene, then cards —
- * same reading order, main object always in frame, no letters on the photo.
+ * Tablet/phone: calm surface, copy, a framed crop of the scene, then the cards as one
+ * compact container (see CardGrid) — same reading order, main object always in frame, no
+ * letters on the photo. Below xl the vertical spacing is tighter (section padding, photo to
+ * cards); the xl values are the original ones.
  */
 export function StepSection({
   id,
@@ -58,7 +60,7 @@ export function StepSection({
     >
       <SceneBackdrop scene={scene} settle={settle()} />
 
-      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-16 sm:py-20 xl:py-14 2xl:py-16">
+      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-12 sm:py-16 xl:py-14 2xl:py-16">
         {/* protected zone = the copy column only; the cards row below is wider but carries
             its own opaque surface, so the dark layer never has to reach the scene's signs */}
         <div className="relative xl:max-w-[var(--col-w)]">
@@ -108,7 +110,7 @@ export function StepSection({
 
             <SceneFrame scene={scene} className="mt-10 w-full" />
 
-            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-9 w-full xl:mt-10 xl:w-[min(52rem,52vw)] xl:max-w-none" />
+            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-6 w-full xl:mt-10 xl:w-[min(52rem,52vw)] xl:max-w-none" />
           </div>
         </div>
       </div>
