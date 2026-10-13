@@ -8,6 +8,10 @@ const IMAGE_ALT =
   "Ruta cripto segura: escudo con Bitcoin y las seis etapas del aprendizaje — 1. Primeros pasos, 2. Dólares digitales, 3. P2P: qué revisar, 4. Wallets y claves, 5. Anti-estafas, 6. Criterio cripto"
 
 const HERO = sceneSources("hero-shield-skyline-background")
+// The framed phone/tablet picture also offers a 2500px rendition: 3x phones draw the artwork
+// about 2200-2500 device pixels wide, and without it they had to download the 3351px master
+// (1.2 MB). The desktop backdrop keeps the two original files.
+const HERO_FRAMED = sceneSources("hero-shield-skyline-background", [2500])
 
 /**
  * Desktop (xl+) hero environment. The artwork is sized to its own 21:9 ratio
@@ -147,8 +151,8 @@ export function RoadmapMobile() {
         {/* from xl this frame is display:none — resolve it to a blank pixel so nothing downloads */}
         <source media="(min-width: 1280px)" srcSet={BLANK_PIXEL} />
         <img
-          src={HERO.src}
-          srcSet={HERO.srcSet}
+          src={HERO_FRAMED.src}
+          srcSet={HERO_FRAMED.srcSet}
           sizes="(max-width: 639px) calc((100vw - 2.5rem) * 2.333), (max-width: 767px) calc((100vw - 2.9rem) * 1.312), calc(94vw * 1.111)"
           alt=""
           loading="eager"

@@ -19,12 +19,8 @@ import { FinalCtaPopup } from "@/components/final-cta-popup"
 export default function Home() {
   return (
     <div className="bg-cinematic relative min-h-screen overflow-x-clip">
-      {/* subtle map/grid texture */}
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
-
-      {/* atmospheric light points */}
-      <div className="bg-particles pointer-events-none absolute inset-0" aria-hidden="true" />
-
+      {/* no grid/particle layers here: every section of this page is opaque, so they never showed
+          (the pages built on PageFrame keep their grid) */}
       <div className="relative flex min-h-screen flex-col pt-[var(--header-h)]">
         <SiteHeader />
 

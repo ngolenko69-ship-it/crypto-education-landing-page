@@ -41,6 +41,11 @@ export function HeroContent() {
         </Cta>
       </div>
 
+      {/* what the gold button does, in one quiet line: Telegram opens, the bot asks to join the channel, the PDF follows */}
+      <p className="type-legal mt-3 max-w-[34rem] text-pretty" style={reveal({ delay: 400, y: 12, duration: 560 })}>
+        Se abre Telegram. Únete al canal gratuito y recibe tu curso en PDF a través del bot.
+      </p>
+
       <ul
         className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-3"
         style={reveal({ delay: 450, y: 12, duration: 560 })}

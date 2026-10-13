@@ -79,9 +79,12 @@ export function SiteHeader() {
         className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between gap-4 px-[var(--gutter)]"
       >
         <a href="#inicio" className="flex shrink-0 items-center py-1 transition-opacity hover:opacity-90">
+          {/* the 444px WebP is the same artwork at 4x the drawn size (the 2172px PNG stays as the source) */}
           <img
-            src="/images/ruta-logo.png"
+            src="/images/ruta-logo.webp"
             alt="RUTA Cripto Segura"
+            width={108}
+            height={36}
             className="h-9 w-auto object-contain drop-shadow-[0_2px_12px_rgba(230,197,116,0.25)]"
           />
         </a>
