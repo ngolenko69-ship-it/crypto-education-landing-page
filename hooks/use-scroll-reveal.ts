@@ -23,15 +23,15 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
   options?: IntersectionObserverInit,
 ) {
   const ref = useRef<T>(null)
+  // Starts false on both server and client so hydration never diverges;
+  // `typeof IntersectionObserver` differs between the two environments, so
+  // it must never feed the initial render, only the effect below.
   const [inView, setInView] = useState(false)
 
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true)
-      return
-    }
+    if (typeof IntersectionObserver === "undefined") return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
