@@ -8,7 +8,8 @@
 // Plain strings only, no "@/" imports: the tests load this file outside Next.js, where the alias
 // does not exist.
 
-/** Official free channel: its subscribers get the guide. */
+/** Official free channel: its subscribers get the free introductory course (a PDF). */
+export const TELEGRAM_CHANNEL_HANDLE = "@rutacriptosegura"
 export const TELEGRAM_CHANNEL_URL = "https://t.me/rutacriptosegura"
 
 /** Official manager: questions, help with the materials, collaboration. */

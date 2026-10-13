@@ -1,7 +1,11 @@
-import { SITE_URL, TELEGRAM_CHANNEL_URL, TELEGRAM_MANAGER_HANDLE, TELEGRAM_MANAGER_URL } from "./links"
+import { SITE_URL, TELEGRAM_CHANNEL_HANDLE, TELEGRAM_CHANNEL_URL, TELEGRAM_MANAGER_HANDLE, TELEGRAM_MANAGER_URL } from "./links"
 import type { InlineButton, InlineKeyboard } from "./types"
 
 // Everything the bot says, in Spanish. Every address comes from ./links, so one is changed in one place only.
+//
+// The free product is the "Curso introductorio gratuito de criptomonedas": a PDF course that a person gets for
+// subscribing to the channel for free. The messages call it "curso". Only the wording changed: the commands keep
+// their names (/guia, /subir_guia) and the code, storage keys and administrator messages still say "guide".
 
 export const BOT_HANDLE = "@RutaCriptoSeguraBot"
 export const CALLBACK_VERIFY = "verify"
@@ -24,24 +28,26 @@ export const keyboards = {
 
 export const texts = {
   welcome:
-    "🛡️ ¡Bienvenido a Ruta Cripto Segura!\n\n" +
-    "Aprende sobre criptomonedas, stablecoins, P2P y seguridad digital con mayor confianza.\n\n" +
-    "🎁 Tenemos una guía práctica gratuita para ti.\n" +
-    "Para recibirla, suscríbete a nuestro canal educativo y verifica tu suscripción.\n\n" +
-    "¡Aprende antes de arriesgar!",
+    "🎁 ¡Obtén tu curso introductorio gratuito de criptomonedas!\n" +
+    "Aprende los fundamentos de Bitcoin, stablecoins, P2P, wallets y seguridad digital con nuestro curso en PDF.\n" +
+    "Para recibirlo, solo tienes que:\n\n" +
+    "1. Suscribirte gratis a nuestro canal educativo.\n" +
+    "2. Pulsar «Verificar suscripción».\n" +
+    "3. Recibir tu curso directamente aquí.\n\n" +
+    "🛡️ ¡Aprende antes de arriesgar!",
 
   notSubscribed:
-    "❌ Todavía no encontramos tu suscripción.\n" +
-    "Únete a nuestro canal gratuito y vuelve a pulsar «Verificar suscripción».",
+    `❌ Todavía no encontramos tu suscripción a ${TELEGRAM_CHANNEL_HANDLE}.\n` +
+    "Suscríbete gratis a nuestro canal educativo y vuelve a pulsar «Verificar suscripción» para recibir tu curso introductorio gratuito de criptomonedas.",
 
   confirmed:
     "✅ ¡Suscripción confirmada!\n" +
-    "🎉 ¡Gracias por unirte a Ruta Cripto Segura!\n" +
-    "Aquí tienes tu guía educativa gratuita.",
+    `🎉 ¡Gracias por suscribirte a ${TELEGRAM_CHANNEL_HANDLE}!\n` +
+    "Aquí tienes tu curso introductorio gratuito de criptomonedas en PDF.",
 
   ready:
-    "📚 ¡Tu guía está lista!\n" +
-    "En ella aprenderás sobre stablecoins, P2P, wallets, seguridad digital y prevención de estafas.\n\n" +
+    "📚 ¡Tu curso introductorio gratuito de criptomonedas está listo!\n" +
+    "En él aprenderás sobre Bitcoin, stablecoins, P2P, wallets, seguridad digital y prevención de estafas.\n\n" +
     "Síguenos en nuestro canal para recibir más contenido educativo.\n" +
     "💚 Ruta Cripto Segura — Aprende antes de arriesgar.",
 
@@ -50,18 +56,18 @@ export const texts = {
     "⚠️ No pudimos verificar tu suscripción en este momento.\n" +
     "Inténtalo de nuevo en unos minutos.",
 
-  /** The guide was not sent (Telegram refused the file or the connection failed). */
+  /** The course was not sent (Telegram refused the file or the connection failed). */
   deliveryFailed:
-    "⚠️ No pudimos enviarte la guía en este momento.\n" +
+    "⚠️ No pudimos enviarte tu curso en este momento.\n" +
     "Inténtalo de nuevo en unos minutos o escríbenos.",
 
   guideUnavailable:
-    "⚠️ La guía todavía no está disponible.\n" +
+    "⚠️ El curso todavía no está disponible.\n" +
     "Inténtalo de nuevo en unos minutos o escríbenos.",
 
   alreadySent:
-    "📚 Ya te enviamos la guía hace un momento.\n" +
-    "Si no la ves, revisa este chat o escríbenos.",
+    "📚 Ya te enviamos tu curso hace un momento.\n" +
+    "Si no lo ves, revisa este chat o escríbenos.",
 
   dailyLimit:
     "Has alcanzado el límite de envíos de hoy.\n" +
@@ -77,23 +83,23 @@ export const texts = {
 
   unknown:
     "No entendí tu mensaje.\n" +
-    "Usa /guia para recibir la guía gratuita o /ayuda para ver las opciones.",
+    "Usa /guia para recibir tu curso introductorio gratuito o /ayuda para ver las opciones.",
 
   noFilesPlease:
     "Por seguridad, no necesitamos que nos envíes archivos ni datos personales.\n" +
-    "Usa /guia para recibir la guía gratuita o /ayuda para ver las opciones.",
+    "Usa /guia para recibir tu curso introductorio gratuito o /ayuda para ver las opciones.",
 
   help:
     "🛡️ Ayuda de Ruta Cripto Segura\n\n" +
     "Comandos:\n" +
     "/start — iniciar el bot\n" +
-    "/guia — obtener la guía gratuita (verificamos tu suscripción al canal)\n" +
+    "/guia — obtener tu curso introductorio gratuito de criptomonedas (verificamos tu suscripción al canal)\n" +
     "/canal — abrir nuestro canal oficial gratuito\n" +
     "/ayuda — mostrar esta ayuda\n\n" +
     `📢 Canal oficial gratuito: ${TELEGRAM_CHANNEL_URL}\n` +
     `💬 Atención y consultas: ${TELEGRAM_MANAGER_HANDLE} (${TELEGRAM_MANAGER_URL})\n` +
     `🌐 Sitio web: ${SITE_URL}\n\n` +
-    "🔒 Nunca te pediremos frases semilla, claves privadas, contraseñas, documentos ni dinero para entregarte la guía. " +
+    "🔒 Nunca te pediremos frases semilla, claves privadas, contraseñas, documentos ni dinero para entregarte el curso. " +
     "Si alguien lo hace en nombre de Ruta Cripto Segura, no respondas y escríbenos por los canales oficiales.\n\n" +
     "Contenido educativo e informativo. No constituye asesoramiento financiero personalizado.",
 }

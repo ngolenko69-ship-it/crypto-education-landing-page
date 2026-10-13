@@ -32,7 +32,7 @@
 | `lib/bot/process-update.ts` | Защита от повторной обработки одного и того же события Telegram |
 | `lib/bot/telegram-api.ts` | Клиент Bot API: таймауты, повтор при 429, ошибки без токена |
 | `lib/bot/store.ts` | Хранилище: Upstash REST и память (для тестов) |
-| `lib/bot/messages.ts` | Все испанские тексты и кнопки |
+| `lib/bot/messages.ts` | Все испанские тексты и кнопки. Бесплатный продукт в текстах называется «Curso introductorio gratuito de criptomonedas»; команды `/guia` и `/subir_guia` не переименовывались |
 | `lib/bot/links.ts` | Адреса канала, менеджера и сайта, которые бот показывает в сообщениях. Свой файл бота: он не читает файлы сайта и не может изменить кнопки сайта |
 | `lib/bot/{subscription,guide,stats,security,log,limits,diagnostics,runtime,types}.ts` | Проверка подписки, файл гайда, счётчики, секреты и псевдонимы, логи, лимиты, диагностика, типы |
 | `lib/bot/setup.ts`, `setup-auth.ts`, `setup-types.ts` | Страница настройки: проверка и подключение Telegram, ключ и ограничение попыток, общие типы (раздел 7) |
@@ -150,7 +150,7 @@ GitHub → **Pull requests** → откройте PR со страницей н�
 
 ### Шаг 6. Проверьте /start
 
-В Telegram откройте @RutaCriptoSeguraBot и нажмите Start. Ожидается приветствие на испанском и две кнопки: «Suscribirme al canal» и «Verificar suscripción». С аккаунта без подписки кнопка проверки отвечает «Todavía no encontramos tu suscripción». Пока PDF не загружен, подписанный пользователь увидит, что гайд пока недоступен: загрузка описана в разделе 8.
+В Telegram откройте @RutaCriptoSeguraBot и нажмите Start. Ожидается приветствие на испанском (начинается с «🎁 ¡Obtén tu curso introductorio gratuito de criptomonedas!») и две кнопки: «Suscribirme al canal» и «Verificar suscripción». С аккаунта без подписки кнопка проверки отвечает «Todavía no encontramos tu suscripción». Пока PDF не загружен, подписанный пользователь увидит, что гайд пока недоступен: загрузка описана в разделе 8.
 
 ### Шаг 7. Выключите страницу
 
@@ -206,8 +206,8 @@ export const TELEGRAM_BOT_URL = "https://t.me/RutaCriptoSeguraBot"
 |---|---|---|
 | 1 | Тестовый аккаунт: `/start` | Приветствие и две кнопки: «📢 Suscribirme al canal», «✅ Verificar suscripción» |
 | 2 | «Verificar suscripción» **без** подписки | Всплывающее «❌ Todavía no encontramos tu suscripción», сообщение с текстом из ТЗ и теми же кнопками. PDF не пришёл |
-| 3 | Нажать «Suscribirme al canal», подписаться, вернуться, «Verificar suscripción» | «✅ ¡Suscripción confirmada!…», затем PDF, затем «📚 ¡Tu guía está lista!…» с кнопкой «💬 Contactar con el equipo» |
-| 4 | Сразу нажать «Verificar» ещё раз | PDF не дублируется («Ya te enviamos la guía hace un momento») |
+| 3 | Нажать «Suscribirme al canal», подписаться, вернуться, «Verificar suscripción» | «✅ ¡Suscripción confirmada!…», затем PDF, затем «📚 ¡Tu curso introductorio gratuito de criptomonedas está listo!…» с кнопкой «💬 Contactar con el equipo» |
+| 4 | Сразу нажать «Verificar» ещё раз | PDF не дублируется («Ya te enviamos tu curso hace un momento») |
 | 5 | Отписаться от канала, подождать минуту, `/guia` | Бот снова просит подписаться, PDF не отправляет |
 | 6 | `/guia` при подписке | PDF приходит |
 | 7 | `/ayuda`, `/canal` | Испанский текст, верные ссылки на канал и менеджера; у `/canal` кнопка открывает канал |
@@ -273,6 +273,6 @@ export const TELEGRAM_BOT_URL = "https://t.me/RutaCriptoSeguraBot"
 | В отчёте «Канал» ✕ | Добавьте бота администратором канала @rutacriptosegura (права на публикацию не нужны, но он должен видеть участников) |
 | Бот молчит | На странице `/telegram-setup` посмотрите пункт Webhook (последняя ошибка доставки); Vercel Logs; убедитесь, что webhook подключён |
 | Бот отвечает «не можем проверить подписку» | Логи: `subscription_check_failed`; чаще всего бот не админ канала или неверный `TELEGRAM_CHANNEL_CHAT_ID` |
-| Бот отвечает «la guía todavía no está disponible» | PDF не загружен — раздел 8. Админам придёт алерт |
+| Бот отвечает «El curso todavía no está disponible» | PDF не загружен — раздел 8. Админам придёт алерт |
 | Telegram «wrong file identifier» | Файл удалён/заменён; загрузите PDF заново (`/subir_guia`) |
 | Все сообщения «Un momento…» | Слишком частые нажатия: подождите 2 секунды |
