@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test:bot": "node --import ./scripts/dev/register-ts.mjs --test lib/bot/__tests__/*.test.ts",
-    "test:bot:e2e": "node scripts/telegram/e2e/run.mjs"
+    "test:bot:e2e": "node scripts/telegram/e2e/run.mjs && node scripts/telegram/e2e/setup.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

@@ -1,4 +1,4 @@
-import type { InlineKeyboard, TgChatMember, WebhookInfo } from "./types"
+import type { BotCommand, InlineKeyboard, TgChatMember, WebhookInfo } from "./types"
 
 // A small Telegram Bot API client on plain fetch: timeouts, one careful retry, and errors that
 // never carry the request URL (the URL contains the bot token).
@@ -61,6 +61,14 @@ export function classifyTelegramError(code: number, description: string): Telegr
   return "other"
 }
 
+export type WebhookSettings = {
+  url: string
+  /** Telegram sends this value back in X-Telegram-Bot-Api-Secret-Token with every update. */
+  secretToken: string
+  allowedUpdates: readonly string[]
+  maxConnections: number
+}
+
 export interface TelegramApi {
   getMe(): Promise<{ id: number; username: string | null }>
   getChatMember(chatId: string | number, userId: number): Promise<TgChatMember>
@@ -69,6 +77,9 @@ export interface TelegramApi {
   sendDocument(chatId: number, fileId: string): Promise<void>
   answerCallbackQuery(callbackQueryId: string, text?: string): Promise<void>
   getWebhookInfo(): Promise<WebhookInfo>
+  /** One-time setup only (lib/bot/setup.ts). The bot never changes its own webhook while it runs. */
+  setWebhook(settings: WebhookSettings): Promise<void>
+  setMyCommands(commands: readonly BotCommand[]): Promise<void>
 }
 
 type TelegramEnvelope = {
@@ -165,5 +176,22 @@ export function createTelegramApi(options: {
       await call("answerCallbackQuery", { callback_query_id: callbackQueryId, ...(text ? { text } : {}) })
     },
     getWebhookInfo: () => call<WebhookInfo>("getWebhookInfo", {}, { retryTransient: true }),
+    // Both setup calls give the same result when repeated, so a second try after a network failure is safe.
+    async setWebhook(settings) {
+      await call(
+        "setWebhook",
+        {
+          url: settings.url,
+          secret_token: settings.secretToken,
+          allowed_updates: settings.allowedUpdates,
+          max_connections: settings.maxConnections,
+          drop_pending_updates: false,
+        },
+        { retryTransient: true },
+      )
+    },
+    async setMyCommands(commands) {
+      await call("setMyCommands", { commands }, { retryTransient: true })
+    },
   }
 }

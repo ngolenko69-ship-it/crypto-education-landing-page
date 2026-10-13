@@ -6,6 +6,7 @@ export function startFakeTelegram({ token, port }) {
     calls: [],
     members: {}, // user_id -> { status, is_member }
     botId: 999,
+    username: "RutaCriptoSeguraBot",
     botStatus: "administrator",
     failures: {}, // method -> [ { status, body } ]  (consumed one per call)
     webhook: { url: "", pending_update_count: 0, allowed_updates: [] },
@@ -18,7 +19,7 @@ export function startFakeTelegram({ token, port }) {
     for await (const chunk of req) raw += chunk
     const url = new URL(req.url, "http://x")
     if (url.pathname === "/__state") return json(res, 200, state)
-    if (url.pathname === "/__reset") { state.calls.length = 0; state.members = {}; state.failures = {}; state.botStatus = "administrator"; state.slowMs = 0; return json(res, 200, { ok: true }) }
+    if (url.pathname === "/__reset") { state.calls.length = 0; state.members = {}; state.failures = {}; state.botStatus = "administrator"; state.username = "RutaCriptoSeguraBot"; state.slowMs = 0; return json(res, 200, { ok: true }) }
     if (url.pathname === "/__set") { Object.assign(state, JSON.parse(raw || "{}")); return json(res, 200, { ok: true }) }
 
     const match = /^\/bot([^/]+)\/(\w+)$/.exec(url.pathname)
@@ -33,7 +34,7 @@ export function startFakeTelegram({ token, port }) {
     if (queued) return json(res, queued.status, queued.body)
 
     switch (method) {
-      case "getMe": return json(res, 200, { ok: true, result: { id: state.botId, is_bot: true, first_name: "Ruta", username: "RutaCriptoSeguraBot" } })
+      case "getMe": return json(res, 200, { ok: true, result: { id: state.botId, is_bot: true, first_name: "Ruta", username: state.username } })
       case "getChatMember": {
         if (params.chat_id !== "@rutacriptosegura") return json(res, 400, { ok: false, error_code: 400, description: "Bad Request: chat not found" })
         if (params.user_id === state.botId) return json(res, 200, { ok: true, result: { status: state.botStatus } })

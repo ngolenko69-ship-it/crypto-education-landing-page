@@ -3,11 +3,12 @@ import http from "node:http"
 
 export function startFakeUpstash({ token, port }) {
   const kv = new Map()
-  const stats = { commands: 0, bad_auth: 0, down: false }
+  const stats = { commands: 0, bad_auth: 0, down: false, readOnly: false }
   const alive = (key) => { const e = kv.get(key); if (!e) return undefined; if (e.exp !== null && e.exp <= Date.now()) { kv.delete(key); return undefined } return e }
   function run(cmd) {
     stats.commands++
     const [name, ...a] = cmd; const op = String(name).toUpperCase()
+    if (stats.readOnly && ["SET", "DEL", "INCR"].includes(op)) throw new Error(`NOPERM this user has no permissions to run the '${op.toLowerCase()}' command`)
     switch (op) {
       case "PING": return "PONG"
       case "GET": return alive(a[0])?.value ?? null

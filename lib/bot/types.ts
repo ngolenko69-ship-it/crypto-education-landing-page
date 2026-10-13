@@ -54,7 +54,11 @@ export type InlineKeyboard = { inline_keyboard: InlineButton[][] }
 export type WebhookInfo = {
   url: string
   pending_update_count: number
+  has_custom_certificate?: boolean
   last_error_date?: number
   last_error_message?: string
+  max_connections?: number
   allowed_updates?: string[]
 }
+
+export type BotCommand = { command: string; description: string }
