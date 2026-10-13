@@ -29,7 +29,7 @@ export function PageFrame({
         <header className="flex items-center justify-between gap-4 py-5 sm:py-6">
           <Link href="/" className="flex shrink-0 items-center transition-opacity hover:opacity-90">
             <img
-              src="/images/ruta-logo.png"
+              src="/images/ruta-logo.webp"
               alt="RUTA Cripto Segura"
               width={108}
               height={36}

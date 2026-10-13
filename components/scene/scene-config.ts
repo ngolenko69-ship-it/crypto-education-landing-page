@@ -27,10 +27,15 @@ export type SceneConfig = {
 
 export const SCENE_IMAGE_WIDTHS = { small: 1680, master: 3351 } as const
 
-export function sceneSources(image: string) {
+/**
+ * `extraWidths`: further renditions of the same master (`/images/<image>-<width>.webp`) that
+ * only some placements need, e.g. the hero's 2500px file for phones with 3x screens.
+ */
+export function sceneSources(image: string, extraWidths: number[] = []) {
+  const widths = [SCENE_IMAGE_WIDTHS.small, ...extraWidths].sort((a, b) => a - b)
   return {
     src: `/images/${image}.webp`,
-    srcSet: `/images/${image}-1680.webp 1680w, /images/${image}.webp 3351w`,
+    srcSet: [...widths.map((w) => `/images/${image}-${w}.webp ${w}w`), `/images/${image}.webp ${SCENE_IMAGE_WIDTHS.master}w`].join(", "),
   }
 }
 

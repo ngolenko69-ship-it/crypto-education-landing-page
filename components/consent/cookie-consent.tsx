@@ -6,7 +6,7 @@ import { OPEN_SETTINGS_EVENT, getConsentSnapshot, saveConsent } from "@/lib/cons
 import { useConsent } from "./use-consent"
 
 // Accept and reject share exactly the same look and size: rejecting is as easy as accepting.
-const choiceButton = "cta-base cta-secondary min-h-11 cursor-pointer px-4 text-sm"
+const choiceButton = "cta-base cta-secondary min-h-11 cursor-pointer px-2 text-sm sm:px-4"
 
 /**
  * Consent banner + preferences dialog for the optional technologies (today: Vercel Web
@@ -52,18 +52,33 @@ export function CookieConsent() {
           role="region"
           aria-labelledby="cc-titulo"
           aria-describedby="cc-texto"
-          className="fixed inset-x-3 z-[70] rounded-[18px] border border-[var(--line-gold)] bg-surface p-5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.75)] sm:inset-x-auto sm:left-6 sm:w-[min(34rem,calc(100vw-3rem))] sm:p-6"
+          className="fixed inset-x-3 z-[70] rounded-[18px] border border-[var(--line-gold)] bg-surface p-4 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.75)] sm:inset-x-auto sm:left-6 sm:w-[min(34rem,calc(100vw-3rem))] sm:p-6"
           style={{ bottom: "calc(0.75rem + env(safe-area-inset-bottom, 0px))" }}
         >
-          <h2 id="cc-titulo" className="font-serif text-[1.15rem] font-medium leading-snug text-text-primary">
+          {/* Phones (below 640px) get the compact version: smaller title, the same facts in fewer
+              words with the policy link inline, and the three choices in one row from 360px (two rows
+              on narrower screens). From 640px everything is as before. */}
+          <h2 id="cc-titulo" className="font-serif text-base font-medium leading-snug text-text-primary sm:text-[1.15rem]">
             Tu privacidad es importante
           </h2>
-          <p id="cc-texto" className="mt-2 text-sm leading-relaxed text-text-secondary">
-            Utilizamos tecnologías necesarias para el funcionamiento del sitio. Con tu consentimiento,
-            también podremos utilizar herramientas opcionales de análisis cuando estén habilitadas.
-            Puedes aceptar, rechazar o configurar tus preferencias.
+          <p id="cc-texto" className="mt-1.5 text-[13px] leading-snug text-text-secondary sm:mt-2 sm:text-sm sm:leading-relaxed">
+            <span className="sm:hidden">
+              Usamos tecnologías necesarias para que el sitio funcione. Las de análisis son opcionales y
+              solo se activan con tu consentimiento.{" "}
+              <Link
+                href="/politica-de-cookies"
+                className="font-medium text-gold-text underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
+              >
+                Política de Cookies
+              </Link>
+            </span>
+            <span className="hidden sm:inline">
+              Utilizamos tecnologías necesarias para el funcionamiento del sitio. Con tu consentimiento,
+              también podremos utilizar herramientas opcionales de análisis cuando estén habilitadas.
+              Puedes aceptar, rechazar o configurar tus preferencias.
+            </span>
           </p>
-          <p className="mt-2 text-sm">
+          <p className="mt-2 hidden text-sm sm:block">
             <Link
               href="/politica-de-cookies"
               className="font-medium text-gold-text underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
@@ -71,7 +86,7 @@ export function CookieConsent() {
               Política de Cookies
             </Link>
           </p>
-          <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="mt-3 grid grid-cols-2 gap-2 min-[360px]:grid-cols-3 sm:mt-4 sm:grid-cols-2">
             <button type="button" onClick={() => saveConsent(true)} className={choiceButton}>
               Aceptar
             </button>
@@ -81,7 +96,7 @@ export function CookieConsent() {
             <button
               type="button"
               onClick={openSettings}
-              className="col-span-2 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-4 text-sm font-medium text-text-primary underline decoration-gold/50 underline-offset-4 transition-colors hover:text-gold-text"
+              className="col-span-2 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-2 text-sm font-medium text-text-primary underline decoration-gold/50 underline-offset-4 transition-colors hover:text-gold-text min-[360px]:col-span-1 sm:col-span-2 sm:px-4"
             >
               Configurar
             </button>
