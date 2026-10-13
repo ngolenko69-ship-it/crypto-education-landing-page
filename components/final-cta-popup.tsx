@@ -7,6 +7,7 @@ import { TELEGRAM_CHANNEL_URL, TELEGRAM_COURSE_URL } from "@/lib/telegram"
 
 const SEEN_KEY = "ruta_final_popup_seen"
 const SCROLL_KEYS = new Set([" ", "PageUp", "PageDown", "Home", "End", "ArrowUp", "ArrowDown"])
+const LINE = 40 // px an arrow key scrolls the text
 
 /**
  * The closing invitation. One purpose: the free introductory course (the bot), with the free
@@ -76,14 +77,7 @@ export function FinalCtaPopup() {
         close()
         return
       }
-      if (e.key !== "Tab") {
-        // Keys that would scroll the page behind. Inside the card the copy may need them (short screens).
-        if (SCROLL_KEYS.has(e.key) && !(e.key === " " && (e.target as HTMLElement | null)?.closest("button"))) {
-          const scroller = scrollerRef.current
-          if (!scroller || scroller.scrollHeight <= scroller.clientHeight + 1) e.preventDefault()
-        }
-        return
-      }
+      if (e.key !== "Tab") return
       const card = cardRef.current
       if (!card) return
       const items = Array.from(card.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"))
@@ -112,40 +106,92 @@ export function FinalCtaPopup() {
     if (open) window.dispatchEvent(new Event(FINAL_POPUP_OPEN_EVENT))
   }, [open])
 
-  // The page behind does not scroll while the invitation is open (wheel, touch and the scroll keys).
-  // The scroll is held back instead of hiding the page's scrollbar: hiding it would widen the page
-  // by the scrollbar's width and make the header and the content jump sideways. The card's own
-  // text still scrolls when a short screen needs it.
+  // The page behind never scrolls while the invitation is open: not by wheel, touch or keys. The
+  // scroll is held back instead of hiding the page's scrollbar (that would widen the page by the
+  // scrollbar's width and make the header and the content jump sideways). The card's own text, which
+  // a short screen needs, stays scrollable wherever the pointer or the keyboard focus is: the focus
+  // usually sits on the close button, outside the text, and the browser would then scroll the page,
+  // so the keys are handled here and the text is scrolled by hand.
   useEffect(() => {
     if (!open) return
     const overlay = overlayRef.current
+    const card = cardRef.current
     const scroller = scrollerRef.current
-    if (!overlay || !scroller) return
+    if (!overlay || !card || !scroller) return
+
     const canScroll = (dy: number) =>
       scroller.scrollHeight > scroller.clientHeight + 1 &&
       (dy < 0 ? scroller.scrollTop > 0 : scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - 1)
+
     const onWheel = (e: WheelEvent) => {
-      if (scroller.contains(e.target as Node) && canScroll(e.deltaY)) return
+      if (e.ctrlKey) return // a zoom gesture (trackpad pinch), not a scroll
+      const target = e.target as Node
+      // Over the text the browser scrolls it and stops at its ends; the scroll never passes to the page.
+      if (scroller.contains(target) && canScroll(e.deltaY)) return
       e.preventDefault()
+      if (card.contains(target)) scroller.scrollTop += e.deltaY * (e.deltaMode === 1 ? 16 : 1) // e.g. over the close button
     }
+
     let lastY = 0
     const onTouchStart = (e: TouchEvent) => {
       lastY = e.touches[0]?.clientY ?? 0
     }
     const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 1) return // pinch zoom
       const y = e.touches[0]?.clientY ?? lastY
       const dy = lastY - y
       lastY = y
-      if (scroller.contains(e.target as Node) && canScroll(dy)) return
-      e.preventDefault()
+      const target = e.target as Node
+      if (scroller.contains(target) && canScroll(dy)) return
+      if (e.cancelable) e.preventDefault()
+      if (card.contains(target)) scroller.scrollTop += dy // a swipe that starts on the close button
     }
+
+    const onScrollKey = (e: KeyboardEvent) => {
+      if (!SCROLL_KEYS.has(e.key)) return
+      // On a button Space presses it; it never scrolls there.
+      if (e.key === " " && (e.target as HTMLElement | null)?.closest("button")) return
+      e.preventDefault() // the browser never scrolls anything by itself while the invitation is open
+      const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      const jump = (top: number) => scroller.scrollTo({ top, behavior: instant ? "auto" : "smooth" })
+      const page = scroller.clientHeight * 0.875
+      const toEnd = e.ctrlKey || e.metaKey // Ctrl/Cmd + arrow: start or end
+      switch (e.key) {
+        case "ArrowDown":
+          if (toEnd) jump(scroller.scrollHeight)
+          else scroller.scrollBy({ top: LINE })
+          break
+        case "ArrowUp":
+          if (toEnd) jump(0)
+          else scroller.scrollBy({ top: -LINE })
+          break
+        case "PageDown":
+          jump(scroller.scrollTop + page)
+          break
+        case "PageUp":
+          jump(scroller.scrollTop - page)
+          break
+        case "Home":
+          jump(0)
+          break
+        case "End":
+          jump(scroller.scrollHeight)
+          break
+        case " ":
+          jump(scroller.scrollTop + (e.shiftKey ? -page : page))
+          break
+      }
+    }
+
     overlay.addEventListener("wheel", onWheel, { passive: false })
     overlay.addEventListener("touchstart", onTouchStart, { passive: true })
     overlay.addEventListener("touchmove", onTouchMove, { passive: false })
+    window.addEventListener("keydown", onScrollKey)
     return () => {
       overlay.removeEventListener("wheel", onWheel)
       overlay.removeEventListener("touchstart", onTouchStart)
       overlay.removeEventListener("touchmove", onTouchMove)
+      window.removeEventListener("keydown", onScrollKey)
     }
   }, [open])
 
