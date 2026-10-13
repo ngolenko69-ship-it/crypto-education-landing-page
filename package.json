@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:bot": "node --import ./scripts/dev/register-ts.mjs --test lib/bot/__tests__/*.test.ts",
+    "test:bot:e2e": "node scripts/telegram/e2e/run.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
