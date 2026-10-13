@@ -12,11 +12,15 @@ export const TELEGRAM_MANAGER_HANDLE = "@RutaCriptoSeguraAdmin"
 export const TELEGRAM_MANAGER_URL = "https://t.me/RutaCriptoSeguraAdmin"
 
 /**
- * The free-guide bot: it checks the channel subscription and sends the PDF guide. Every "get the
- * free course / guide" button of the site goes to it (see TELEGRAM_COURSE_URL). The subscribe
- * buttons keep pointing at the channel and the contact buttons at the manager.
+ * The free-course bot: it checks the channel subscription and sends the free introductory PDF
+ * course. Every "get the free course" button of the site goes to it (see TELEGRAM_COURSE_URL).
+ * The community buttons keep pointing at the channel and the help buttons at the manager.
  */
 export const TELEGRAM_BOT_URL = "https://t.me/RutaCriptoSeguraBot"
 
-/** Destination of every "Obtener curso / guía gratis" button: the free-guide bot. */
-export const TELEGRAM_COURSE_URL: string = TELEGRAM_BOT_URL
+/**
+ * Destination of every "Obtener curso gratis" button: the bot, opened as "/start web". The bot
+ * already understands "web" and counts these launches apart in /estado. One parameter serves the
+ * whole site on purpose: the bot cannot tell the buttons apart, and no other value is supported.
+ */
+export const TELEGRAM_COURSE_URL: string = `${TELEGRAM_BOT_URL}?start=web`

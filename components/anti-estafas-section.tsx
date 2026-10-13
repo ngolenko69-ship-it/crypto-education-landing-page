@@ -1,6 +1,6 @@
 "use client"
 
-import { AlarmClock, MailWarning, ShieldCheck } from "lucide-react"
+import { AlarmClock, Gift, MailWarning, ShieldCheck } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
 import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
@@ -47,8 +47,8 @@ export function AntiEstafasSection() {
         </>
       }
       lead="Las estafas suelen empezar con urgencia, promesas fáciles o mensajes que parecen confiables. Aprende a reconocer señales antes de entregar datos, dinero o acceso."
-      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener guía anti-estafas gratis", external: true }}
-      helper="Aprende a detectar señales de fraude antes de confiar."
+      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener curso gratis", external: true, icon: Gift }}
+      helper="Descubre señales de riesgo y buenas prácticas."
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={cards}
       scene={scene}

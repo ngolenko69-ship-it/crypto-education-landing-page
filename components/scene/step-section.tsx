@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, type LucideIcon } from "lucide-react"
 import { Cta } from "@/components/ui/cta"
 import { useReveal } from "@/hooks/use-scroll-reveal"
 import { CardGrid, type CardItem } from "./section-card"
@@ -17,7 +17,8 @@ export type StepSectionProps = {
   badge: string
   title: React.ReactNode
   lead: React.ReactNode
-  cta: { href: string; label: string; external?: boolean }
+  /** `icon`: a leading icon instead of the trailing arrow (the free-course buttons carry the gift). */
+  cta: { href: string; label: string; external?: boolean; icon?: LucideIcon }
   helper?: string
   trust: string
   cards: CardItem[]
@@ -47,6 +48,7 @@ export function StepSection({
   scene,
 }: StepSectionProps) {
   const { ref, inView, reveal, settle } = useReveal()
+  const CtaIcon = cta.icon
 
   return (
     <section
@@ -82,11 +84,14 @@ export function StepSection({
 
               <div className="mt-8 w-full sm:w-auto" style={reveal({ delay: 380, y: 14, duration: 500 })}>
                 <Cta href={cta.href} external={cta.external} className="w-full sm:w-auto">
+                  {CtaIcon && <CtaIcon className="h-[18px] w-[18px]" aria-hidden="true" />}
                   {cta.label}
-                  <ArrowRight
-                    className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
-                    aria-hidden="true"
-                  />
+                  {!CtaIcon && (
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  )}
                 </Cta>
               </div>
 
