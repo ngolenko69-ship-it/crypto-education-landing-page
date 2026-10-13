@@ -1,97 +1,85 @@
 import { AntiEstafasSection } from "@/components/anti-estafas-section"
 import { BenefitsBar } from "@/components/benefits-bar"
+import { CometCursor } from "@/components/comet-cursor"
 import { ComunidadCriptoSeguraSection } from "@/components/comunidad-cripto-segura-section"
 import { DolaresDigitalesSection } from "@/components/dolares-digitales-section"
+import { GoldenRoute } from "@/components/golden-route"
 import { HeroContent } from "@/components/hero-content"
 import { LegalTrustFooterSection } from "@/components/legal-trust-footer-section"
 import { P2pQueRevisarSection } from "@/components/p2p-que-revisar-section"
 import { PrimerosPasosSection } from "@/components/primeros-pasos-section"
 import { RoadmapBackdrop, RoadmapMobile } from "@/components/roadmap-visual"
-import { ScrollTransition } from "@/components/scroll-transition"
-import { SnakeTransition } from "@/components/snake-transition"
+import { TextShield } from "@/components/scene/text-shield"
 import { SobreNosotrosSection } from "@/components/sobre-nosotros-section"
 import { WalletsYClavesSection } from "@/components/wallets-y-claves-section"
 import { SiteHeader } from "@/components/site-header"
-import { TelegramFloatingBar } from "@/components/telegram-floating-bar"
+import { TelegramLauncher } from "@/components/telegram-floating-bar"
 import { FinalCtaPopup } from "@/components/final-cta-popup"
 
 export default function Home() {
   return (
-    <div className="bg-cinematic relative min-h-screen overflow-hidden">
+    <div className="bg-cinematic relative min-h-screen overflow-x-clip">
       {/* subtle map/grid texture */}
-      <div
-        className="bg-grid pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
+      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden="true" />
 
       {/* atmospheric light points */}
-      <div
-        className="bg-particles pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      />
+      <div className="bg-particles pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative flex min-h-screen flex-col pt-14 lg:pt-16">
+      <div className="relative flex min-h-screen flex-col pt-[var(--header-h)]">
         <SiteHeader />
 
-        <main
-          id="inicio"
-          className="relative mx-auto flex w-full max-w-[1500px] flex-1 flex-col scroll-mt-20 px-5 pb-12 pt-2 sm:px-8 md:px-10 md:scroll-mt-24 lg:px-14 lg:pt-2"
-        >
-          <section className="relative flex flex-1 flex-col justify-center py-2 md:py-4 lg:min-h-[calc(100vh-9rem)]">
-            {/* Desktop: cinematic roadmap image blended into the background */}
+        <main className="relative flex flex-1 flex-col">
+          {/* ---------- Hero ---------- */}
+          <section
+            id="inicio"
+            aria-label="Inicio"
+            className="relative w-full overflow-clip xl:flex xl:min-h-[calc(100vh-var(--header-h))] xl:items-center xl:bg-surface-deep"
+          >
             <RoadmapBackdrop />
 
-            {/* Left text content, floating above the blended scene */}
-            <div className="relative z-10 w-full max-w-xl lg:max-w-[38rem]">
-              <HeroContent />
-            </div>
+            <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-8 sm:py-12 xl:py-16">
+              {/* one protected column: copy, CTAs, trust line and benefits
+                  share a single left edge; the shield covers all of it on
+                  desktop and ends well before the shield artwork */}
+              <div className="relative xl:max-w-[min(40rem,38vw)] xl:[--shield-feather:6rem] 2xl:[--shield-feather:9rem] min-[1792px]:[--shield-feather:12rem]">
+                <TextShield strength={0.86} padY="4rem" />
 
-            {/* Mobile / tablet: image stacked below the text as its own section */}
-            <div className="relative z-10 mt-10 lg:hidden">
-              <RoadmapMobile />
+                <div className="relative z-10">
+                  <HeroContent />
+
+                  {/* tablet / phone: the artwork in the reading flow */}
+                  <div className="mt-10 xl:hidden">
+                    <RoadmapMobile />
+                  </div>
+
+                  <div className="mt-10 w-full max-w-2xl xl:mt-12 xl:max-w-none">
+                    <BenefitsBar />
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
-          <div className="relative z-10 mt-8 lg:mt-4">
-            <BenefitsBar />
-          </div>
+          <PrimerosPasosSection />
+          <DolaresDigitalesSection />
+          <P2pQueRevisarSection />
+          <WalletsYClavesSection />
+          <AntiEstafasSection />
+          <ComunidadCriptoSeguraSection />
+          <SobreNosotrosSection />
         </main>
 
-        {/* cinematic scroll continuation from the hero roadmap into step 1 */}
-        <ScrollTransition />
-        <PrimerosPasosSection />
-
-        {/* snake route transition guiding from step 1 into step 2 */}
-        <SnakeTransition step="Etapa 2" label="Dólares digitales" />
-        <DolaresDigitalesSection />
-
-        {/* snake route transition guiding from step 2 into step 3 */}
-        <SnakeTransition step="Etapa 3" label="P2P: qué revisar" />
-        <P2pQueRevisarSection />
-
-        {/* snake route transition guiding from step 3 into step 4 */}
-        <SnakeTransition step="Etapa 4" label="Wallets y claves" />
-        <WalletsYClavesSection />
-
-        {/* snake route transition guiding from step 4 into step 5 */}
-        <SnakeTransition step="Etapa 5" label="Anti-estafas" />
-        <AntiEstafasSection />
-
-        {/* snake route transition guiding from step 5 into the community step */}
-        <SnakeTransition step="Etapa 6" label="Comunidad cripto segura" />
-        <ComunidadCriptoSeguraSection />
-
-        {/* snake route transition guiding from the community step into the final trust section */}
-        <SnakeTransition step="Etapa 7" label="Sobre nosotros" />
-        <SobreNosotrosSection />
-
-        {/* the golden route ends in trust: continuation into the legal / trust footer */}
-        <SnakeTransition step="Etapa 8" label="Confianza y transparencia" />
         <LegalTrustFooterSection />
       </div>
 
-      {/* conversion overlays: floating community bar + final invitation popup */}
-      <TelegramFloatingBar />
+      {/* a small gold comet mark that follows the cursor across the page */}
+      <CometCursor />
+
+      {/* the golden route: one continuous comet motif linking every step */}
+      <GoldenRoute />
+
+      {/* conversion overlays: compact community launcher + final invitation popup */}
+      <TelegramLauncher />
       <FinalCtaPopup />
     </div>
   )

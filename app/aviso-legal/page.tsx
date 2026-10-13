@@ -1,25 +1,18 @@
 import type { Metadata } from "next"
+import { LegalDocumentView } from "@/components/legal/legal-document"
 import { LegalPageShell } from "@/components/legal-page-shell"
+import { avisoLegal } from "@/lib/legal/aviso-legal"
 
 export const metadata: Metadata = {
-  title: "Aviso legal | Ruta Cripto Segura",
+  title: "Aviso Legal | Ruta Cripto Segura",
   description:
-    "Aviso legal de Ruta Cripto Segura, proyecto educativo sobre seguridad cripto y prevención de estafas.",
+    "Aviso legal de Ruta Cripto Segura: proyecto educativo independiente, finalidad, ausencia de servicios financieros, riesgos, plataformas externas y afiliados.",
 }
 
 export default function AvisoLegalPage() {
   return (
-    <LegalPageShell title="Aviso legal">
-      <p>
-        Esta página está en preparación. Aquí encontrarás la información legal
-        del proyecto Ruta Cripto Segura, incluyendo la titularidad del sitio y
-        las condiciones de uso del contenido educativo.
-      </p>
-      <p>
-        Mientras tanto, recuerda que todo el material publicado tiene una
-        finalidad educativa sobre seguridad cripto, prevención de estafas y
-        buenas prácticas digitales.
-      </p>
+    <LegalPageShell title={avisoLegal.title} current="/aviso-legal">
+      <LegalDocumentView sections={avisoLegal.sections} />
     </LegalPageShell>
   )
 }
