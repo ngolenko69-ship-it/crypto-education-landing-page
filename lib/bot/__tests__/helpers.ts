@@ -5,7 +5,7 @@ import type { BotDeps } from "../handlers"
 import { createLogger } from "../log"
 import { createMemoryStore, type MemoryStore } from "../store"
 import { TelegramApiError, type TelegramApi, type TelegramErrorKind } from "../telegram-api"
-import type { InlineKeyboard, TgChatMember, TgDocument, TgUpdate } from "../types"
+import type { BotCommand, InlineKeyboard, TgChatMember, TgDocument, TgUpdate, WebhookInfo } from "../types"
 
 export const TOKEN = "123456789:FAKE-test-token-0000000000"
 export const SECRET = "test-webhook-secret-0123456789abcdef"
@@ -22,7 +22,14 @@ export function createFakeTelegram() {
   const calls: Call[] = []
   const members = new Map<number, TgChatMember>()
   const failures = new Map<string, TelegramApiError[]>()
-  const state = { botId: 999, botStatus: "administrator" as TgChatMember["status"] }
+  const state = {
+    botId: 999,
+    botUsername: "RutaCriptoSeguraBot" as string | null,
+    botStatus: "administrator" as TgChatMember["status"],
+    /** What getWebhookInfo answers; setWebhook replaces it. */
+    webhook: { url: "https://example.test/api/telegram/webhook", pending_update_count: 0 } as WebhookInfo,
+    commands: [] as BotCommand[],
+  }
 
   const enter = (method: string, args: unknown[]) => {
     calls.push({ method, args })
@@ -33,7 +40,7 @@ export function createFakeTelegram() {
   const api: TelegramApi = {
     async getMe() {
       enter("getMe", [])
-      return { id: state.botId, username: "RutaCriptoSeguraBot" }
+      return { id: state.botId, username: state.botUsername }
     },
     async getChatMember(chatId, userId) {
       enter("getChatMember", [chatId, userId])
@@ -51,7 +58,15 @@ export function createFakeTelegram() {
     },
     async getWebhookInfo() {
       enter("getWebhookInfo", [])
-      return { url: "https://example.test/api/telegram/webhook", pending_update_count: 0 }
+      return { ...state.webhook }
+    },
+    async setWebhook(settings) {
+      enter("setWebhook", [settings])
+      state.webhook = { url: settings.url, pending_update_count: 0, allowed_updates: [...settings.allowedUpdates], max_connections: settings.maxConnections }
+    },
+    async setMyCommands(commands) {
+      enter("setMyCommands", [commands])
+      state.commands = [...commands]
     },
   }
 
