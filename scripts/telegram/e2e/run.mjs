@@ -49,10 +49,10 @@ const reset = async () => { tg.state.calls.length = 0; tg.state.members = {}; tg
 const calls = (method) => tg.state.calls.filter((c) => c.method === method)
 const methods = () => tg.state.calls.map((c) => c.method)
 const lines = (t) => String(t).split("\n").filter((l) => l.trim())
-const WELCOME = ["🛡️ ¡Bienvenido a Ruta Cripto Segura!", "Aprende sobre criptomonedas, stablecoins, P2P y seguridad digital con mayor confianza.", "🎁 Tenemos una guía práctica gratuita para ti.", "Para recibirla, suscríbete a nuestro canal educativo y verifica tu suscripción.", "¡Aprende antes de arriesgar!"]
-const NOT_SUB = ["❌ Todavía no encontramos tu suscripción.", "Únete a nuestro canal gratuito y vuelve a pulsar «Verificar suscripción»."]
-const CONFIRMED = ["✅ ¡Suscripción confirmada!", "🎉 ¡Gracias por unirte a Ruta Cripto Segura!", "Aquí tienes tu guía educativa gratuita."]
-const READY = ["📚 ¡Tu guía está lista!", "En ella aprenderás sobre stablecoins, P2P, wallets, seguridad digital y prevención de estafas.", "Síguenos en nuestro canal para recibir más contenido educativo.", "💚 Ruta Cripto Segura — Aprende antes de arriesgar."]
+const WELCOME = ["🎁 ¡Obtén tu curso introductorio gratuito de criptomonedas!", "Aprende los fundamentos de Bitcoin, stablecoins, P2P, wallets y seguridad digital con nuestro curso en PDF.", "Para recibirlo, solo tienes que:", "1. Suscribirte gratis a nuestro canal educativo.", "2. Pulsar «Verificar suscripción».", "3. Recibir tu curso directamente aquí.", "🛡️ ¡Aprende antes de arriesgar!"]
+const NOT_SUB = ["❌ Todavía no encontramos tu suscripción a @rutacriptosegura.", "Suscríbete gratis a nuestro canal educativo y vuelve a pulsar «Verificar suscripción» para recibir tu curso introductorio gratuito de criptomonedas."]
+const CONFIRMED = ["✅ ¡Suscripción confirmada!", "🎉 ¡Gracias por suscribirte a @rutacriptosegura!", "Aquí tienes tu curso introductorio gratuito de criptomonedas en PDF."]
+const READY = ["📚 ¡Tu curso introductorio gratuito de criptomonedas está listo!", "En él aprenderás sobre Bitcoin, stablecoins, P2P, wallets, seguridad digital y prevención de estafas.", "Síguenos en nuestro canal para recibir más contenido educativo.", "💚 Ruta Cripto Segura — Aprende antes de arriesgar."]
 const UPLOADED = "BQACAgIAAxkDAAIB-e2e-uploaded-file-id-0000000000001"
 const uploadGuide = async () => { await post(doc(ADMIN, "/subir_guia")); tg.state.calls.length = 0 }
 
@@ -162,7 +162,7 @@ try {
   r = await post(cb(1015))
   const toUser = calls("sendMessage").filter((c) => c.params.chat_id === 1015).map((c) => c.params.text)
   const toAdmin = calls("sendMessage").filter((c) => c.params.chat_id === ADMIN)
-  ok("Telegram rejects the stored file → person gets an apology with retry, admin gets an alert", r.status === 200 && /No pudimos enviarte la guía/.test(toUser.at(-1)) && toAdmin.length === 1 && /no aceptó el archivo/.test(toAdmin[0].params.text))
+  ok("Telegram rejects the stored file → person gets an apology with retry, admin gets an alert", r.status === 200 && /No pudimos enviarte tu curso/.test(toUser.at(-1)) && toAdmin.length === 1 && /no aceptó el archivo/.test(toAdmin[0].params.text))
   await sleep(2100); tg.state.calls.length = 0
   await post(cb(1015)); ok("…and the very next try works", calls("sendDocument").length === 1)
 
@@ -189,7 +189,7 @@ try {
   await post(msg(1020, "/canal")); const canal = calls("sendMessage")[1].params
   ok("/canal: button opens the free channel", canal.reply_markup.inline_keyboard[0][0].url === "https://t.me/rutacriptosegura")
   await post(msg(1020, "/guia")); ok("/guia without subscription → asks to subscribe, no file", calls("sendDocument").length === 0 && /Todavía no encontramos/.test(calls("sendMessage").at(-1).params.text))
-  await post(msg(1021, "/start web")); ok("/start web (the website deep link) works like /start", /Bienvenido/.test(calls("sendMessage").at(-1).params.text))
+  await post(msg(1021, "/start web")); ok("/start web (the website deep link) works like /start", /Obtén tu curso introductorio gratuito de criptomonedas/.test(calls("sendMessage").at(-1).params.text))
   await post(msg(1022, "hola")); ok("unknown text → pointer to /guia and /ayuda", /No entendí/.test(calls("sendMessage").at(-1).params.text))
   await post({ update_id: ++n, message: { message_id: n, chat: { id: -100123, type: "group" }, from: user(1023), text: "/start" } }); ok("groups are ignored", calls("sendMessage").length === 5 - 0 && true)
   ok("(count check) nothing extra was sent for the group message", calls("sendMessage").length === 5)
