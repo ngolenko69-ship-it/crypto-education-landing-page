@@ -128,10 +128,13 @@ export function RoadmapBackdrop() {
 }
 
 /**
- * Tablet / phone: the same artwork as a framed picture in the reading flow,
- * right after the copy. 4:3 on phones keeps the shield and the checkpoint
- * stack in frame; wider on tablets. It is the LCP image there, so it loads
- * eagerly with high priority.
+ * Tablet / phone: the same artwork as a framed picture in the reading flow, right after the copy.
+ * The shield, its pedestal and the six checkpoints with their labels all sit on the right of the
+ * panorama, so the frame is pinned to its right edge (object-position 100%). A square frame on
+ * phones is the tightest crop that keeps the whole shield and every label in view without
+ * stretching anything; tablets get wider frames. It is the LCP image there, so it loads eagerly
+ * with high priority. `sizes` is the width the artwork really draws at inside each frame (the
+ * frame's height sets the scale), so every screen picks the file it needs.
  */
 export function RoadmapMobile() {
   return (
@@ -146,13 +149,13 @@ export function RoadmapMobile() {
         <img
           src={HERO.src}
           srcSet={HERO.srcSet}
-          sizes="100vw"
+          sizes="(max-width: 639px) calc((100vw - 2.5rem) * 2.333), (max-width: 767px) calc((100vw - 2.9rem) * 1.312), calc(94vw * 1.111)"
           alt=""
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="block aspect-[4/3] w-full object-cover sm:aspect-[16/9] md:aspect-[21/10]"
-          style={{ objectPosition: "72% 50%", filter: SCENE_FILTER }}
+          className="block aspect-square w-full object-cover sm:aspect-[16/9] md:aspect-[21/10]"
+          style={{ objectPosition: "100% 50%", filter: SCENE_FILTER }}
         />
       </picture>
       <div
@@ -160,12 +163,12 @@ export function RoadmapMobile() {
         style={{ background: "linear-gradient(to top, rgba(7,19,15,0.45), transparent)" }}
         aria-hidden="true"
       />
-      {/* golden route anchor (frame crop: 72% 50% keeps the checkpoint stack in view) */}
+      {/* golden route anchor: the artwork's own "1. Primeros pasos" checkpoint (its circle sits at 83.3% x,
+          78.8% y of the panorama); the x position follows each frame's crop: square, 16:9, 21:10 */}
       <span
         id="route-exit-hero-mobile"
         aria-hidden="true"
-        className="absolute h-px w-px"
-        style={{ right: "7.5%", top: "76.6%" }}
+        className="absolute left-[61%] top-[78.8%] h-px w-px sm:left-[78.1%] md:left-[81.4%]"
       />
     </div>
   )

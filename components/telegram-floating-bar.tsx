@@ -8,8 +8,9 @@ import { TELEGRAM_CHANNEL_URL, TELEGRAM_COURSE_URL, TELEGRAM_MANAGER_URL } from 
 
 /**
  * Compact help launcher. Closed by default: a small labelled pill in the bottom-right corner
- * (inside the safe area). The panel opens only on the user's action, closes with its button or
- * Escape (focus returns to the pill), and never re-opens by itself on scroll or section change.
+ * (inside the safe area; "Ayuda" on phones, "¿Necesitas ayuda?" from 640px). The panel opens
+ * only on the user's action, closes with its button or Escape (focus returns to the pill), and
+ * never re-opens by itself on scroll or section change.
  * It offers three routes, never a chat: the free course (the bot), a person (the manager) and
  * the free channel. Nothing on it pulses or moves on its own. While the Comunidad step is on
  * screen the launcher steps aside so the page's own "Unirme a la comunidad" button has priority.
@@ -175,10 +176,12 @@ export function TelegramLauncher() {
         aria-haspopup="dialog"
         aria-controls={open ? panelId : undefined}
         tabIndex={hidden ? -1 : 0}
-        className="cta-base cta-secondary min-h-12 gap-2.5 px-4 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] sm:px-5"
+        className="cta-base cta-secondary min-h-11 gap-2 px-3.5 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] sm:min-h-12 sm:gap-2.5 sm:px-5"
       >
         <MessageCircle className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
-        <span className="text-[14px] font-semibold">¿Necesitas ayuda?</span>
+        {/* phones: the short label, so the pill takes little of the corner (still a 44px target); from 640px the full question */}
+        <span className="text-[14px] font-semibold sm:hidden">Ayuda</span>
+        <span className="hidden text-[14px] font-semibold sm:inline">¿Necesitas ayuda?</span>
       </button>
     </div>
   )

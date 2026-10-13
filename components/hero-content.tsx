@@ -1,8 +1,9 @@
 "use client"
 
-import { ArrowRight, BellOff, LineChart, Lock, ShieldCheck } from "lucide-react"
+import { BellOff, Compass, Gift, LineChart, Lock } from "lucide-react"
 import { Cta } from "@/components/ui/cta"
 import { useReveal } from "@/hooks/use-scroll-reveal"
+import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
 
 const trustItems = [
   { icon: BellOff, label: "Sin señales." },
@@ -30,16 +31,13 @@ export function HeroContent() {
         className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center"
         style={reveal({ delay: 350, y: 14, duration: 560 })}
       >
-        <Cta href="#primeros-pasos" className="w-full sm:w-auto">
-          Empezar la ruta
-          <ArrowRight
-            className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
-            aria-hidden="true"
-          />
+        <Cta href={TELEGRAM_COURSE_URL} external className="w-full sm:w-auto">
+          <Gift className="h-[18px] w-[18px]" aria-hidden="true" />
+          Obtener curso gratis
         </Cta>
-        <Cta href="#anti-estafas" variant="secondary" className="w-full sm:w-auto">
-          <ShieldCheck className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
-          Aprender a protegerme de estafas
+        <Cta href="#primeros-pasos" variant="secondary" className="w-full sm:w-auto">
+          <Compass className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
+          Explorar la ruta
         </Cta>
       </div>
 

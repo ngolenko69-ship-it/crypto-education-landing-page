@@ -52,7 +52,8 @@ export default function Home() {
                     <RoadmapMobile />
                   </div>
 
-                  <div className="mt-10 w-full max-w-2xl xl:mt-12 xl:max-w-none">
+                  {/* the trust strip only fits the wide hero; below 1280px the picture leads straight into step 1 */}
+                  <div className="mt-12 hidden w-full xl:block">
                     <BenefitsBar />
                   </div>
                 </div>
