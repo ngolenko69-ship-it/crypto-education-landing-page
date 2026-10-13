@@ -12,16 +12,11 @@ export const TELEGRAM_MANAGER_HANDLE = "@RutaCriptoSeguraAdmin"
 export const TELEGRAM_MANAGER_URL = "https://t.me/RutaCriptoSeguraAdmin"
 
 /**
- * The bot that will check the channel subscription and send the PDF course. It does not
- * exist yet, so this stays null — never put a guessed address here. Once the bot is
- * created, set its real link (the full t.me address of the bot, as a string): only the
- * "get the free course" buttons switch to it (see TELEGRAM_COURSE_URL); the channel and
- * manager buttons stay as they are.
+ * The free-guide bot: it checks the channel subscription and sends the PDF guide. Every "get the
+ * free course / guide" button of the site goes to it (see TELEGRAM_COURSE_URL). The subscribe
+ * buttons keep pointing at the channel and the contact buttons at the manager.
  */
-export const TELEGRAM_BOT_URL: string | null = null
+export const TELEGRAM_BOT_URL = "https://t.me/RutaCriptoSeguraBot"
 
-/**
- * Destination of every "Obtener curso / guía gratis" button: the bot once it exists,
- * the free channel until then.
- */
-export const TELEGRAM_COURSE_URL: string = TELEGRAM_BOT_URL ?? TELEGRAM_CHANNEL_URL
+/** Destination of every "Obtener curso / guía gratis" button: the free-guide bot. */
+export const TELEGRAM_COURSE_URL: string = TELEGRAM_BOT_URL
