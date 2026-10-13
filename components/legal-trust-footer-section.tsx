@@ -68,7 +68,7 @@ export function LegalTrustFooterSection() {
           aria-hidden="true"
         />
 
-        <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-14 pt-16 sm:pt-20 xl:pb-16 xl:pt-20">
+        <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-10 pt-12 sm:pt-16 xl:pb-16 xl:pt-20">
           <div className="relative xl:max-w-[var(--col-w)]">
             <TextShield strength={scene.shield} />
 
@@ -95,7 +95,7 @@ export function LegalTrustFooterSection() {
 
               <SceneFrame scene={scene} className="mt-10 w-full" />
 
-              <CardGrid items={trustCards} inView={inView} startDelay={420} columns={2} className="mt-9 w-full max-w-2xl xl:mt-10" />
+              <CardGrid items={trustCards} inView={inView} startDelay={420} columns={2} className="mt-6 w-full xl:mt-10 xl:max-w-2xl" />
             </div>
           </div>
         </div>

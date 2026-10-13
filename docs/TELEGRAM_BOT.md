@@ -190,13 +190,24 @@ PDF уходит с вашего аккаунта Telegram прямо на се�
 
 ## 9. Подключение к сайту
 
-Все кнопки получения бесплатного PDF на сайте ведут на бота: «Obtener curso gratis» (два раза), «Obtener guía P2P gratis», «Obtener guía de wallets gratis», «Obtener guía anti-estafas gratis». Адрес задан в одном месте, в `lib/telegram.ts`:
+На сайте три понятных маршрута, их не нужно путать:
+
+| Что хочет человек | Кнопки сайта | Куда ведут |
+|---|---|---|
+| Бесплатный вводный курс (PDF) | «Obtener curso gratis»: в шапке, во всех пяти учебных разделах, на плавающей панели «¿Necesitas ayuda?»; «Obtener mi curso gratis» во всплывающем окне | бот `https://t.me/RutaCriptoSeguraBot?start=web` |
+| Читать канал, сообщество | «Unirme a la comunidad» (раздел Comunidad), «Explorar canal gratuito» (панель), «Explorar el canal gratuito» (всплывающее окно) | канал `https://t.me/rutacriptosegura` |
+| Помощь человека | «Ayuda» в шапке, «Ayuda · Contactar con el equipo» в мобильном меню, «Hablar con un administrador» на панели, страница контактов | менеджер `https://t.me/RutaCriptoSeguraAdmin` |
+
+Адреса заданы в одном месте, в `lib/telegram.ts`:
 
 ```ts
 export const TELEGRAM_BOT_URL = "https://t.me/RutaCriptoSeguraBot"
+export const TELEGRAM_COURSE_URL: string = `${TELEGRAM_BOT_URL}?start=web`
 ```
 
-Кнопки подписки («Suscribirme gratis» в шапке, «Unirme a la comunidad», «Suscribirme al canal gratuito» во всплывающем окне, плавающая кнопка «Ir al Telegram») ведут в официальный канал `https://t.me/rutacriptosegura`, кнопки связи — к менеджеру `https://t.me/RutaCriptoSeguraAdmin`. Параметр `?start=web` бот понимает (считает такие входы в статистике отдельно): при желании его можно добавить к адресу бота в той же строке.
+Параметр `?start=web` бот понимает: переход по такой ссылке равен команде `/start web`, а `/estado` считает такие запуски отдельно (в строке «inicios N (web M)»). Параметр один на весь сайт, поэтому по статистике нельзя отличить кнопку в шапке от кнопки в разделе P2P или во всплывающем окне; для этого нужен отдельный этап трекинга.
+
+Подписка на канал сама по себе бота не запускает: Telegram не позволяет боту первым написать человеку. Поэтому кнопки получения курса ведут именно в бота, где человек получает инструкцию, подписывается и нажимает «Verificar suscripción».
 
 ## 10. План тестирования
 

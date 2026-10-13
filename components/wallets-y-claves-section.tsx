@@ -1,6 +1,6 @@
 "use client"
 
-import { FileKey2, KeyRound, ShieldAlert } from "lucide-react"
+import { FileKey2, Gift, KeyRound, ShieldAlert } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
 import { TELEGRAM_COURSE_URL } from "@/lib/telegram"
@@ -47,8 +47,8 @@ export function WalletsYClavesSection() {
         </>
       }
       lead="Una wallet puede parecer simple, pero tus claves, códigos y frase semilla son la parte más sensible. Aprende qué proteger, qué no compartir y cómo evitar errores que pueden costarte dinero."
-      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener guía de wallets gratis", external: true }}
-      helper="Aprende a proteger claves, accesos y frase semilla."
+      cta={{ href: TELEGRAM_COURSE_URL, label: "Obtener curso gratis", external: true, icon: Gift }}
+      helper="El curso incluye lo básico de wallets y claves."
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={cards}
       scene={scene}

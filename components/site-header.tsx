@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { ArrowRight, Menu, X } from "lucide-react"
-import { TELEGRAM_CHANNEL_URL } from "@/lib/telegram"
+import { useEffect, useRef, useState } from "react"
+import { Gift, Menu, MessageCircle, X } from "lucide-react"
+import { TELEGRAM_COURSE_URL, TELEGRAM_MANAGER_URL } from "@/lib/telegram"
 
 const navItems = [
   { label: "Inicio", href: "#inicio" },
@@ -21,11 +21,14 @@ const sectionIds = navItems.map((item) => item.href.slice(1))
  * Fixed header with one deterministic height (--header-h) at every size, so
  * the page offset, anchor scroll padding and focus scroll padding all agree.
  * Full navigation from xl (1280px); 1024-1279 uses the compact menu because
- * eight Spanish labels plus the CTA do not fit without clipping.
+ * eight Spanish labels plus the two actions do not fit without clipping.
+ * The two actions: the gold "Obtener curso gratis" (the free-course bot) and
+ * the quiet outlined "Ayuda" (the manager). Community has its own section.
  */
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState("inicio")
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   // Scroll-spy: the section crossing the upper-middle band of the viewport.
   // The footer is not a menu item on purpose; "Sobre nosotros" stays active there.
@@ -48,11 +51,14 @@ export function SiteHeader() {
     return () => observer.disconnect()
   }, [])
 
-  // The compact menu closes on Escape and never stays open across a resize to desktop.
+  // The compact menu closes on Escape (focus goes back to its button) and never stays open
+  // across a resize to desktop.
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false)
+      if (e.key !== "Escape") return
+      setOpen(false)
+      toggleRef.current?.focus()
     }
     const mq = window.matchMedia("(min-width: 1280px)")
     const onChange = () => {
@@ -105,23 +111,31 @@ export function SiteHeader() {
           })}
         </ul>
 
-        <div className="hidden shrink-0 xl:block">
+        <div className="hidden shrink-0 items-center gap-3 xl:flex">
           <a
-            href={TELEGRAM_CHANNEL_URL}
+            href={TELEGRAM_MANAGER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="cta-base cta-primary group/cta min-h-10 px-5 text-[13px] 2xl:text-sm"
+            className="cta-base cta-secondary min-h-11 gap-2 px-4 text-[13px] 2xl:text-sm"
           >
-            Suscribirme gratis
-            <ArrowRight
-              className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
-              aria-hidden="true"
-            />
+            <MessageCircle className="h-4 w-4 text-gold" aria-hidden="true" />
+            Ayuda
+            <span className="sr-only"> con un administrador de Telegram (se abre en una pestaña nueva)</span>
+          </a>
+          <a
+            href={TELEGRAM_COURSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-base cta-primary min-h-11 gap-2 px-5 text-[13px] 2xl:text-sm"
+          >
+            <Gift className="h-4 w-4" aria-hidden="true" />
+            Obtener curso gratis
             <span className="sr-only"> (se abre en una pestaña nueva)</span>
           </a>
         </div>
 
         <button
+          ref={toggleRef}
           type="button"
           onClick={() => setOpen((v) => !v)}
           className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--line-gold)] text-text-primary xl:hidden"
@@ -159,20 +173,30 @@ export function SiteHeader() {
               )
             })}
           </ul>
-          <a
-            href={TELEGRAM_CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
-            className="cta-base cta-primary group/cta mt-4 w-full"
-          >
-            Suscribirme gratis
-            <ArrowRight
-              className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
-              aria-hidden="true"
-            />
-            <span className="sr-only"> (se abre en una pestaña nueva)</span>
-          </a>
+          <div className="mt-4 flex flex-col gap-3">
+            <a
+              href={TELEGRAM_COURSE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="cta-base cta-primary w-full"
+            >
+              <Gift className="h-[18px] w-[18px]" aria-hidden="true" />
+              Obtener curso gratis
+              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            </a>
+            <a
+              href={TELEGRAM_MANAGER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="cta-base cta-secondary w-full"
+            >
+              <MessageCircle className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
+              Ayuda · Contactar con el equipo
+              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            </a>
+          </div>
         </div>
       )}
     </header>

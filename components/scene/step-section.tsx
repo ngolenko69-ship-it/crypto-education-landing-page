@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, type LucideIcon } from "lucide-react"
 import { Cta } from "@/components/ui/cta"
 import { useReveal } from "@/hooks/use-scroll-reveal"
 import { CardGrid, type CardItem } from "./section-card"
@@ -17,7 +17,8 @@ export type StepSectionProps = {
   badge: string
   title: React.ReactNode
   lead: React.ReactNode
-  cta: { href: string; label: string; external?: boolean }
+  /** `icon`: a leading icon instead of the trailing arrow (the free-course buttons carry the gift). */
+  cta: { href: string; label: string; external?: boolean; icon?: LucideIcon }
   helper?: string
   trust: string
   cards: CardItem[]
@@ -29,8 +30,10 @@ export type StepSectionProps = {
  * One learning step. Desktop (xl+): the scene fills the section, the copy
  * column sits on the left over its own TextShield, the cards row stays inside
  * the protected zone so it never floats over the bright path or the object.
- * Tablet/phone: calm surface, copy, a framed crop of the scene, then cards —
- * same reading order, main object always in frame, no letters on the photo.
+ * Tablet/phone: calm surface, copy, a framed crop of the scene, then the cards as one
+ * compact container (see CardGrid) — same reading order, main object always in frame, no
+ * letters on the photo. Below xl the vertical spacing is tighter (section padding, photo to
+ * cards); the xl values are the original ones.
  */
 export function StepSection({
   id,
@@ -47,6 +50,7 @@ export function StepSection({
   scene,
 }: StepSectionProps) {
   const { ref, inView, reveal, settle } = useReveal()
+  const CtaIcon = cta.icon
 
   return (
     <section
@@ -56,7 +60,7 @@ export function StepSection({
     >
       <SceneBackdrop scene={scene} settle={settle()} />
 
-      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-16 sm:py-20 xl:py-14 2xl:py-16">
+      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] py-12 sm:py-16 xl:py-14 2xl:py-16">
         {/* protected zone = the copy column only; the cards row below is wider but carries
             its own opaque surface, so the dark layer never has to reach the scene's signs */}
         <div className="relative xl:max-w-[var(--col-w)]">
@@ -82,11 +86,14 @@ export function StepSection({
 
               <div className="mt-8 w-full sm:w-auto" style={reveal({ delay: 380, y: 14, duration: 500 })}>
                 <Cta href={cta.href} external={cta.external} className="w-full sm:w-auto">
+                  {CtaIcon && <CtaIcon className="h-[18px] w-[18px]" aria-hidden="true" />}
                   {cta.label}
-                  <ArrowRight
-                    className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
-                    aria-hidden="true"
-                  />
+                  {!CtaIcon && (
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-200 group-hover/cta:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  )}
                 </Cta>
               </div>
 
@@ -103,7 +110,7 @@ export function StepSection({
 
             <SceneFrame scene={scene} className="mt-10 w-full" />
 
-            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-9 w-full xl:mt-10 xl:w-[min(52rem,52vw)] xl:max-w-none" />
+            <CardGrid id={cardsId} items={cards} inView={inView} startDelay={620} className="mt-6 w-full xl:mt-10 xl:w-[min(52rem,52vw)] xl:max-w-none" />
           </div>
         </div>
       </div>

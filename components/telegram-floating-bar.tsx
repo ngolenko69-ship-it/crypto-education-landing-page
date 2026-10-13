@@ -1,33 +1,46 @@
 "use client"
 
 import { useCallback, useEffect, useId, useRef, useState } from "react"
-import { Send, X } from "lucide-react"
-import { TELEGRAM_CHANNEL_URL } from "@/lib/telegram"
-
-const SEEN_KEY = "ruta_telegram_launcher_seen"
+import { ArrowUpRight, Gift, MessageCircle, Send, X } from "lucide-react"
+import { useConsent } from "@/components/consent/use-consent"
+import { FINAL_POPUP_OPEN_EVENT } from "@/lib/overlay-events"
+import { TELEGRAM_CHANNEL_URL, TELEGRAM_COURSE_URL, TELEGRAM_MANAGER_URL } from "@/lib/telegram"
 
 /**
- * Compact community launcher. Closed by default: a small labelled pill in the
- * bottom-right corner (inside the safe area). The panel opens only on the
- * user's action, closes with its button or Escape (focus returns to the pill),
- * and never re-opens by itself on scroll or section change. Once the visitor
- * has opened or closed it, the pill's soft attention dot stays off for the
- * rest of the session. While the Comunidad step is on screen the launcher
- * steps aside so the page's own "Unirme a la comunidad" button has priority.
+ * Compact help launcher. Closed by default: a small labelled pill in the bottom-right corner
+ * (inside the safe area; "Ayuda" on phones, "¿Necesitas ayuda?" from 640px). The panel opens
+ * only on the user's action, closes with its button or Escape (focus returns to the pill), and
+ * never re-opens by itself on scroll or section change.
+ * It offers three routes, never a chat: the free course (the bot), a person (the manager) and
+ * the free channel. Nothing on it pulses or moves on its own. While the Comunidad step is on
+ * screen the launcher steps aside so the page's own "Unirme a la comunidad" button has priority.
+ * Below 1024px the cookie banner covers this corner, so there the launcher waits for the
+ * visitor's cookie choice instead of hiding behind the banner.
  */
 export function TelegramLauncher() {
   const [open, setOpen] = useState(false)
-  const [seen, setSeen] = useState(true)
   const [yielding, setYielding] = useState(false)
+  // Starts true on purpose: the server and the first client render agree, and nothing flashes
+  // under the cookie banner before the real width is known.
+  const [compact, setCompact] = useState(true)
+  const consent = useConsent()
   const pillRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const panelId = useId()
   const titleId = useId()
+  const descId = useId()
 
-  // Browser-only session state, read once mounted (never during SSR).
+  // Below 1024px the banner spans (or nearly spans) the screen over the launcher.
   useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)")
+    const onChange = () => {
+      setCompact(!mq.matches)
+      if (!mq.matches) setOpen(false)
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSeen(sessionStorage.getItem(SEEN_KEY) === "1")
+    setCompact(!mq.matches)
+    mq.addEventListener("change", onChange)
+    return () => mq.removeEventListener("change", onChange)
   }, [])
 
   // Hide while the Comunidad section occupies the viewport, and close an open
@@ -47,32 +60,17 @@ export function TelegramLauncher() {
     return () => observer.disconnect()
   }, [])
 
-  const markSeen = useCallback(() => {
-    setSeen(true)
-    try {
-      sessionStorage.setItem(SEEN_KEY, "1")
-    } catch {
-      /* storage can be unavailable (private mode); the launcher still works */
-    }
+  // The final invitation is a modal: an open help panel closes and leaves the focus to it.
+  useEffect(() => {
+    const onPopup = () => setOpen(false)
+    window.addEventListener(FINAL_POPUP_OPEN_EVENT, onPopup)
+    return () => window.removeEventListener(FINAL_POPUP_OPEN_EVENT, onPopup)
   }, [])
 
-  const close = useCallback(
-    (returnFocus = true) => {
-      setOpen(false)
-      markSeen()
-      if (returnFocus) pillRef.current?.focus()
-    },
-    [markSeen],
-  )
-
-  const toggle = () => {
-    if (open) {
-      close()
-    } else {
-      setOpen(true)
-      markSeen()
-    }
-  }
+  const close = useCallback((returnFocus = true) => {
+    setOpen(false)
+    if (returnFocus) pillRef.current?.focus()
+  }, [])
 
   // Escape closes; focus moves into the panel when it opens.
   useEffect(() => {
@@ -85,7 +83,8 @@ export function TelegramLauncher() {
     return () => window.removeEventListener("keydown", onKey)
   }, [open, close])
 
-  const hidden = yielding
+  const waitingForCookies = compact && !(consent.ready && consent.decided)
+  const hidden = yielding || waitingForCookies
 
   return (
     <div
@@ -101,65 +100,88 @@ export function TelegramLauncher() {
           id={panelId}
           role="dialog"
           aria-labelledby={titleId}
+          aria-describedby={descId}
           tabIndex={-1}
-          className="surface-card relative w-[min(22rem,calc(100vw-2rem))] max-h-[calc(100dvh-7rem)] overflow-y-auto p-5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.7)] outline-none motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-200"
+          className="surface-card relative max-h-[calc(100dvh-10rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-5 shadow-[0_18px_50px_-12px_rgba(0,0,0,0.7)] outline-none motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:duration-200"
         >
           <button
             type="button"
             onClick={() => close()}
             aria-label="Cerrar"
-            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line-gold)] text-text-secondary transition-colors hover:border-gold/50 hover:text-gold-text"
+            className="group absolute right-2 top-2 flex h-11 w-11 items-center justify-center rounded-full text-text-secondary transition-colors hover:text-gold-text"
           >
-            <X className="h-4 w-4" aria-hidden="true" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line-gold)] transition-colors group-hover:border-gold/50">
+              <X className="h-4 w-4" aria-hidden="true" />
+            </span>
           </button>
 
-          <div className="flex items-start gap-3.5 pr-8">
+          <div className="flex items-start gap-3.5 pr-9">
             <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gold/10 text-gold">
-              <Send className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
+              <MessageCircle className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
             </span>
             <div className="min-w-0">
-              <p className="type-eyebrow text-[11px] tracking-[0.16em] text-gold-text">Comunidad</p>
-              <h3 id={titleId} className="mt-1 font-serif text-lg leading-tight text-text-primary">
-                Únete a nuestra comunidad
+              <h3 id={titleId} className="font-serif text-lg leading-tight text-text-primary">
+                ¿Cómo podemos ayudarte?
               </h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-text-secondary">
-                Te ayudamos a entender crypto con más seguridad, sin señales ni
-                promesas.
+              <p id={descId} className="mt-1.5 text-sm leading-relaxed text-text-secondary">
+                Empieza gratis, explora nuestra comunidad o contacta con nuestro equipo.
               </p>
             </div>
           </div>
 
-          <a
-            href={TELEGRAM_CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-base cta-primary mt-4 w-full"
-          >
-            <Send className="h-4 w-4" aria-hidden="true" />
-            Ir al Telegram
-            <span className="sr-only"> (se abre en una pestaña nueva)</span>
-          </a>
+          <div className="mt-4 flex flex-col gap-2.5">
+            <a
+              href={TELEGRAM_COURSE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => close()}
+              className="cta-base cta-primary w-full"
+            >
+              <Gift className="h-[18px] w-[18px]" aria-hidden="true" />
+              Obtener curso gratis
+              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            </a>
+            <a
+              href={TELEGRAM_MANAGER_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => close()}
+              className="cta-base cta-secondary w-full"
+            >
+              <MessageCircle className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
+              Hablar con un administrador
+              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            </a>
+            <a
+              href={TELEGRAM_CHANNEL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => close()}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full text-sm font-medium text-gold-text underline-offset-4 transition-colors hover:text-gold hover:underline"
+            >
+              <Send className="h-4 w-4" aria-hidden="true" />
+              Explorar canal gratuito
+              <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              <span className="sr-only"> (se abre en una pestaña nueva)</span>
+            </a>
+          </div>
         </div>
       )}
 
       <button
         ref={pillRef}
         type="button"
-        onClick={toggle}
+        onClick={() => (open ? close() : setOpen(true))}
         aria-expanded={open}
+        aria-haspopup="dialog"
         aria-controls={open ? panelId : undefined}
-        aria-label={open ? "Cerrar panel de la comunidad" : "Abrir panel de la comunidad"}
         tabIndex={hidden ? -1 : 0}
-        className="cta-base cta-secondary relative min-h-12 gap-2.5 px-4 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] sm:px-5"
+        className="cta-base cta-secondary min-h-11 gap-2 px-3.5 shadow-[0_12px_30px_-12px_rgba(0,0,0,0.7)] sm:min-h-12 sm:gap-2.5 sm:px-5"
       >
-        <Send className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
-        <span className="text-[14px] font-semibold">Comunidad</span>
-        {!seen && !open && (
-          <span
-            className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-gold shadow-[0_0_10px_rgba(230,197,116,0.9)] motion-safe:animate-pulse"
-            aria-hidden="true"
-          />
-        )}
+        <MessageCircle className="h-[18px] w-[18px] text-gold" aria-hidden="true" />
+        {/* phones: the short label, so the pill takes little of the corner (still a 44px target); from 640px the full question */}
+        <span className="text-[14px] font-semibold sm:hidden">Ayuda</span>
+        <span className="hidden text-[14px] font-semibold sm:inline">¿Necesitas ayuda?</span>
       </button>
     </div>
   )

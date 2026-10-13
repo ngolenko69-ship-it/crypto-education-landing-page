@@ -58,7 +58,7 @@ export function SobreNosotrosSection() {
       <div className="relative xl:flex xl:min-h-[clamp(560px,38vw,720px)] xl:flex-col xl:justify-start">
         <SceneBackdrop scene={scene} settle={introSettle()} />
 
-        <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pt-16 sm:pt-20 xl:pt-20">
+        <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pt-12 sm:pt-16 xl:pt-20">
           <div className="relative xl:max-w-[var(--col-w)]">
             <TextShield strength={scene.shield} padY="3rem" />
 
@@ -89,8 +89,8 @@ export function SobreNosotrosSection() {
       </div>
 
       {/* ---------- calm band: details and cards in the flow, nothing over faces ---------- */}
-      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-16 pt-10 sm:pb-20 sm:pt-12 xl:pb-24 xl:pt-14">
-        <div ref={detailsRef} className="grid gap-10 lg:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:items-start lg:gap-14">
+      <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-[var(--gutter)] pb-12 pt-8 sm:pb-16 sm:pt-10 xl:pb-24 xl:pt-14">
+        <div ref={detailsRef} className="grid gap-6 lg:grid-cols-[minmax(0,38rem)_minmax(0,1fr)] lg:items-start lg:gap-14">
           <div className="type-body max-w-2xl space-y-4" style={detailsReveal({ delay: 0, y: 14, duration: 600 })}>
             <p>
               Trabajamos con plataformas líderes del ecosistema cripto,
