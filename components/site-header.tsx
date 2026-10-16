@@ -24,6 +24,7 @@ const sectionIds = navItems.map((item) => item.href.slice(1))
  * eight Spanish labels plus the two actions do not fit without clipping.
  * The two actions: the gold "Obtener curso gratis" (the free-course bot) and
  * the quiet outlined "Ayuda" (the manager). Community has its own section.
+ * Below xl the same manager route is the compact "Asesor" button beside the menu button.
  */
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
@@ -76,7 +77,7 @@ export function SiteHeader() {
     <header className="fixed inset-x-0 top-0 z-50 h-[var(--header-h)] border-b border-gold/15 bg-surface-deep/85 backdrop-blur-xl">
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between gap-4 px-[var(--gutter)]"
+        className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between gap-4 pl-[max(var(--gutter),env(safe-area-inset-left))] pr-[max(var(--gutter),env(safe-area-inset-right))]"
       >
         <a href="#inicio" className="flex shrink-0 items-center py-1 transition-opacity hover:opacity-90">
           {/* the 444px WebP is the same artwork at 4x the drawn size (the 2172px PNG stays as the source) */}
@@ -137,23 +138,36 @@ export function SiteHeader() {
           </a>
         </div>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--line-gold)] text-text-primary xl:hidden"
-          aria-expanded={open}
-          aria-controls="site-menu"
-          aria-label={open ? "Cerrar menú" : "Abrir menú"}
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* compact navigation (below 1280px): the manager is one tap away, next to the menu button */}
+        <div className="flex shrink-0 items-center gap-2 xl:hidden">
+          <a
+            href={TELEGRAM_MANAGER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cta-base cta-secondary min-h-11 shrink-0 gap-1.5 whitespace-nowrap px-3 text-[13px]"
+          >
+            <MessageCircle className="h-4 w-4 text-gold" aria-hidden="true" />
+            Asesor
+            <span className="sr-only"> de Telegram: hablar con un administrador (se abre en una pestaña nueva)</span>
+          </a>
+          <button
+            ref={toggleRef}
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--line-gold)] text-text-primary"
+            aria-expanded={open}
+            aria-controls="site-menu"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {open && (
         <div
           id="site-menu"
-          className="max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-gold/10 bg-surface-deep/95 px-[var(--gutter)] pb-6 pt-2 backdrop-blur-xl xl:hidden"
+          className="max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-gold/10 bg-surface-deep/95 pb-6 pl-[max(var(--gutter),env(safe-area-inset-left))] pr-[max(var(--gutter),env(safe-area-inset-right))] pt-2 backdrop-blur-xl xl:hidden"
         >
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => {

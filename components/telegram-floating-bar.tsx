@@ -2,43 +2,34 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { ArrowUpRight, Gift, MessageCircle, Send, X } from "lucide-react"
-import { useConsent } from "@/components/consent/use-consent"
 import { FINAL_POPUP_OPEN_EVENT } from "@/lib/overlay-events"
 import { TELEGRAM_CHANNEL_URL, TELEGRAM_COURSE_URL, TELEGRAM_MANAGER_URL } from "@/lib/telegram"
 
 /**
- * Compact help launcher. Closed by default: a small labelled pill in the bottom-right corner
- * (inside the safe area; "Ayuda" on phones, "¿Necesitas ayuda?" from 640px). The panel opens
- * only on the user's action, closes with its button or Escape (focus returns to the pill), and
- * never re-opens by itself on scroll or section change.
- * It offers three routes, never a chat: the free course (the bot), a person (the manager) and
- * the free channel. Nothing on it pulses or moves on its own. While the Comunidad step is on
+ * Help launcher for wide screens (from 1280px, where the header has no menu button): a small
+ * labelled pill in the bottom-right corner. Below 1280px it is not shown at all: there the header
+ * carries the manager button ("Asesor"). The panel opens only on the user's action, closes with its
+ * button or Escape (focus returns to the pill), and never re-opens by itself on scroll or section
+ * change. It offers three routes, never a chat: the free course (the bot), a person (the manager)
+ * and the free channel. Nothing on it pulses or moves on its own. While the Comunidad step is on
  * screen the launcher steps aside so the page's own "Unirme a la comunidad" button has priority.
- * Below 1024px the cookie banner covers this corner, so there the launcher waits for the
- * visitor's cookie choice instead of hiding behind the banner.
  */
 export function TelegramLauncher() {
   const [open, setOpen] = useState(false)
   const [yielding, setYielding] = useState(false)
-  // Starts true on purpose: the server and the first client render agree, and nothing flashes
-  // under the cookie banner before the real width is known.
-  const [compact, setCompact] = useState(true)
-  const consent = useConsent()
   const pillRef = useRef<HTMLButtonElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const panelId = useId()
   const titleId = useId()
   const descId = useId()
 
-  // Below 1024px the banner spans (or nearly spans) the screen over the launcher.
+  // An open panel closes when the window becomes narrower than the launcher's range (the launcher
+  // itself is hidden by CSS below 1280px).
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)")
+    const mq = window.matchMedia("(min-width: 1280px)")
     const onChange = () => {
-      setCompact(!mq.matches)
       if (!mq.matches) setOpen(false)
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setCompact(!mq.matches)
     mq.addEventListener("change", onChange)
     return () => mq.removeEventListener("change", onChange)
   }, [])
@@ -83,12 +74,11 @@ export function TelegramLauncher() {
     return () => window.removeEventListener("keydown", onKey)
   }, [open, close])
 
-  const waitingForCookies = compact && !(consent.ready && consent.decided)
-  const hidden = yielding || waitingForCookies
+  const hidden = yielding
 
   return (
     <div
-      className={`fixed right-4 z-40 flex flex-col items-end gap-3 transition-opacity duration-300 motion-reduce:transition-none sm:right-6 ${
+      className={`fixed right-4 z-40 hidden flex-col items-end gap-3 transition-opacity duration-300 motion-reduce:transition-none sm:right-6 xl:flex ${
         hidden ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
       style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
