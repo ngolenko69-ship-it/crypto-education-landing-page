@@ -88,13 +88,13 @@ export function StepSection({
                 {lead}
               </p>
 
-              {/* with a second button the wrapper becomes the same row/stack as the hero's (from xl it may be
-                  wider than the copy column, like the cards below, so the two buttons stay side by side);
-                  alone it is unchanged */}
+              {/* with a second button the wrapper becomes the same row/stack as the hero's: stacked on phones,
+                  side by side when they fit, one under the other when the copy column is too narrow for both
+                  (never wider than the column); alone it is unchanged */}
               <div
                 className={
                   secondaryCta
-                    ? "mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center xl:w-max xl:flex-nowrap"
+                    ? "mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center"
                     : "mt-8 w-full sm:w-auto"
                 }
                 style={reveal({ delay: 380, y: 14, duration: 500 })}
@@ -110,7 +110,7 @@ export function StepSection({
                   )}
                 </Cta>
                 {secondaryCta && (
-                  <Cta href={secondaryCta.href} variant="secondary" external={secondaryCta.external} className="w-full sm:w-auto">
+                  <Cta href={secondaryCta.href} variant="secondary" external={secondaryCta.external} className="w-full px-4 sm:w-auto sm:px-7">
                     {SecondaryIcon && <SecondaryIcon className="h-[18px] w-[18px] text-gold" aria-hidden="true" />}
                     {secondaryCta.label}
                   </Cta>
