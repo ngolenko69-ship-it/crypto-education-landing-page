@@ -19,6 +19,8 @@ export type StepSectionProps = {
   lead: React.ReactNode
   /** `icon`: a leading icon instead of the trailing arrow (the free-course buttons carry the gift). */
   cta: { href: string; label: string; external?: boolean; icon?: LucideIcon }
+  /** optional quieter second button (outlined), next to the first from 640px and under it on phones */
+  secondaryCta?: { href: string; label: string; external?: boolean; icon?: LucideIcon }
   helper?: string
   trust: string
   cards: CardItem[]
@@ -43,6 +45,7 @@ export function StepSection({
   title,
   lead,
   cta,
+  secondaryCta,
   helper,
   trust,
   cards,
@@ -51,6 +54,7 @@ export function StepSection({
 }: StepSectionProps) {
   const { ref, inView, reveal, settle } = useReveal()
   const CtaIcon = cta.icon
+  const SecondaryIcon = secondaryCta?.icon
 
   return (
     <section
@@ -84,7 +88,17 @@ export function StepSection({
                 {lead}
               </p>
 
-              <div className="mt-8 w-full sm:w-auto" style={reveal({ delay: 380, y: 14, duration: 500 })}>
+              {/* with a second button the wrapper becomes the same row/stack as the hero's (from xl it may be
+                  wider than the copy column, like the cards below, so the two buttons stay side by side);
+                  alone it is unchanged */}
+              <div
+                className={
+                  secondaryCta
+                    ? "mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center xl:w-max xl:flex-nowrap"
+                    : "mt-8 w-full sm:w-auto"
+                }
+                style={reveal({ delay: 380, y: 14, duration: 500 })}
+              >
                 <Cta href={cta.href} external={cta.external} className="w-full sm:w-auto">
                   {CtaIcon && <CtaIcon className="h-[18px] w-[18px]" aria-hidden="true" />}
                   {cta.label}
@@ -95,6 +109,12 @@ export function StepSection({
                     />
                   )}
                 </Cta>
+                {secondaryCta && (
+                  <Cta href={secondaryCta.href} variant="secondary" external={secondaryCta.external} className="w-full sm:w-auto">
+                    {SecondaryIcon && <SecondaryIcon className="h-[18px] w-[18px] text-gold" aria-hidden="true" />}
+                    {secondaryCta.label}
+                  </Cta>
+                )}
               </div>
 
               {helper && (

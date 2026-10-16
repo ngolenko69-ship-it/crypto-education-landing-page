@@ -1,9 +1,9 @@
 "use client"
 
-import { Newspaper, UserCheck, Users } from "lucide-react"
+import { MessageCircle, Newspaper, UserCheck, Users } from "lucide-react"
 import { StepSection } from "@/components/scene/step-section"
 import type { SceneConfig } from "@/components/scene/scene-config"
-import { TELEGRAM_CHANNEL_URL } from "@/lib/telegram"
+import { TELEGRAM_CHANNEL_URL, TELEGRAM_MANAGER_URL } from "@/lib/telegram"
 
 const cards = [
   {
@@ -48,6 +48,7 @@ export function ComunidadCriptoSeguraSection() {
       }
       lead="Después de conocer los pasos básicos, puedes unirte a nuestra comunidad educativa: compartimos noticias cripto, explicamos riesgos y ayudamos a resolver dudas sin presión ni promesas."
       cta={{ href: TELEGRAM_CHANNEL_URL, label: "Unirme a la comunidad", external: true }}
+      secondaryCta={{ href: TELEGRAM_MANAGER_URL, label: "Hablar con un administrador", external: true, icon: MessageCircle }}
       helper="Admins y comunidad para aprender con más seguridad."
       trust="Contenido educativo. Sin señales. Sin promesas de ganancias."
       cards={cards}
