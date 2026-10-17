@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
 import { CookieConsent } from '@/components/consent/cookie-consent'
 import { ConsentGatedAnalytics } from '@/components/consent/consent-gated-analytics'
+import { ConsentGatedGoogleAds } from '@/components/consent/consent-gated-google-ads'
+import { TelegramClickTracker } from '@/components/consent/telegram-click-tracker'
 import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -57,9 +59,12 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
-        {/* optional technologies only after the visitor agrees (see lib/consent.ts) */}
+        {/* optional technologies only after the visitor agrees (see lib/consent.ts): analytics and,
+            separately, the Google Ads measurement tag (lib/ads.ts). The click tracker only observes. */}
         <CookieConsent />
         <ConsentGatedAnalytics />
+        <ConsentGatedGoogleAds />
+        <TelegramClickTracker />
       </body>
     </html>
   )

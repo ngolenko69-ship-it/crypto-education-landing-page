@@ -1,6 +1,6 @@
 /** Date shown on every legal document. Change it whenever a document's content changes. */
-export const LEGAL_UPDATED = "10 de octubre de 2026"
-export const LEGAL_UPDATED_ISO = "2026-10-10"
+export const LEGAL_UPDATED = "17 de octubre de 2026"
+export const LEGAL_UPDATED_ISO = "2026-10-17"
 
 /**
  * The legal identification of whoever operates the site is NOT known yet: the project is not

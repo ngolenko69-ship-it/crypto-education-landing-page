@@ -43,10 +43,10 @@ export const politicaDeCookies: LegalDoc = {
           type: "p",
           text: "Pueden utilizarse para comprender el rendimiento del sitio y mejorar la experiencia de navegación.",
         },
-        { type: "h3", text: "Cookies de marketing" },
+        { type: "h3", text: "Cookies de publicidad y medición" },
         {
           type: "p",
-          text: "Pueden utilizarse para medir campañas publicitarias, atribuir conversiones o personalizar publicidad.",
+          text: "Pueden utilizarse para medir campañas publicitarias, atribuir conversiones o personalizar publicidad. En este sitio solo se utilizan si las aceptas (categoría «Publicidad y medición»).",
         },
         { type: "h3", text: "Cookies de terceros" },
         {
@@ -84,16 +84,21 @@ export const politicaDeCookies: LegalDoc = {
         { type: "cookie-inventory" },
         {
           type: "p",
-          text: "Resultado de la revisión técnica del sitio realizada el 10 de octubre de 2026:",
+          text: "Resultado de la revisión técnica del sitio realizada el 10 de octubre de 2026 y actualizada el 17 de octubre de 2026, al incorporarse la etiqueta de medición de Google Ads:",
         },
         {
           type: "ul",
           items: [
-            "No se detectaron cookies HTTP, ni propias ni de terceros.",
-            "No se utilizan Google Analytics, Google Tag Manager, Google Ads, Meta Pixel ni otras herramientas de publicidad o seguimiento.",
+            "Mientras no aceptes ninguna categoría opcional, el sitio no establece cookies HTTP, ni propias ni de terceros, y no carga ni Vercel Web Analytics ni la etiqueta de Google Ads.",
+            "Si aceptas «Publicidad y medición», se carga la etiqueta de Google Ads (identificador AW-18517392159). Esa etiqueta puede establecer cookies de Google Ads en este dominio y enviar a Google datos de uso del sitio, como las páginas visitadas y las acciones realizadas, por ejemplo abrir un enlace de Telegram.",
+            "No se utilizan Google Analytics, Google Tag Manager, Meta Pixel ni otras herramientas de publicidad o seguimiento distintas de las indicadas en el inventario.",
             "El sitio no incorpora widgets, vídeos ni otro contenido incrustado de terceros, y sus tipografías se sirven desde el propio sitio.",
             "El sitio no almacena nada más en tu navegador que las tecnologías de la lista anterior.",
           ],
+        },
+        {
+          type: "p",
+          text: "Aparte de la información técnica que la propia etiqueta de Google recibe de cada visita (página visitada, origen de la visita, dirección IP, tipo de navegador y de dispositivo), los únicos eventos que enviamos son los clics en nuestros enlaces a Telegram: curso gratuito, canal gratuito y administrador. Un clic no confirma que te hayas suscrito, que hayas hablado con alguien ni que hayas recibido el PDF: solo indica que se abrió el enlace. No enviamos tu nombre, tu correo electrónico ni datos de tu cuenta de Telegram.",
         },
         {
           type: "p",
@@ -117,10 +122,28 @@ export const politicaDeCookies: LegalDoc = {
           type: "p",
           text: "El usuario podrá modificar o retirar posteriormente el consentimiento cuando corresponda.",
         },
-        // ADDED to match what the site really does (consent-gated Vercel Web Analytics).
+        // ADDED to match what the site really does: two independent optional categories, both
+        // consent-gated (Vercel Web Analytics; the Google Ads tag with Consent Mode v2, basic).
         {
           type: "p",
-          text: "En este sitio, Vercel Web Analytics es la única tecnología opcional. No se carga hasta que la aceptas, y puedes cambiar o retirar tu elección en cualquier momento:",
+          text: "En este sitio hay dos categorías opcionales, independientes entre sí: «Analíticas» (Vercel Web Analytics) y «Publicidad y medición» (etiqueta de Google Ads). Ninguna se carga hasta que la aceptas, y rechazarlas no limita el uso del sitio ni de ninguno de sus botones.",
+        },
+        {
+          type: "p",
+          text: "Aceptar «Analíticas» no activa «Publicidad y medición». Si ya habías aceptado las analíticas antes de que existiera la categoría de publicidad, tu elección se mantiene para las analíticas y «Publicidad y medición» permanece desactivada hasta que la aceptes.",
+        },
+        { type: "h3", text: "Google Consent Mode v2" },
+        {
+          type: "p",
+          text: "Cuando aceptas «Publicidad y medición», informamos a Google de tu elección mediante las señales de consentimiento ad_storage, ad_user_data, ad_personalization y analytics_storage (Google Consent Mode v2). Las tres primeras reflejan tu decisión sobre «Publicidad y medición»; analytics_storage refleja la de «Analíticas». Antes de aceptar, la etiqueta de Google no se carga y no se envía nada a Google.",
+        },
+        {
+          type: "p",
+          text: "Si retiras el consentimiento, dejamos de enviar mediciones a Google de inmediato, actualizamos esas señales a «denegado» y eliminamos las cookies de Google Ads de este dominio; la etiqueta no vuelve a cargarse en tus siguientes visitas. Las cookies de terceros que Google haya podido establecer en otros dominios puedes borrarlas desde la configuración de tu navegador.",
+        },
+        {
+          type: "p",
+          text: "Guardamos tu elección durante 12 meses; después te la volvemos a preguntar. Puedes cambiarla o retirarla en cualquier momento:",
         },
         { type: "cookie-settings" },
       ],
@@ -137,6 +160,10 @@ export const politicaDeCookies: LegalDoc = {
           type: "p",
           text: "La desactivación de tecnologías estrictamente necesarias puede afectar el funcionamiento de algunas características del sitio.",
         },
+        {
+          type: "p",
+          text: "También puedes gestionar la personalización de anuncios de Google en [Configuración de anuncios de Google](https://adssettings.google.com) y consultar cómo utiliza Google la información de los sitios que usan sus servicios en [policies.google.com/technologies/partner-sites](https://policies.google.com/technologies/partner-sites).",
+        },
       ],
     },
     {
@@ -149,7 +176,7 @@ export const politicaDeCookies: LegalDoc = {
         },
         {
           type: "p",
-          text: "Entre ellos pueden encontrarse Vercel, Google / Gmail y Telegram, según la finalidad del servicio.",
+          text: "Entre ellos pueden encontrarse Vercel (alojamiento y, si lo aceptas, Vercel Web Analytics), Google (Gmail y, si aceptas «Publicidad y medición», la etiqueta de Google Ads) y Telegram, según la finalidad del servicio.",
         },
         {
           type: "p",

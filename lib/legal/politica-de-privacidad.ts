@@ -56,6 +56,15 @@ export const politicaDePrivacidad: LegalDoc = {
           type: "p",
           text: "Datos técnicos necesarios para el funcionamiento y la seguridad del sitio, conforme a la configuración real del proveedor de alojamiento.",
         },
+        { type: "h3", text: "Datos de medición publicitaria (solo con tu consentimiento)" },
+        {
+          type: "p",
+          text: "Si aceptas la categoría «Publicidad y medición», la etiqueta de Google Ads recibe datos técnicos y de uso de tu visita: dirección IP, tipo de navegador y de dispositivo, páginas visitadas, origen de la visita (por ejemplo, un anuncio de Google), identificadores de las cookies de Google Ads y las acciones que realizas en el sitio, como abrir un enlace de Telegram.",
+        },
+        {
+          type: "p",
+          text: "El sitio no envía a Google tu nombre, tu correo electrónico ni datos de tu cuenta de Telegram, y no añade datos personales a las direcciones ni a los eventos que se miden. Un clic en un enlace de Telegram no confirma que te hayas suscrito, hablado con alguien ni recibido el curso: solo indica que se abrió el enlace.",
+        },
         { type: "h3", text: "Datos de Telegram" },
         {
           type: "p",
@@ -86,6 +95,7 @@ export const politicaDePrivacidad: LegalDoc = {
             "Administrar la comunidad educativa.",
             "Cumplir obligaciones legales.",
             "Mejorar el funcionamiento del sitio mediante herramientas utilizadas legalmente.",
+            "Medir la eficacia de nuestra publicidad en Google y poder mejorarla, solo si aceptas «Publicidad y medición».",
           ],
         },
         { type: "p", text: "No enviaremos comunicaciones comerciales no solicitadas." },
@@ -99,6 +109,10 @@ export const politicaDePrivacidad: LegalDoc = {
         {
           type: "p",
           text: "Según el caso, podrá fundamentarse en el consentimiento del usuario, la atención de solicitudes, el cumplimiento de obligaciones legales u otras bases legítimas reconocidas por la normativa correspondiente.",
+        },
+        {
+          type: "p",
+          text: "La analítica y la medición publicitaria se basan exclusivamente en tu consentimiento, que puedes retirar en cualquier momento desde «Preferencias de cookies», sin que ello afecte a la licitud del tratamiento anterior a su retirada.",
         },
         {
           type: "p",
@@ -116,6 +130,10 @@ export const politicaDePrivacidad: LegalDoc = {
           rows: [
             ["Vercel", "alojamiento e infraestructura técnica del sitio."],
             ["Google / Gmail", "gestión de comunicaciones recibidas por correo electrónico."],
+            [
+              "Google (Google Ads)",
+              "medición de la eficacia de nuestros anuncios en Google, solo si aceptas «Publicidad y medición».",
+            ],
             ["Telegram", "comunicaciones y participación voluntaria en la comunidad."],
           ],
         },
@@ -123,6 +141,10 @@ export const politicaDePrivacidad: LegalDoc = {
         {
           type: "p",
           text: `Vercel también ofrece Vercel Web Analytics, una herramienta opcional de analítica agregada que solo se carga si aceptas las cookies analíticas. Más información en la ${COOKIES_LINK}.`,
+        },
+        {
+          type: "p",
+          text: `Google Ads es una herramienta opcional de medición publicitaria: su etiqueta solo se carga si aceptas «Publicidad y medición», y Google trata la información conforme a sus propias políticas ([cómo utiliza Google la información de los sitios que usan sus servicios](https://policies.google.com/technologies/partner-sites)). Puedes gestionar la personalización de anuncios en [Configuración de anuncios de Google](https://adssettings.google.com). Más información en la ${COOKIES_LINK}.`,
         },
         {
           type: "p",
@@ -173,6 +195,10 @@ export const politicaDePrivacidad: LegalDoc = {
           type: "p",
           text: "Los usuarios podrán ejercer los derechos reconocidos por la legislación aplicable, entre ellos los de acceso, rectificación, actualización, supresión, oposición y retirada del consentimiento, cuando correspondan.",
         },
+        {
+          type: "p",
+          text: "Puedes retirar tu consentimiento sobre las cookies y la medición publicitaria en cualquier momento desde «Preferencias de cookies», en el pie de página del sitio.",
+        },
         { type: "p", text: "Para realizar una solicitud:" },
         { type: "p", text: EMAIL },
         {
@@ -202,7 +228,7 @@ export const politicaDePrivacidad: LegalDoc = {
       blocks: [
         {
           type: "p",
-          text: "La utilización de proveedores internacionales puede implicar tratamiento de datos en distintos países.",
+          text: "La utilización de proveedores internacionales, como Vercel, Google y Telegram, puede implicar tratamiento de datos en distintos países, incluidos los datos de medición publicitaria que reciba Google si aceptas «Publicidad y medición».",
         },
         {
           type: "p",
@@ -224,7 +250,7 @@ export const politicaDePrivacidad: LegalDoc = {
         },
         {
           type: "p",
-          text: "Las tecnologías que requieran consentimiento previo no deberán activarse antes de obtenerlo, cuando así lo exija la legislación aplicable.",
+          text: "Las tecnologías opcionales (Vercel Web Analytics y la etiqueta de Google Ads) no se activan antes de obtener tu consentimiento.",
         },
       ],
     },

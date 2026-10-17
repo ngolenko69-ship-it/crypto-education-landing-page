@@ -115,14 +115,19 @@ export function LegalTrustFooterSection() {
             aria-hidden="true"
           />
 
-          <p className="type-legal mt-6 max-w-3xl">
-            Ruta Cripto Segura es un proyecto educativo sobre seguridad cripto,
-            prevención de estafas y buenas prácticas digitales. No somos una
-            wallet, exchange ni asesor financiero. No ofrecemos señales de
-            trading, recomendaciones de inversión, predicciones de mercado ni
-            promesas de ganancias. Verifica siempre la información y cumple con
-            las normas aplicables en tu país.
-          </p>
+          {/* The official statement of what RUTA is and is not. It replaces the former closing paragraph,
+              whose sentences are now carried by the lead above (what the project is) and by the cards
+              ("Sin señales", "Sin custodia", "Transparencia"), so nothing is said twice. */}
+          <div className="mt-6 max-w-3xl border-l-2 border-gold/45 pl-4 sm:pl-5">
+            <h3 className="font-serif text-[1.15rem] font-medium leading-snug text-gold-text sm:text-[1.25rem]">
+              Plataforma exclusivamente educativa
+            </h3>
+            <p className="type-small mt-2 sm:text-base sm:leading-relaxed">
+              RUTA Cripto Segura es una plataforma exclusivamente educativa. No realizamos operaciones
+              de compra, venta, intercambio ni transferencias de criptomonedas por cuenta de terceros.
+              No ofrecemos asesoramiento de inversión ni promesas de rentabilidad.
+            </p>
+          </div>
 
           <p className="type-legal mt-3 tracking-wide">
             Las marcas mencionadas pertenecen a sus respectivos propietarios.
