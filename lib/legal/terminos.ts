@@ -26,6 +26,10 @@ export const terminos: LegalDoc = {
           type: "p",
           text: "Nuestro objetivo es facilitar información comprensible para personas que desean aprender a utilizar herramientas del ecosistema cripto con mayor criterio.",
         },
+        {
+          type: "p",
+          text: "RUTA Cripto Segura es una plataforma exclusivamente educativa. No realizamos operaciones de compra, venta, intercambio ni transferencias de criptomonedas por cuenta de terceros. No ofrecemos asesoramiento de inversión ni promesas de rentabilidad.",
+        },
       ],
     },
     {

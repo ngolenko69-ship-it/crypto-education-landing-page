@@ -2,34 +2,78 @@
 
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { OPEN_SETTINGS_EVENT, getConsentSnapshot, saveConsent } from "@/lib/consent"
+import { OPEN_SETTINGS_EVENT, getConsentSnapshot, saveConsent, type ConsentChoice } from "@/lib/consent"
 import { useConsent } from "./use-consent"
 
 // Accept and reject share exactly the same look and size: rejecting is as easy as accepting.
 const choiceButton = "cta-base cta-secondary min-h-11 cursor-pointer px-2 text-sm sm:px-4"
 
+const ACCEPT_ALL: ConsentChoice = { analytics: true, advertising: true }
+const REJECT_ALL: ConsentChoice = { analytics: false, advertising: false }
+
+/** A switch card for one optional category: the whole card is the checkbox, so the target is large. */
+function ConsentToggle({
+  id,
+  title,
+  description,
+  checked,
+  onChange,
+}: {
+  id: string
+  title: string
+  description: string
+  checked: boolean
+  onChange: (checked: boolean) => void
+}) {
+  return (
+    <li className="relative rounded-xl border border-[var(--line-gold)] bg-surface-deep/60 p-4 pr-[5.25rem]">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        aria-labelledby={id}
+        aria-describedby={`${id}-texto`}
+        className="peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-4 top-4 block h-7 w-12 rounded-full border border-gold/40 bg-surface-deep transition-colors peer-checked:bg-gold/35 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--gold-text)] after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:bg-text-secondary after:transition-transform peer-checked:after:translate-x-5 peer-checked:after:bg-gold-text"
+      />
+      <h3 id={id} className="text-[15px] font-semibold text-text-primary">
+        {title}
+      </h3>
+      <p id={`${id}-texto`} className="mt-1 text-sm leading-snug text-text-secondary">
+        {description}
+      </p>
+    </li>
+  )
+}
+
 /**
- * Consent banner + preferences dialog for the optional technologies (today: Vercel Web
- * Analytics). Nothing optional loads until the visitor accepts; "not decided" behaves like
- * "rejected". The banner never takes focus and does not block the page, so the cookie policy
- * can be read before deciding. The preferences dialog is a native modal <dialog>: focus trap,
- * Escape and focus return come from the browser.
+ * Consent banner + preferences dialog for the optional technologies, in three categories:
+ * necessary (always on), "Analíticas" (Vercel Web Analytics) and "Publicidad y medición" (the
+ * Google Ads tag). The two optional ones are independent choices. Nothing optional loads until
+ * the visitor accepts it; "not decided" behaves like "rejected". The banner never takes focus and
+ * does not block the page, so the cookie policy can be read before deciding. The preferences
+ * dialog is a native modal <dialog>: focus trap, Escape and focus return come from the browser.
  */
 export function CookieConsent() {
   const consent = useConsent()
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [draftAnalytics, setDraftAnalytics] = useState(false)
+  const [draft, setDraft] = useState<ConsentChoice>(REJECT_ALL)
   const dialogRef = useRef<HTMLDialogElement>(null)
 
   const openSettings = () => {
-    setDraftAnalytics(getConsentSnapshot().analytics)
+    const { analytics, advertising } = getConsentSnapshot()
+    setDraft({ analytics, advertising })
     setSettingsOpen(true)
   }
 
   // The footer and the cookie policy open the same dialog through a window event.
   useEffect(() => {
     const onOpen = () => {
-      setDraftAnalytics(getConsentSnapshot().analytics)
+      const { analytics, advertising } = getConsentSnapshot()
+      setDraft({ analytics, advertising })
       setSettingsOpen(true)
     }
     window.addEventListener(OPEN_SETTINGS_EVENT, onOpen)
@@ -63,8 +107,8 @@ export function CookieConsent() {
           </h2>
           <p id="cc-texto" className="mt-1.5 text-[13px] leading-snug text-text-secondary sm:mt-2 sm:text-sm sm:leading-relaxed">
             <span className="sm:hidden">
-              Usamos tecnologías necesarias para que el sitio funcione. Las de análisis son opcionales y
-              solo se activan con tu consentimiento.{" "}
+              Usamos tecnologías necesarias para que el sitio funcione. Las de análisis y de publicidad
+              solo se activan si las aceptas.{" "}
               <Link
                 href="/politica-de-cookies"
                 className="font-medium text-gold-text underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
@@ -74,7 +118,7 @@ export function CookieConsent() {
             </span>
             <span className="hidden sm:inline">
               Utilizamos tecnologías necesarias para el funcionamiento del sitio. Con tu consentimiento,
-              también podremos utilizar herramientas opcionales de análisis cuando estén habilitadas.
+              también podremos utilizar herramientas opcionales de análisis y de publicidad y medición.
               Puedes aceptar, rechazar o configurar tus preferencias.
             </span>
           </p>
@@ -87,10 +131,10 @@ export function CookieConsent() {
             </Link>
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2 min-[360px]:grid-cols-3 sm:mt-4 sm:grid-cols-2">
-            <button type="button" onClick={() => saveConsent(true)} className={choiceButton}>
+            <button type="button" onClick={() => saveConsent(ACCEPT_ALL)} className={choiceButton}>
               Aceptar
             </button>
-            <button type="button" onClick={() => saveConsent(false)} className={choiceButton}>
+            <button type="button" onClick={() => saveConsent(REJECT_ALL)} className={choiceButton}>
               Rechazar
             </button>
             <button
@@ -152,26 +196,20 @@ export function CookieConsent() {
                 </span>
               </div>
             </li>
-            <li className="relative rounded-xl border border-[var(--line-gold)] bg-surface-deep/60 p-4 pr-[5.25rem]">
-              <input
-                type="checkbox"
-                checked={draftAnalytics}
-                onChange={(e) => setDraftAnalytics(e.target.checked)}
-                aria-labelledby="cs-analiticas"
-                aria-describedby="cs-analiticas-texto"
-                className="peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
-              />
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute right-4 top-4 block h-7 w-12 rounded-full border border-gold/40 bg-surface-deep transition-colors peer-checked:bg-gold/35 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--gold-text)] after:absolute after:left-1 after:top-1 after:h-5 after:w-5 after:rounded-full after:bg-text-secondary after:transition-transform peer-checked:after:translate-x-5 peer-checked:after:bg-gold-text"
-              />
-              <h3 id="cs-analiticas" className="text-[15px] font-semibold text-text-primary">
-                Analíticas
-              </h3>
-              <p id="cs-analiticas-texto" className="mt-1 text-sm leading-snug text-text-secondary">
-                Vercel Web Analytics: estadísticas agregadas de visitas. Solo se cargan si las activas.
-              </p>
-            </li>
+            <ConsentToggle
+              id="cs-analiticas"
+              title="Analíticas"
+              description="Vercel Web Analytics: estadísticas agregadas de visitas. Solo se cargan si las activas."
+              checked={draft.analytics}
+              onChange={(analytics) => setDraft((d) => ({ ...d, analytics }))}
+            />
+            <ConsentToggle
+              id="cs-publicidad"
+              title="Publicidad y medición"
+              description="Etiqueta de Google Ads: mide si nuestros anuncios llevan a acciones en este sitio (por ejemplo, abrir Telegram) y ayuda a mejorarlos. No se usa para remarketing ni publicidad personalizada. Google puede usar cookies y recibir datos de uso. Solo se carga si la activas."
+              checked={draft.advertising}
+              onChange={(advertising) => setDraft((d) => ({ ...d, advertising }))}
+            />
           </ul>
 
           <p className="mt-4 text-sm">
@@ -188,7 +226,7 @@ export function CookieConsent() {
             <button
               type="button"
               onClick={() => {
-                saveConsent(draftAnalytics)
+                saveConsent(draft)
                 setSettingsOpen(false)
               }}
               className="cta-base cta-primary min-h-11 flex-1 cursor-pointer px-4 text-sm"

@@ -62,6 +62,11 @@ export const avisoLegal: LegalDoc = {
       id: "ausencia-de-servicios-financieros",
       title: "3. Ausencia de servicios financieros",
       blocks: [
+        { type: "h3", text: "Plataforma exclusivamente educativa" },
+        {
+          type: "p",
+          text: "RUTA Cripto Segura es una plataforma exclusivamente educativa. No realizamos operaciones de compra, venta, intercambio ni transferencias de criptomonedas por cuenta de terceros. No ofrecemos asesoramiento de inversión ni promesas de rentabilidad.",
+        },
         {
           type: "p",
           text: "Ruta Cripto Segura no opera como banco, exchange, proveedor de custodia ni intermediario de transferencias financieras.",
