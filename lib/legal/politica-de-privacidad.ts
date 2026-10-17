@@ -63,7 +63,7 @@ export const politicaDePrivacidad: LegalDoc = {
         },
         {
           type: "p",
-          text: "El sitio no envía a Google tu nombre, tu correo electrónico ni datos de tu cuenta de Telegram, y no añade datos personales a las direcciones ni a los eventos que se miden. Un clic en un enlace de Telegram no confirma que te hayas suscrito, hablado con alguien ni recibido el curso: solo indica que se abrió el enlace.",
+          text: "El sitio no envía a Google tu nombre, tu correo electrónico ni datos de tu cuenta de Telegram, y no añade datos personales a las direcciones ni a los eventos que se miden. No utilizamos estos datos para remarketing ni para publicidad personalizada. Un clic en un enlace de Telegram no confirma que te hayas suscrito, hablado con alguien ni recibido el curso: solo indica que se abrió el enlace.",
         },
         { type: "h3", text: "Datos de Telegram" },
         {
@@ -144,7 +144,7 @@ export const politicaDePrivacidad: LegalDoc = {
         },
         {
           type: "p",
-          text: `Google Ads es una herramienta opcional de medición publicitaria: su etiqueta solo se carga si aceptas «Publicidad y medición», y Google trata la información conforme a sus propias políticas ([cómo utiliza Google la información de los sitios que usan sus servicios](https://policies.google.com/technologies/partner-sites)). Puedes gestionar la personalización de anuncios en [Configuración de anuncios de Google](https://adssettings.google.com). Más información en la ${COOKIES_LINK}.`,
+          text: `Google Ads es una herramienta opcional de medición publicitaria: su etiqueta solo se carga si aceptas «Publicidad y medición», y Google trata la información conforme a sus propias políticas ([cómo utiliza Google la información de los sitios que usan sus servicios](https://policies.google.com/technologies/partner-sites)). RUTA no utiliza remarketing ni publicidad personalizada; aun así, puedes gestionar la personalización de anuncios de Google en [Configuración de anuncios de Google](https://adssettings.google.com). Más información en la ${COOKIES_LINK}.`,
         },
         {
           type: "p",

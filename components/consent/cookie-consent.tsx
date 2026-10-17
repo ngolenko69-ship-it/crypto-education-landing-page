@@ -206,7 +206,7 @@ export function CookieConsent() {
             <ConsentToggle
               id="cs-publicidad"
               title="Publicidad y medición"
-              description="Etiqueta de Google Ads: mide si nuestros anuncios llevan a acciones en este sitio (por ejemplo, abrir Telegram) y ayuda a mejorarlos. Google puede usar cookies y recibir datos de uso. Solo se carga si la activas."
+              description="Etiqueta de Google Ads: mide si nuestros anuncios llevan a acciones en este sitio (por ejemplo, abrir Telegram) y ayuda a mejorarlos. No se usa para remarketing ni publicidad personalizada. Google puede usar cookies y recibir datos de uso. Solo se carga si la activas."
               checked={draft.advertising}
               onChange={(advertising) => setDraft((d) => ({ ...d, advertising }))}
             />

@@ -4,10 +4,23 @@
  * How it works (Google Consent Mode v2, "basic" implementation):
  *  - Until the visitor accepts "Publicidad y medición" NOTHING of Google is loaded: no gtag.js,
  *    no request, no cookie, not even a dataLayer. Accepting only analytics does not change that.
- *  - On acceptance the tag is loaded once (components/consent/consent-gated-google-ads.tsx) with
- *    the four consent signals first set to "denied" and then updated to what the visitor chose.
- *  - Withdrawing the consent updates the signals to "denied", stops every event at once and
- *    removes Google's cookies from this domain. The tag is not loaded again on later visits.
+ *  - On acceptance the page first defines gtag() and sends Google's consent DEFAULT (everything
+ *    "denied"), then loads gtag.js. Only when the script reports that it has loaded, and only if the
+ *    visitor's CURRENT choice still includes advertising, the tag is activated: consent update ->
+ *    js -> config. A visitor who changes their mind while the script is still downloading therefore
+ *    never gets a measurement started on an old answer (see createGoogleAdsController).
+ *  - ad_storage and ad_user_data follow "Publicidad y medición"; analytics_storage follows
+ *    "Analíticas"; ad_personalization is ALWAYS "denied": RUTA runs no remarketing and no
+ *    personalised advertising. Conversion measurement does not depend on it.
+ *
+ * Withdrawing the consent, honestly:
+ *  - our side: the signals are updated to "denied" (Google's mechanism for any change of choice),
+ *    every event stops at once, the Google cookies of this domain are removed, and the tag is not
+ *    loaded again on later visits;
+ *  - Google's side: a gtag.js that was already loaded cannot be unloaded from a page. It stays in
+ *    memory until the page is closed or reloaded. Google documents the "denied" update as the way to
+ *    tell it to stop using cookies and user data, but it does not promise that a loaded tag makes no
+ *    further request at all, so this code does not claim that either. Nothing of ours calls it again.
  *
  * What is measured: transitions to Telegram, nothing else. A click on a Telegram link is NOT a
  * subscription, a chat or a received PDF, and the events say exactly that: ruta_course_click,
@@ -21,7 +34,7 @@
  * Plain strings and pure functions first (testable outside Next.js); browser-only parts below.
  */
 
-import { hasAdvertisingConsent, type ConsentChoice } from "./consent"
+import { getConsentSnapshot, type ConsentChoice } from "./consent"
 import { TELEGRAM_BOT_URL, TELEGRAM_CHANNEL_URL, TELEGRAM_MANAGER_URL } from "./telegram"
 
 /** Google tag ID of the Google Ads account. Public by design (it is visible on every site that uses it). */
@@ -49,40 +62,52 @@ export type GoogleConsentSignals = {
 }
 
 /**
- * The visitor's two optional choices as Google's four signals. "Publicidad y medición" drives the
- * three advertising signals together; "Analíticas" drives analytics_storage only. Accepting
- * analytics alone therefore never grants an advertising signal.
+ * The visitor's two optional choices as Google's four signals. "Publicidad y medición" drives
+ * ad_storage and ad_user_data (the two signals conversion measurement needs); "Analíticas" drives
+ * analytics_storage. ad_personalization is always "denied": no remarketing, no personalised ads.
+ * Accepting analytics alone therefore never grants an advertising signal.
  */
 export function googleConsentSignals(choice: ConsentChoice): GoogleConsentSignals {
   const ads: GoogleConsentValue = choice.advertising ? "granted" : "denied"
   return {
     ad_storage: ads,
     ad_user_data: ads,
-    ad_personalization: ads,
+    ad_personalization: "denied",
     analytics_storage: choice.analytics ? "granted" : "denied",
   }
 }
 
+const ALL_DENIED = googleConsentSignals({ analytics: false, advertising: false })
+
 /**
- * The inline script that starts the tag, run only after "Publicidad y medición" was accepted.
- * Order matters to Google: consent default (everything denied) → consent update (the visitor's
- * choice) → js → config. Built from constants and booleans only, so nothing user-controlled can
- * end up in it.
+ * The first inline script: defines gtag() and sends Google's consent DEFAULT (everything denied)
+ * before gtag.js is requested. It sends nothing else: the tag is activated later, once it has loaded
+ * and the visitor's current choice has been checked (see createGoogleAdsController). Static, so nothing
+ * user-controlled can end up in it.
  */
-export function buildGoogleAdsInitScript(choice: ConsentChoice): string {
-  const denied = googleConsentSignals({ analytics: false, advertising: false })
-  const chosen = googleConsentSignals(choice)
+export const GOOGLE_ADS_STUB_SCRIPT = [
+  "window.dataLayer = window.dataLayer || [];",
+  // gtag.js only understands the real `arguments` object, not an array of them.
+  "window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };",
+  `gtag("consent", "default", ${JSON.stringify(ALL_DENIED)});`,
+].join("\n")
+
+export type GtagCall = unknown[]
+
+/**
+ * What activates the tag, in Google's order: personalised advertising off -> consent update (the
+ * visitor's choice) -> js -> click-identifier redaction -> config. Called only after gtag.js has loaded.
+ */
+export function googleActivationCalls(choice: ConsentChoice, now: Date = new Date()): GtagCall[] {
   return [
-    "window.dataLayer = window.dataLayer || [];",
-    // gtag.js only understands the real `arguments` object, not an array of them.
-    "window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };",
-    `gtag("consent", "default", ${JSON.stringify(denied)});`,
-    `gtag("consent", "update", ${JSON.stringify(chosen)});`,
-    'gtag("js", new Date());',
-    // belt and braces: if a signal is ever denied, click identifiers are redacted from requests
-    'gtag("set", "ads_data_redaction", true);',
-    `gtag("config", ${JSON.stringify(GOOGLE_ADS_ID)});`,
-  ].join("\n")
+    // belt and braces next to ad_personalization = denied; Google: this does not disable conversion tracking
+    ["set", "allow_ad_personalization_signals", false],
+    ["consent", "update", googleConsentSignals(choice)],
+    ["js", now],
+    // if a signal is ever denied, click identifiers are redacted from requests
+    ["set", "ads_data_redaction", true],
+    ["config", GOOGLE_ADS_ID],
+  ]
 }
 
 declare global {
@@ -121,32 +146,93 @@ export function clearGoogleAdsCookies(): void {
 
 type Gtag = (...args: unknown[]) => void
 
+export type GoogleAdsDeps = {
+  /** The visitor's choice RIGHT NOW (read from the store each time, never from a stale copy). */
+  choice: () => ConsentChoice
+  gtag: () => Gtag | undefined
+  clearCookies: () => void
+  now?: () => Date
+}
+
 /**
- * Keeps Google's consent state equal to the visitor's choice for the rest of the page session.
- * Call it with the current choice whenever the choice (or the page) changes; it only acts on a real change:
- *  - the very first time with advertising accepted, the start-up script has just told Google exactly this
- *    state, so nothing is pushed (a second "update" after "config" would be noise);
- *  - later changes (analytics toggled, advertising withdrawn or accepted again) push one consent update;
- *  - when advertising is not accepted, Google's cookies on this domain are removed (idempotent), and if the
- *    tag had already started in this visit its signals are set to "denied".
+ * The life of the tag inside one page. It decides when to activate Google and what to tell it later.
+ *
+ *  - Nothing is activated before the script has loaded (markScriptReady) AND the visitor's current
+ *    choice includes advertising. If they withdrew while the script was downloading, the tag simply
+ *    never starts: Google keeps the default "denied" and receives no js/config. A script that failed
+ *    to download (markScriptFailed) never starts either.
+ *  - Accepted, withdrawn and accepted again while loading counts as accepted: one activation, with the
+ *    final choice (including analytics).
+ *  - After activation every real change (analytics toggled, advertising withdrawn, accepted again
+ *    without a reload) sends exactly one consent update; config is never sent twice.
+ *  - Whenever advertising is not accepted, Google's cookies on this domain are removed.
+ *  - isActive() is what the click events ask: true only for an activated tag whose visitor still
+ *    accepts advertising, so events stop the instant the choice is withdrawn, even in another tab.
  */
-export function createConsentReconciler(deps: { gtag: () => Gtag | undefined; clearCookies: () => void }) {
-  let announced: string | null = null // what Google was last told in this page session; null = nothing yet
-  return (choice: ConsentChoice): void => {
+export function createGoogleAdsController(deps: GoogleAdsDeps) {
+  let scriptReady = false
+  let scriptFailed = false
+  let activated = false
+  let announced: string | null = null // the signals Google was last told after activation
+
+  const announce = (choice: ConsentChoice): void => {
     const signals = googleConsentSignals(choice)
     const signature = JSON.stringify(signals)
-    if (!choice.advertising) deps.clearCookies()
-    if (announced === null) {
-      if (choice.advertising) announced = signature // announced by the start-up script
-      return
-    }
     if (announced === signature) return
     announced = signature
     deps.gtag()?.("consent", "update", signals)
   }
+
+  const sync = (): void => {
+    const choice = deps.choice()
+    if (!choice.advertising) {
+      deps.clearCookies()
+      if (activated) announce(choice)
+      return
+    }
+    if (!scriptReady) return // activation happens when the script reports it has loaded
+    const gtag = deps.gtag()
+    if (!gtag) return
+    if (!activated) {
+      activated = true
+      for (const call of googleActivationCalls(choice, deps.now?.())) gtag(...call)
+      announced = JSON.stringify(googleConsentSignals(choice))
+      return
+    }
+    announce(choice)
+  }
+
+  return {
+    /**
+     * gtag.js has been downloaded and has run: the script element's own "load" event, never a guess.
+     * (next/script's onReady is NOT that: it also fires for a tag mounted again while the script is
+     * still downloading, which would start the measurement on a half-loaded page.)
+     */
+    markScriptReady(): void {
+      // next/script also reports "loaded" to a tag mounted again after a failed download
+      if (scriptFailed) return
+      scriptReady = true
+      sync()
+    },
+    /** gtag.js could not be downloaded (extension, network): the tag does not start on this page. */
+    markScriptFailed(): void {
+      scriptFailed = true
+      scriptReady = false
+    },
+    /** The choice (or the page) changed: bring Google in line. Safe to call as often as you like. */
+    sync,
+    isActive: (): boolean => activated && deps.choice().advertising && typeof deps.gtag() === "function",
+    state: () => ({ scriptReady, scriptFailed, activated, announced }),
+  }
 }
 
-export const reconcileGoogleConsent = createConsentReconciler({
+export type GoogleAdsController = ReturnType<typeof createGoogleAdsController>
+
+export const googleAds: GoogleAdsController = createGoogleAdsController({
+  choice: () => {
+    const { analytics, advertising } = getConsentSnapshot()
+    return { analytics, advertising }
+  },
   gtag: () => (typeof window === "undefined" ? undefined : window.gtag),
   clearCookies: clearGoogleAdsCookies,
 })
@@ -227,14 +313,17 @@ export function buildTelegramClickCalls(
 }
 
 /**
- * Reports one click to Google. Sends nothing, and returns false, unless the visitor accepted
- * "Publicidad y medición" and the tag has been started (window.gtag exists only then: the stub is
- * created by the init script, after Google's consent default/update, never earlier).
+ * Reports one click to Google. Sends nothing, and returns false, unless the tag is active: gtag.js
+ * has loaded, was activated, and the visitor still accepts "Publicidad y medición" at this moment.
+ * A click before that (for instance in the first instant after accepting) is simply not counted.
  */
-export function sendTelegramClick(target: TelegramTarget, placement: string): boolean {
-  if (typeof window === "undefined" || !hasAdvertisingConsent()) return false
-  const gtag = window.gtag
-  if (typeof gtag !== "function") return false
+export function sendTelegramClick(
+  target: TelegramTarget,
+  placement: string,
+  controller: GoogleAdsController = googleAds,
+  gtag: Gtag | undefined = typeof window === "undefined" ? undefined : window.gtag,
+): boolean {
+  if (typeof gtag !== "function" || !controller.isActive()) return false
   try {
     for (const call of buildTelegramClickCalls(target, placement)) gtag(...call)
     return true

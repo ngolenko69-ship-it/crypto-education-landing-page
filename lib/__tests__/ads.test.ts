@@ -4,18 +4,20 @@ import { beforeEach, describe, it } from "node:test"
 import {
   GOOGLE_ADS_ID,
   GOOGLE_ADS_SCRIPT_SRC,
+  GOOGLE_ADS_STUB_SCRIPT,
   TELEGRAM_EVENT_NAMES,
-  buildGoogleAdsInitScript,
   buildTelegramClickCalls,
   classifyTelegramHref,
   cleanConversionLabel,
   clearGoogleAdsCookies,
-  createConsentReconciler,
+  createGoogleAdsController,
+  googleActivationCalls,
   googleConsentSignals,
   isAdsExcludedPath,
   sendTelegramClick,
+  type GoogleAdsController,
 } from "../ads"
-import { CONSENT_KEY, saveConsent, subscribeConsent } from "../consent"
+import { CONSENT_KEY, subscribeConsent } from "../consent"
 import { TELEGRAM_BOT_URL, TELEGRAM_CHANNEL_URL, TELEGRAM_COURSE_URL, TELEGRAM_MANAGER_URL } from "../telegram"
 
 const DENIED = { ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied" }
@@ -26,7 +28,7 @@ describe("Google Consent Mode v2 signals", () => {
     assert.deepEqual(googleConsentSignals({ analytics: true, advertising: true }), {
       ad_storage: "granted",
       ad_user_data: "granted",
-      ad_personalization: "granted",
+      ad_personalization: "denied", // RUTA runs no remarketing and no personalised ads
       analytics_storage: "granted",
     })
   })
@@ -44,57 +46,50 @@ describe("Google Consent Mode v2 signals", () => {
     assert.equal(s.analytics_storage, "denied")
     assert.equal(s.ad_storage, "granted")
     assert.equal(s.ad_user_data, "granted")
-    assert.equal(s.ad_personalization, "granted")
+    assert.equal(s.ad_personalization, "denied")
+  })
+
+  it("keeps ad_personalization denied in every combination, while measurement keeps ad_storage and ad_user_data", () => {
+    for (const analytics of [true, false]) {
+      for (const advertising of [true, false]) {
+        const s = googleConsentSignals({ analytics, advertising })
+        assert.equal(s.ad_personalization, "denied")
+        assert.equal(s.ad_storage, advertising ? "granted" : "denied")
+        assert.equal(s.ad_user_data, advertising ? "granted" : "denied")
+      }
+    }
   })
 })
 
 describe("the start-up script", () => {
   /** Runs the inline script in an empty page-like context and returns what it put in the dataLayer. */
-  function run(choice: { analytics: boolean; advertising: boolean }) {
+  function run() {
     const context = vm.createContext({ Date })
     ;(context as { window?: unknown }).window = context
-    vm.runInContext(buildGoogleAdsInitScript(choice), context)
+    vm.runInContext(GOOGLE_ADS_STUB_SCRIPT, context)
     const w = context as unknown as { dataLayer: ArrayLike<unknown>[]; gtag: unknown }
-    // the script runs in its own realm: round-trip through JSON so the values compare by content (a Date becomes its ISO string)
+    // the script runs in its own realm: round-trip through JSON so the values compare by content
     const layer = JSON.parse(JSON.stringify(Array.from(w.dataLayer).map((entry) => Array.from(entry)))) as unknown[][]
-    return { layer, gtag: w.gtag, dataLayer: w.dataLayer }
+    return { layer, gtag: w.gtag, dataLayer: w.dataLayer, context }
   }
 
-  it("sends consent default (all denied) first, then the visitor's choice, then js and config", () => {
-    const { layer } = run({ analytics: true, advertising: true })
-    assert.equal(layer.length, 5)
-    assert.deepEqual(layer[0], ["consent", "default", DENIED])
-    assert.deepEqual(layer[1], [
-      "consent",
-      "update",
-      { ad_storage: "granted", ad_user_data: "granted", ad_personalization: "granted", analytics_storage: "granted" },
-    ])
-    assert.equal(layer[2][0], "js")
-    assert.match(String(layer[2][1]), /^\d{4}-\d{2}-\d{2}T/) // a Date
-    assert.deepEqual(layer[3], ["set", "ads_data_redaction", true])
-    assert.deepEqual(layer[4], ["config", GOOGLE_ADS_ID])
-  })
-
-  it("passes only the analytics choice through when advertising was accepted without analytics", () => {
-    const { layer } = run({ analytics: false, advertising: true })
-    assert.equal((layer[1][2] as Record<string, string>).analytics_storage, "denied")
-    assert.equal((layer[1][2] as Record<string, string>).ad_storage, "granted")
+  it("defines gtag() and sends ONLY Google's consent default, everything denied: no update, no js, no config", () => {
+    const { layer } = run()
+    assert.deepEqual(layer, [["consent", "default", DENIED]])
   })
 
   it("pushes real Arguments objects, which is what gtag.js requires", () => {
-    const { dataLayer } = run({ analytics: false, advertising: true })
+    const { dataLayer } = run()
     for (const entry of Array.from(dataLayer)) {
       assert.equal(Object.prototype.toString.call(entry), "[object Arguments]")
     }
   })
 
   it("does not replace an existing gtag or dataLayer (so a second run cannot split the queue)", () => {
-    const context = vm.createContext({ Date })
-    ;(context as { window?: unknown }).window = context
-    vm.runInContext(buildGoogleAdsInitScript({ analytics: false, advertising: true }), context)
-    const first = (context as unknown as { gtag: unknown; dataLayer: unknown }).gtag
+    const { context } = run()
+    const first = (context as unknown as { gtag: unknown }).gtag
     const layer = (context as unknown as { dataLayer: unknown }).dataLayer
-    vm.runInContext(buildGoogleAdsInitScript({ analytics: false, advertising: true }), context)
+    vm.runInContext(GOOGLE_ADS_STUB_SCRIPT, context)
     assert.equal((context as unknown as { gtag: unknown }).gtag, first)
     assert.equal((context as unknown as { dataLayer: unknown }).dataLayer, layer)
   })
@@ -103,6 +98,31 @@ describe("the start-up script", () => {
     assert.equal(GOOGLE_ADS_SCRIPT_SRC, `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`)
     assert.match(GOOGLE_ADS_ID, /^AW-\d+$/)
     assert.equal(GOOGLE_ADS_ID, "AW-18517392159")
+  })
+})
+
+describe("what activates the tag", () => {
+  it("is, in Google's order: personalised ads off, consent update, js, redaction, config", () => {
+    const calls = googleActivationCalls({ analytics: true, advertising: true }, new Date("2026-10-17T12:00:00Z"))
+    assert.equal(calls.length, 5)
+    assert.deepEqual(calls[0], ["set", "allow_ad_personalization_signals", false])
+    assert.deepEqual(calls[1], [
+      "consent",
+      "update",
+      { ad_storage: "granted", ad_user_data: "granted", ad_personalization: "denied", analytics_storage: "granted" },
+    ])
+    assert.equal(calls[2][0], "js")
+    assert.ok(calls[2][1] instanceof Date)
+    assert.deepEqual(calls[3], ["set", "ads_data_redaction", true])
+    assert.deepEqual(calls[4], ["config", GOOGLE_ADS_ID])
+  })
+
+  it("passes only the analytics choice through when advertising was accepted without analytics", () => {
+    const update = googleActivationCalls({ analytics: false, advertising: true })[1][2] as Record<string, string>
+    assert.equal(update.analytics_storage, "denied")
+    assert.equal(update.ad_storage, "granted")
+    assert.equal(update.ad_user_data, "granted")
+    assert.equal(update.ad_personalization, "denied")
   })
 })
 
@@ -241,66 +261,80 @@ function installBrowser(hostname = "rutacriptosegura.com") {
   }
 }
 
+/** A controller on fake dependencies: the visitor's current choice, a recordable gtag, a cookie-cleanup counter. */
+function lab(initial: { analytics: boolean; advertising: boolean } = { analytics: false, advertising: false }) {
+  const state = { choice: { ...initial }, hasGtag: true }
+  const calls: unknown[][] = []
+  const gtag = (...args: unknown[]) => void calls.push(args)
+  let cleared = 0
+  const controller = createGoogleAdsController({
+    choice: () => ({ ...state.choice }),
+    gtag: () => (state.hasGtag ? gtag : undefined),
+    clearCookies: () => void cleared++,
+    now: () => new Date("2026-10-17T12:00:00Z"),
+  })
+  return { controller, state, calls, gtag, cleared: () => cleared }
+}
+
+const update = (ad: "granted" | "denied", analytics: "granted" | "denied") => [
+  "consent",
+  "update",
+  { ad_storage: ad, ad_user_data: ad, ad_personalization: "denied", analytics_storage: analytics },
+]
+
 describe("sendTelegramClick", () => {
-  let browser: ReturnType<typeof installBrowser>
-  beforeEach(() => {
-    browser = installBrowser()
-    browser.resetConsent()
+  it("sends nothing before the tag is active, whatever the visitor accepted", () => {
+    const { controller, calls, gtag } = lab({ analytics: true, advertising: true })
+    assert.equal(sendTelegramClick("course", "hero", controller, gtag), false) // script not loaded yet
+    assert.equal(calls.length, 0)
+    controller.markScriptReady()
+    const before = calls.length
+    assert.equal(sendTelegramClick("course", "hero", controller, gtag), true)
+    assert.equal(calls.length, before + 1)
   })
 
-  it("sends nothing before the visitor decides", () => {
-    browser.installGtag()
-    assert.equal(sendTelegramClick("course", "hero"), false)
-    assert.equal(browser.gtagCalls.length, 0)
+  it("sends nothing after a rejection or with analytics only", () => {
+    for (const choice of [{ analytics: false, advertising: false }, { analytics: true, advertising: false }]) {
+      const { controller, calls, gtag } = lab(choice)
+      controller.markScriptReady()
+      assert.equal(sendTelegramClick("manager", "header", controller, gtag), false)
+      assert.equal(calls.length, 0)
+    }
   })
 
-  it("sends nothing after a rejection", () => {
-    browser.installGtag()
-    saveConsent({ analytics: false, advertising: false })
-    assert.equal(sendTelegramClick("manager", "header"), false)
-    assert.equal(browser.gtagCalls.length, 0)
+  it("sends exactly one named event per click once the tag is active", () => {
+    const { controller, calls, gtag } = lab({ analytics: false, advertising: true })
+    controller.markScriptReady()
+    calls.length = 0
+    assert.equal(sendTelegramClick("manager", "header", controller, gtag), true)
+    assert.deepEqual(calls, [["event", "ruta_manager_click", { telegram_target: "manager", placement: "header", transport_type: "beacon" }]])
   })
 
-  it("sends nothing when only analytics was accepted", () => {
-    browser.installGtag()
-    saveConsent({ analytics: true, advertising: false })
-    assert.equal(sendTelegramClick("community", "comunidad"), false)
-    assert.equal(browser.gtagCalls.length, 0)
-  })
-
-  it("sends nothing while the tag is not started, and never invents the stub itself", () => {
-    saveConsent({ analytics: false, advertising: true })
-    assert.equal(sendTelegramClick("course", "hero"), false)
-    assert.equal((globalThis as unknown as { window: Record<string, unknown> }).window.gtag, undefined)
-  })
-
-  it("sends exactly one named event per click once advertising is accepted and the tag is started", () => {
-    browser.installGtag()
-    saveConsent({ analytics: false, advertising: true })
-    assert.equal(sendTelegramClick("manager", "header"), true)
-    assert.equal(browser.gtagCalls.length, 1)
-    assert.deepEqual(browser.gtagCalls[0], [
-      "event",
-      "ruta_manager_click",
-      { telegram_target: "manager", placement: "header", transport_type: "beacon" },
-    ])
-  })
-
-  it("stops at once after the consent is withdrawn", () => {
-    browser.installGtag()
-    saveConsent({ analytics: true, advertising: true })
-    assert.equal(sendTelegramClick("course", "hero"), true)
-    saveConsent({ analytics: true, advertising: false })
-    assert.equal(sendTelegramClick("course", "hero"), false)
-    assert.equal(browser.gtagCalls.length, 1)
+  it("stops at once after the consent is withdrawn, even before anyone told the controller", () => {
+    const { controller, state, calls, gtag } = lab({ analytics: true, advertising: true })
+    controller.markScriptReady()
+    calls.length = 0
+    assert.equal(sendTelegramClick("course", "hero", controller, gtag), true)
+    state.choice = { analytics: true, advertising: false } // another tab withdrew it; no sync() yet
+    assert.equal(sendTelegramClick("course", "hero", controller, gtag), false)
+    assert.equal(calls.length, 1)
   })
 
   it("never lets a failing tag break the click", () => {
-    ;(globalThis as unknown as { window: Record<string, unknown> }).window.gtag = () => {
+    const { controller } = lab({ analytics: false, advertising: true })
+    controller.markScriptReady()
+    const broken = () => {
       throw new Error("boom")
     }
-    saveConsent({ analytics: false, advertising: true })
-    assert.equal(sendTelegramClick("course", "hero"), false)
+    assert.equal(sendTelegramClick("course", "hero", controller, broken), false)
+  })
+
+  it("sends nothing when gtag.js never loaded (blocked by an extension or the network)", () => {
+    const { controller, calls, gtag } = lab({ analytics: true, advertising: true })
+    controller.sync() // consent accepted, script never reports ready
+    assert.equal(controller.isActive(), false)
+    assert.equal(sendTelegramClick("course", "hero", controller, gtag), false)
+    assert.equal(calls.length, 0)
   })
 })
 
@@ -331,80 +365,149 @@ describe("Google Ads cookies", () => {
   })
 })
 
-describe("keeping Google's consent state equal to the visitor's choice", () => {
-  function setup() {
-    const browser = installBrowser()
-    browser.installGtag()
-    const reconcile = createConsentReconciler({
-      gtag: () => (globalThis as unknown as { window: { gtag?: (...a: unknown[]) => void } }).window.gtag,
-      clearCookies: clearGoogleAdsCookies,
-    })
-    return { browser, reconcile }
-  }
-  const update = (ad: "granted" | "denied", analytics: "granted" | "denied") => [
-    "consent",
-    "update",
-    { ad_storage: ad, ad_user_data: ad, ad_personalization: ad, analytics_storage: analytics },
-  ]
-
-  it("says nothing to Google for a visitor who never accepted advertising (and cleans Google cookies)", () => {
-    const { browser, reconcile } = setup()
-    browser.cookies.set("_gcl_aw", "GCL.1.abc")
-    reconcile({ analytics: false, advertising: false })
-    reconcile({ analytics: true, advertising: false })
-    assert.equal(browser.gtagCalls.length, 0)
-    assert.equal(browser.cookies.has("_gcl_aw"), false)
+describe("the life of the tag: a fast-changing visitor", () => {
+  it("does nothing for a visitor who never accepted advertising (and cleans Google cookies)", () => {
+    const { controller, calls, cleared } = lab({ analytics: true, advertising: false })
+    controller.sync()
+    controller.markScriptReady() // e.g. the script was started by an earlier tab
+    controller.sync()
+    assert.equal(calls.length, 0)
+    assert.ok(cleared() >= 1)
+    assert.equal(controller.isActive(), false)
   })
 
-  it("does not repeat what the start-up script already announced", () => {
-    const { browser, reconcile } = setup()
-    reconcile({ analytics: true, advertising: true })
-    reconcile({ analytics: true, advertising: true })
-    assert.equal(browser.gtagCalls.length, 0)
+  it("accepted, but the script is still downloading: nothing is activated yet", () => {
+    const { controller, calls } = lab({ analytics: true, advertising: true })
+    controller.sync()
+    assert.equal(calls.length, 0)
+    assert.deepEqual(controller.state(), { scriptReady: false, scriptFailed: false, activated: false, announced: null })
   })
 
-  it("pushes one update when analytics is toggled later", () => {
-    const { browser, reconcile } = setup()
-    reconcile({ analytics: false, advertising: true }) // start
-    reconcile({ analytics: true, advertising: true })
-    reconcile({ analytics: true, advertising: true })
-    assert.deepEqual(browser.gtagCalls, [update("granted", "granted")])
+  it("activates when the script has loaded: personalised ads off, update (ad_personalization denied), js, redaction, config", () => {
+    const { controller, calls } = lab({ analytics: true, advertising: true })
+    controller.sync()
+    controller.markScriptReady()
+    assert.deepEqual(calls, [
+      ["set", "allow_ad_personalization_signals", false],
+      update("granted", "granted"),
+      ["js", new Date("2026-10-17T12:00:00Z")],
+      ["set", "ads_data_redaction", true],
+      ["config", GOOGLE_ADS_ID],
+    ])
+    assert.equal(controller.isActive(), true)
   })
 
-  it("withdrawing pushes 'denied' for the advertising signals, keeps the analytics choice and removes the cookies", () => {
-    const { browser, reconcile } = setup()
-    reconcile({ analytics: true, advertising: true }) // start
-    browser.cookies.set("_gcl_aw", "GCL.1.abc")
-    reconcile({ analytics: true, advertising: false })
-    assert.deepEqual(browser.gtagCalls, [update("denied", "granted")])
-    assert.equal(browser.cookies.has("_gcl_aw"), false)
-    reconcile({ analytics: true, advertising: false }) // same again: nothing new
-    assert.equal(browser.gtagCalls.length, 1)
+  it("withdrawn WHILE the script downloads: when it arrives nothing is activated, Google keeps the default 'denied'", () => {
+    const { controller, state, calls, cleared } = lab({ analytics: true, advertising: true })
+    controller.sync()
+    state.choice = { analytics: true, advertising: false }
+    controller.sync()
+    controller.markScriptReady()
+    assert.equal(calls.length, 0) // no update, no js, no config
+    assert.ok(cleared() >= 1)
+    assert.equal(controller.isActive(), false)
+    assert.deepEqual(controller.state(), { scriptReady: true, scriptFailed: false, activated: false, announced: null })
   })
 
-  it("accepting again in the same visit pushes 'granted' once", () => {
-    const { browser, reconcile } = setup()
-    reconcile({ analytics: false, advertising: true })
-    reconcile({ analytics: false, advertising: false })
-    reconcile({ analytics: false, advertising: true })
-    assert.deepEqual(browser.gtagCalls, [update("denied", "denied"), update("granted", "denied")])
+  it("accepted, withdrawn and accepted again while downloading: one activation with the FINAL choice", () => {
+    const { controller, state, calls } = lab({ analytics: true, advertising: true })
+    controller.sync()
+    state.choice = { analytics: true, advertising: false }
+    controller.sync()
+    state.choice = { analytics: false, advertising: true } // back, and analytics switched off meanwhile
+    controller.sync()
+    controller.markScriptReady()
+    assert.equal(calls.filter((c) => c[0] === "config").length, 1)
+    assert.deepEqual(calls[1], update("granted", "denied"))
+  })
+
+  it("withdrawn after activation: exactly one 'denied' update, analytics keeps its own choice, cookies removed", () => {
+    const { controller, state, calls, cleared } = lab({ analytics: true, advertising: true })
+    controller.markScriptReady()
+    calls.length = 0
+    const before = cleared()
+    state.choice = { analytics: true, advertising: false }
+    controller.sync()
+    controller.sync() // the same state again: nothing new
+    assert.deepEqual(calls, [update("denied", "granted")])
+    assert.ok(cleared() > before)
+    assert.equal(controller.isActive(), false)
+  })
+
+  it("accepted again WITHOUT a reload: one 'granted' update, never a second config", () => {
+    const { controller, state, calls } = lab({ analytics: false, advertising: true })
+    controller.markScriptReady()
+    state.choice = { analytics: false, advertising: false }
+    controller.sync()
+    state.choice = { analytics: false, advertising: true }
+    controller.sync()
+    controller.sync()
+    assert.deepEqual(calls.slice(5), [update("denied", "denied"), update("granted", "denied")])
+    assert.equal(calls.filter((c) => c[0] === "config").length, 1)
+    assert.equal(controller.isActive(), true)
+  })
+
+  it("analytics toggled while advertising stays accepted: one update per real change", () => {
+    const { controller, state, calls } = lab({ analytics: false, advertising: true })
+    controller.markScriptReady()
+    calls.length = 0
+    state.choice = { analytics: true, advertising: true }
+    controller.sync()
+    controller.sync()
+    state.choice = { analytics: false, advertising: true }
+    controller.sync()
+    assert.deepEqual(calls, [update("granted", "granted"), update("granted", "denied")])
   })
 
   it("withdrawing everything denies all four signals", () => {
-    const { browser, reconcile } = setup()
-    reconcile({ analytics: true, advertising: true })
-    reconcile({ analytics: false, advertising: false })
-    assert.deepEqual(browser.gtagCalls, [update("denied", "denied")])
+    const { controller, state, calls } = lab({ analytics: true, advertising: true })
+    controller.markScriptReady()
+    calls.length = 0
+    state.choice = { analytics: false, advertising: false }
+    controller.sync()
+    assert.deepEqual(calls, [update("denied", "denied")])
   })
 
-  it("survives a missing gtag (the tag never started on this page)", () => {
-    const browser = installBrowser() // no installGtag()
-    const reconcile = createConsentReconciler({
-      gtag: () => (globalThis as unknown as { window: { gtag?: (...a: unknown[]) => void } }).window.gtag,
-      clearCookies: clearGoogleAdsCookies,
-    })
-    reconcile({ analytics: true, advertising: true })
-    reconcile({ analytics: true, advertising: false })
-    assert.equal(browser.gtagCalls.length, 0)
+  it("a late or repeated 'script loaded' (next/script can report it more than once) never activates twice", () => {
+    const { controller, calls } = lab({ analytics: true, advertising: true })
+    controller.markScriptReady()
+    controller.markScriptReady()
+    controller.markScriptReady()
+    assert.equal(calls.filter((c) => c[0] === "config").length, 1)
+  })
+
+  it("a script that failed to download never activates the tag, even if it is reported as loaded for a tag mounted again", () => {
+    const { controller, state, calls } = lab({ analytics: true, advertising: true })
+    controller.sync()
+    controller.markScriptFailed() // blocked by an extension or the network
+    controller.markScriptReady() // next/script resolves the shared promise for a later mount, failed or not
+    state.choice = { analytics: true, advertising: false }
+    controller.sync()
+    state.choice = { analytics: true, advertising: true } // accepted again, without a reload
+    controller.sync()
+    controller.markScriptReady()
+    assert.equal(calls.length, 0)
+    assert.equal(controller.isActive(), false)
+    assert.deepEqual(controller.state(), { scriptReady: false, scriptFailed: true, activated: false, announced: null })
+  })
+
+  it("a failed script still gets Google's cookies removed when the visitor withdraws", () => {
+    const { controller, state, cleared } = lab({ analytics: false, advertising: true })
+    controller.markScriptFailed()
+    state.choice = { analytics: false, advertising: false }
+    const before = cleared()
+    controller.sync()
+    assert.ok(cleared() > before)
+  })
+
+  it("survives a missing gtag(): it activates later, when gtag() exists, and not before", () => {
+    const { controller, state, calls } = lab({ analytics: true, advertising: true })
+    state.hasGtag = false
+    controller.markScriptReady()
+    assert.equal(calls.length, 0)
+    assert.equal(controller.state().activated, false)
+    state.hasGtag = true
+    controller.sync()
+    assert.equal(calls.filter((c) => c[0] === "config").length, 1)
   })
 })

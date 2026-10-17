@@ -81,7 +81,7 @@ export const COOKIE_INVENTORY: InventoryItem[] = [
     name: "Cookies de Google en otros dominios (por ejemplo, google.com o doubleclick.net)",
     provider: "Google (cookies de terceros)",
     purpose:
-      "Medición de conversiones y publicidad de Google Ads. Su existencia, nombre y duración los determina Google según tu navegador y tu configuración de anuncios.",
+      "Medición de conversiones de Google Ads (no se usan para remarketing ni publicidad personalizada). Su existencia, nombre y duración los determina Google según tu navegador y tu configuración de anuncios.",
     category: "Publicidad y medición (opcional). Cookie de terceros.",
     duration: "La define Google; consulta su documentación.",
     consent: "Sí. Solo pueden establecerse si aceptas «Publicidad y medición».",

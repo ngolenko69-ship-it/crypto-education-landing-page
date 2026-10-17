@@ -46,7 +46,7 @@ export const politicaDeCookies: LegalDoc = {
         { type: "h3", text: "Cookies de publicidad y medición" },
         {
           type: "p",
-          text: "Pueden utilizarse para medir campañas publicitarias, atribuir conversiones o personalizar publicidad. En este sitio solo se utilizan si las aceptas (categoría «Publicidad y medición»).",
+          text: "Pueden utilizarse para medir campañas publicitarias, atribuir conversiones o personalizar publicidad. En este sitio solo se utilizan si las aceptas (categoría «Publicidad y medición») y únicamente para medir campañas y atribuir conversiones: no usamos remarketing ni publicidad personalizada.",
         },
         { type: "h3", text: "Cookies de terceros" },
         {
@@ -90,7 +90,7 @@ export const politicaDeCookies: LegalDoc = {
           type: "ul",
           items: [
             "Mientras no aceptes ninguna categoría opcional, el sitio no establece cookies HTTP, ni propias ni de terceros, y no carga ni Vercel Web Analytics ni la etiqueta de Google Ads.",
-            "Si aceptas «Publicidad y medición», se carga la etiqueta de Google Ads (identificador AW-18517392159). Esa etiqueta puede establecer cookies de Google Ads en este dominio y enviar a Google datos de uso del sitio, como las páginas visitadas y las acciones realizadas, por ejemplo abrir un enlace de Telegram.",
+            "Si aceptas «Publicidad y medición», se carga la etiqueta de Google Ads (identificador AW-18517392159). Esa etiqueta puede establecer cookies de Google Ads en este dominio y enviar a Google datos de uso del sitio, como las páginas visitadas y las acciones realizadas, por ejemplo abrir un enlace de Telegram. No usamos esos datos para remarketing ni para publicidad personalizada.",
             "No se utilizan Google Analytics, Google Tag Manager, Meta Pixel ni otras herramientas de publicidad o seguimiento distintas de las indicadas en el inventario.",
             "El sitio no incorpora widgets, vídeos ni otro contenido incrustado de terceros, y sus tipografías se sirven desde el propio sitio.",
             "El sitio no almacena nada más en tu navegador que las tecnologías de la lista anterior.",
@@ -135,11 +135,15 @@ export const politicaDeCookies: LegalDoc = {
         { type: "h3", text: "Google Consent Mode v2" },
         {
           type: "p",
-          text: "Cuando aceptas «Publicidad y medición», informamos a Google de tu elección mediante las señales de consentimiento ad_storage, ad_user_data, ad_personalization y analytics_storage (Google Consent Mode v2). Las tres primeras reflejan tu decisión sobre «Publicidad y medición»; analytics_storage refleja la de «Analíticas». Antes de aceptar, la etiqueta de Google no se carga y no se envía nada a Google.",
+          text: "Informamos a Google de tu elección mediante las señales de consentimiento ad_storage, ad_user_data, ad_personalization y analytics_storage (Google Consent Mode v2). ad_storage y ad_user_data reflejan tu decisión sobre «Publicidad y medición» y analytics_storage la de «Analíticas». ad_personalization permanece siempre en «denegado», porque RUTA no utiliza remarketing ni publicidad personalizada (según la documentación de Google, esa señal afecta al remarketing y a la publicidad personalizada, no a la medición de conversiones). Antes de aceptar, la etiqueta de Google no se carga y no se envía nada a Google.",
         },
         {
           type: "p",
-          text: "Si retiras el consentimiento, dejamos de enviar mediciones a Google de inmediato, actualizamos esas señales a «denegado» y eliminamos las cookies de Google Ads de este dominio; la etiqueta no vuelve a cargarse en tus siguientes visitas. Las cookies de terceros que Google haya podido establecer en otros dominios puedes borrarlas desde la configuración de tu navegador.",
+          text: "Si retiras el consentimiento, dejamos de enviar eventos a Google, actualizamos las señales a «denegado» (el mecanismo que Google prevé para ello) y eliminamos las cookies de Google Ads de este dominio. Si la etiqueta ya se había cargado en la página que tienes abierta, no puede descargarse de ella: permanece en memoria hasta que cierres o recargues la página. Nuestro sitio no vuelve a enviarle nada, pero su funcionamiento interno depende de Google y no podemos garantizar que cese por completo cualquier comunicación con sus servidores hasta entonces; recargar la página tras retirar el consentimiento elimina la etiqueta de la página. La etiqueta no vuelve a cargarse en tus siguientes visitas.",
+        },
+        {
+          type: "p",
+          text: "Si cambias de opinión mientras la etiqueta se está cargando, solo se activa si en ese momento tu elección sigue incluyendo «Publicidad y medición». Las cookies de terceros que Google haya podido establecer en otros dominios puedes borrarlas desde la configuración de tu navegador.",
         },
         {
           type: "p",
